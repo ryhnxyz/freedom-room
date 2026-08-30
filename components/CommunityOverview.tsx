@@ -12,7 +12,7 @@ export default function CommunityOverview() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="max-w-2xl space-y-3">
             <span className="block text-[10px] font-extrabold uppercase tracking-[0.18em] text-muted">The FreedomRoom standard</span>
-            <h2 className="font-heading text-3xl font-extrabold tracking-tight text-primary sm:text-4xl lg:text-5xl">
+            <h2 className="font-display text-4xl leading-[1.02] tracking-tight text-primary sm:text-5xl lg:text-6xl">
               Kenyamanan, privasi, dan kebersihan prima.
             </h2>
           </div>
@@ -29,7 +29,7 @@ export default function CommunityOverview() {
             
             <div className="space-y-3 relative z-10 max-w-sm">
               <span className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-brand">Flexible living</span>
-              <h3 className="font-heading text-xl font-extrabold leading-tight sm:text-2xl">
+              <h3 className="font-display text-3xl leading-tight sm:text-4xl">
                 Pilihan Durasi Sewa Fleksibel Sesuai Kebutuhan
               </h3>
               <p className="text-xs text-sand-100 leading-relaxed">
@@ -66,7 +66,7 @@ export default function CommunityOverview() {
             {/* Top Row: Wide Card */}
             <div className="flex shrink-0 flex-col items-start justify-between gap-4 rounded-[28px] border border-black/5 bg-brand-light p-6 shadow-sm md:flex-row">
               <div className="space-y-2 max-w-lg">
-                <h3 className="font-heading text-xl sm:text-2xl font-bold text-primary">
+                <h3 className="font-display text-3xl leading-tight text-primary sm:text-4xl">
                   Lokasi Strategis & Akses Transportasi Mudah
                 </h3>
                 <p className="text-xs text-secondary leading-relaxed font-sans">

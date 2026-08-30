@@ -12,10 +12,10 @@ interface NavbarProps {
 }
 
 const navLinks = [
-  { href: "/booking", label: "Penginapan", icon: "solar:buildings-2-bold" },
-  { href: "/cek-booking", label: "Reservasi", icon: "solar:calendar-mark-bold" },
+  { href: "https://app.freedomroom.id", label: "Unit", icon: "solar:buildings-2-bold", external: true },
   { href: "/location", label: "Lokasi", icon: "solar:map-point-bold" },
-  { href: "/about", label: "Tentang", icon: "solar:info-circle-bold" },
+  { href: "/about", label: "Tentang Kami", icon: "solar:info-circle-bold" },
+  { href: "/journal", label: "Jurnal", icon: "solar:book-2-bold" },
 ];
 
 export default function Navbar({ onOpenScheduleTour }: NavbarProps) {
@@ -47,12 +47,11 @@ export default function Navbar({ onOpenScheduleTour }: NavbarProps) {
             </span>
           </Link>
 
-          <nav className="mx-auto hidden items-center gap-1 rounded-2xl bg-white p-1.5 shadow-sm ring-1 ring-black/5 md:flex" aria-label="Navigasi utama">
+          <nav className="mx-auto hidden items-center gap-7 md:flex lg:gap-10" aria-label="Navigasi utama">
             {navLinks.map((item) => {
               const active = pathname === item.href;
               return (
-                <Link key={item.href} href={item.href} className={`flex items-center gap-2 rounded-xl px-3 py-2.5 text-xs font-bold transition-colors lg:px-4 ${active ? "bg-primary text-white" : "text-secondary hover:bg-canvas hover:text-primary"}`}>
-                  <Icon icon={item.icon} className="h-4 w-4" />
+                <Link key={item.href} href={item.href} target={item.external ? "_blank" : undefined} rel={item.external ? "noopener noreferrer" : undefined} className={`border-b py-2 text-[11px] font-bold uppercase tracking-[0.12em] transition-colors ${active ? "border-brand text-primary" : "border-transparent text-secondary hover:border-black/20 hover:text-primary"}`}>
                   {item.label}
                 </Link>
               );
@@ -60,11 +59,10 @@ export default function Navbar({ onOpenScheduleTour }: NavbarProps) {
           </nav>
 
           <div className="ml-auto flex items-center gap-2 md:ml-0">
-            <button type="button" onClick={onOpenScheduleTour} className="hidden min-h-10 items-center gap-2 rounded-xl bg-brand px-4 text-xs font-extrabold text-white transition-colors hover:bg-brand-hover sm:flex">
-              <Icon icon="solar:calendar-add-bold" className="h-4 w-4" />
-              Booking
-            </button>
-            <a href="http://localhost:3005" aria-label="Buka portal member" className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white">
+            <a href="https://app.freedomroom.id" target="_blank" rel="noopener noreferrer" className="hidden min-h-10 items-center gap-2 border border-primary bg-primary px-5 text-[11px] font-bold uppercase tracking-[0.1em] text-white transition-colors hover:border-brand hover:bg-brand sm:flex">
+              Reservasi
+            </a>
+            <a href="https://app.freedomroom.id" target="_blank" rel="noopener noreferrer" aria-label="Buka portal member" className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white">
               <Icon icon="solar:user-bold" className="h-4 w-4" />
             </a>
             <button type="button" onClick={() => setMobileMenuOpen(true)} aria-label="Buka menu" className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-primary ring-1 ring-black/5 md:hidden">
@@ -84,16 +82,16 @@ export default function Navbar({ onOpenScheduleTour }: NavbarProps) {
               </button>
             </div>
             <nav className="my-auto grid gap-2" aria-label="Navigasi mobile">
-              <Link href="/" className="flex items-center justify-between rounded-2xl bg-white/10 px-4 py-4 text-base font-bold">Beranda<Icon icon="solar:arrow-right-up-linear" className="h-5 w-5 text-brand" /></Link>
+              <Link href="/" className="flex items-center justify-between border-b border-white/10 px-1 py-4 font-display text-2xl">Beranda<Icon icon="solar:arrow-right-up-linear" className="h-5 w-5 text-brand" /></Link>
               {navLinks.map((item) => (
-                <Link key={item.href} href={item.href} className="flex items-center justify-between rounded-2xl px-4 py-4 text-base font-bold text-white/70 hover:bg-white/10 hover:text-white">{item.label}<Icon icon={item.icon} className="h-5 w-5 text-brand" /></Link>
+                <Link key={item.href} href={item.href} target={item.external ? "_blank" : undefined} rel={item.external ? "noopener noreferrer" : undefined} className="flex items-center justify-between border-b border-white/10 px-1 py-4 font-display text-2xl text-white/75 hover:text-white">{item.label}<Icon icon="solar:arrow-right-linear" className="h-5 w-5 text-brand" /></Link>
               ))}
-              <Link href="/contact" className="flex items-center justify-between rounded-2xl px-4 py-4 text-base font-bold text-white/70 hover:bg-white/10 hover:text-white">Kontak<Icon icon="solar:chat-round-call-bold" className="h-5 w-5 text-brand" /></Link>
+              <Link href="/contact" className="flex items-center justify-between border-b border-white/10 px-1 py-4 font-display text-2xl text-white/75 hover:text-white">Kontak<Icon icon="solar:arrow-right-linear" className="h-5 w-5 text-brand" /></Link>
             </nav>
-            <button type="button" onClick={onOpenScheduleTour} className="flex min-h-13 items-center justify-center gap-2 rounded-2xl bg-brand px-5 text-sm font-extrabold text-white">
+            <a href="https://app.freedomroom.id" target="_blank" rel="noopener noreferrer" className="flex min-h-13 items-center justify-center gap-2 rounded-2xl bg-brand px-5 text-sm font-extrabold text-white">
               <Icon icon="solar:calendar-add-bold" className="h-5 w-5" />
               Booking sekarang
-            </button>
+            </a>
           </div>
         </div>
       )}

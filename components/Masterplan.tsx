@@ -184,14 +184,15 @@ export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
   }, [selectedPlot]);
 
   return (
-    <section id="masterplan" className="py-14 sm:py-24 bg-surface border-b border-border-subtle overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 space-y-6 sm:space-y-10">
+    <section id="masterplan" className="overflow-hidden bg-canvas py-12 sm:py-16">
+      <div className="mx-auto max-w-[1440px] space-y-8 px-4 sm:px-6 lg:px-10">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-5">
-          <div className="space-y-2.5 max-w-2xl">
-            <h2 className="font-heading text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-primary leading-tight">
-              Denah Visual Lantai & Peta Satelit Real
+          <div className="max-w-2xl space-y-3">
+            <span className="eyebrow block text-muted">Explore the address</span>
+            <h2 className="font-display text-4xl leading-[1.02] tracking-tight text-primary sm:text-5xl lg:text-6xl">
+              Discover the residence and its surroundings.
             </h2>
             <p className="text-xs sm:text-sm text-secondary leading-relaxed">
               Jelajahi denah unit aktif di Sentul Tower dan koordinat peta satelit real-time dengan akses cepat ke pusat perbelanjaan & jalan tol.
@@ -199,14 +200,14 @@ export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
           </div>
 
           {/* View Mode Toggle Buttons (Full-width on mobile, shrink-0 on desktop) */}
-          <div className="w-full sm:w-auto grid grid-cols-2 sm:inline-flex items-center p-1.5 bg-sand-200 rounded-2xl border border-border-subtle shrink-0 gap-1 sm:gap-0">
+          <div className="grid w-full shrink-0 grid-cols-2 border-b border-black/15 sm:inline-grid sm:w-auto">
             <button
               type="button"
               onClick={() => setViewMode("realmap")}
-              className={`inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
+              className={`inline-flex min-h-12 items-center justify-center gap-2 border-b-2 px-3 text-xs font-bold uppercase tracking-[0.08em] transition-colors sm:px-5 ${
                 viewMode === "realmap"
-                  ? "bg-brand text-white shadow-sm"
-                  : "text-secondary hover:text-primary hover:bg-white/50"
+                  ? "border-brand text-primary"
+                  : "border-transparent text-secondary hover:text-primary"
               }`}
             >
               <Icon icon="solar:map-bold" className="w-4 h-4 shrink-0" />
@@ -216,10 +217,10 @@ export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
             <button
               type="button"
               onClick={() => setViewMode("floorplan")}
-              className={`inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
+              className={`inline-flex min-h-12 items-center justify-center gap-2 border-b-2 px-3 text-xs font-bold uppercase tracking-[0.08em] transition-colors sm:px-5 ${
                 viewMode === "floorplan"
-                  ? "bg-brand text-white shadow-sm"
-                  : "text-secondary hover:text-primary hover:bg-white/50"
+                  ? "border-brand text-primary"
+                  : "border-transparent text-secondary hover:text-primary"
               }`}
             >
               <Icon icon="solar:structure-bold" className="w-4 h-4 shrink-0" />
@@ -256,7 +257,7 @@ export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
                 </div>
 
                 {/* Real Map Container */}
-                <div className="relative w-full h-[300px] sm:h-[400px] rounded-2xl overflow-hidden border border-border-subtle shadow-inner bg-timber-950 flex-1">
+                <div className="relative h-[320px] w-full flex-1 overflow-hidden rounded-[24px] border border-border-subtle bg-timber-950 shadow-inner sm:h-[440px] sm:rounded-[32px]">
                   <iframe
                     title="Realmap Lokasi Apartemen Sentul Tower"
                     src="https://maps.google.com/maps?q=-6.575,106.862&t=k&z=17&ie=UTF8&iwloc=&output=embed"
@@ -381,7 +382,7 @@ export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
           </div>
 
           {/* Right Column: Selected Unit Detail Specification (4 Cols) */}
-          <div className="lg:col-span-4 bg-surface border border-border-subtle rounded-3xl p-4 sm:p-6 shadow-sm flex flex-col justify-between space-y-5 min-w-0">
+          <div className="app-panel flex min-w-0 flex-col justify-between space-y-5 p-4 sm:p-6 lg:col-span-4">
             
             <div className="space-y-4">
               {/* Unit Badge & Status */}
@@ -396,7 +397,7 @@ export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
               </div>
 
               {/* Unit Image Preview */}
-              <div className="relative h-44 sm:h-52 w-full rounded-2xl overflow-hidden bg-sand-200 border border-border-subtle">
+              <div className="relative h-56 w-full overflow-hidden rounded-[24px] border border-border-subtle bg-sand-200 sm:h-64">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={selectedPlot.image}
@@ -413,7 +414,7 @@ export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
                 <span className="text-[10px] font-mono uppercase text-muted tracking-wider block">
                   {selectedPlot.type} • {selectedPlot.size}
                 </span>
-                <h3 className="font-heading font-bold text-lg sm:text-xl text-primary leading-snug">
+                <h3 className="font-display text-3xl leading-tight text-primary">
                   {selectedPlot.modelAssigned}
                 </h3>
                 <p className="text-xs text-secondary leading-relaxed line-clamp-2 font-sans">

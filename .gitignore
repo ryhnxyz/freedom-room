@@ -37,3 +37,6 @@ next-env.d.ts
 # Agentation
 components/AgentationWrapper.tsx
 .agents/
+
+# Local OpenCode configuration (may contain API keys)
+/opencode.jsonc

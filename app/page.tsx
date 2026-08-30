@@ -7,7 +7,6 @@ import CommunityOverview from "@/components/CommunityOverview";
 import Masterplan from "@/components/Masterplan";
 import HouseGrid from "@/components/HouseGrid";
 import Neighborhood from "@/components/Neighborhood";
-import BlogSection from "@/components/BlogSection";
 import FaqSection from "@/components/FaqSection";
 import TourSection from "@/components/TourSection";
 import TourBookingModal from "@/components/TourBookingModal";
@@ -51,9 +50,6 @@ export default function Home() {
 
       {/* Neighborhood & Location */}
       <Neighborhood />
-
-      {/* Latest Architectural Journal & Blogs Section */}
-      <BlogSection />
 
       {/* Frequently Asked Questions Section */}
       <FaqSection />

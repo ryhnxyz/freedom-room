@@ -119,7 +119,7 @@ export default function HouseGrid() {
             </span>
             <h2
               id="models-section-title"
-              className="font-heading text-3xl font-extrabold leading-[1.08] tracking-tight text-primary sm:text-4xl lg:text-5xl"
+              className="font-display text-4xl leading-[1.02] tracking-tight text-primary sm:text-5xl lg:text-6xl"
             >
               Pilihan Kamar Transit & Harian Eksklusif.
             </h2>
@@ -129,17 +129,21 @@ export default function HouseGrid() {
           </div>
 
           <div className="flex items-center gap-3 shrink-0">
-            <Link href="/booking">
-              <Button variant="primary" size="md" icon="solar:grid-bold">
-                Lihat Semua 9 Unit Kamar
-              </Button>
-            </Link>
+            <a
+              href="https://app.freedomroom.id"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-[#b39229] bg-[#b39229] px-3.5 py-2.5 text-xs font-semibold tracking-wide text-white shadow-sm transition-all duration-150 ease-out hover:border-[#967a21] hover:bg-[#967a21] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#E8DCB8]/60 active:scale-[0.985] sm:text-sm"
+            >
+              <Icon icon="solar:grid-bold" className="h-4.5 w-4.5 shrink-0" />
+              <span>Lihat Semua Unit Kamar</span>
+            </a>
           </div>
         </div>
 
         {/* Room Cards Stack (Fluid on Mobile, Parallax on Desktop) */}
         <div className="relative mx-auto w-full max-w-[1440px] space-y-6 px-4 pb-4 sm:px-6 lg:space-y-8 lg:px-10">
-          {HOUSE_MODELS.map((model, idx) => {
+          {HOUSE_MODELS.slice(0, 3).map((model, idx) => {
             const dbRoom = liveRooms.find((r) => r.id === model.databaseId || r.unit_number === model.unitNumber);
             const isAvailable = (dbRoom?.status || model.status) === "Available";
             const rateVal = dbRoom ? (dbRoom.rate_3h || dbRoom.rate_transit_3h || model.rateTransit3h || model.startingPrice) : (model.rateTransit3h || model.startingPrice);
@@ -177,7 +181,7 @@ export default function HouseGrid() {
                           <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-sand-300/80 block mb-1">
                             UNIT APARTEMEN #{idx + 1 < 10 ? `0${idx + 1}` : idx + 1}
                           </span>
-                          <h3 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white leading-tight">
+                          <h3 className="font-display text-3xl leading-tight text-white sm:text-4xl lg:text-5xl">
                             {model.name}
                           </h3>
                         </div>

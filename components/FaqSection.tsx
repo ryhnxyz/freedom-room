@@ -26,10 +26,11 @@ export default function FaqSection() {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="py-16 sm:py-24 bg-surface border-t border-border-subtle">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 space-y-8 sm:space-y-12">
+    <section id="faq" className="bg-canvas py-12 sm:py-16">
+      <div className="mx-auto max-w-[1100px] space-y-8 px-4 sm:px-6">
         <div className="space-y-3 text-center max-w-2xl mx-auto">
-          <h2 className="font-heading font-bold text-3xl sm:text-4xl text-primary">
+          <span className="eyebrow block text-muted">Guest information</span>
+          <h2 className="font-display text-4xl leading-tight text-primary sm:text-5xl">
             Pertanyaan yang Sering Diajukan
           </h2>
           <p className="text-sm sm:text-base text-secondary">
@@ -44,10 +45,10 @@ export default function FaqSection() {
               <div
                 key={idx}
                 onClick={() => setActiveFaq(isOpen ? null : idx)}
-                className="bg-canvas p-4 sm:p-5 rounded-2xl border border-border-subtle space-y-2 cursor-pointer transition-all hover:border-brand-border shadow-xs"
+                className="cursor-pointer space-y-2 border-b border-black/15 py-5 transition-colors hover:border-brand sm:py-6"
               >
                 <div className="flex items-center justify-between gap-4">
-                  <h4 className="font-heading font-bold text-sm sm:text-base text-primary">
+                  <h4 className="font-display text-xl text-primary sm:text-2xl">
                     {faq.q}
                   </h4>
                   <Icon

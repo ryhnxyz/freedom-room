@@ -56,7 +56,7 @@ export default function Neighborhood() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
             <span className="block text-[10px] font-extrabold uppercase tracking-[0.18em] text-muted">Around your stay</span>
-            <h2 id="neighborhood-title" className="font-heading text-3xl font-extrabold tracking-tight text-primary sm:text-4xl lg:text-5xl">
+            <h2 id="neighborhood-title" className="font-display text-4xl leading-[1.02] tracking-tight text-primary sm:text-5xl lg:text-6xl">
               Lokasi & Sekitar Properti
             </h2>
             <p className="text-xs sm:text-base text-secondary leading-relaxed">
