@@ -295,7 +295,7 @@ export default function TourBookingModal({
         ref={sheetContainerRef}
         onClick={(e) => e.stopPropagation()}
         onTouchMove={(e) => e.stopPropagation()}
-        style={{ maxHeight: "90vh", height: "auto" }}
+        style={{ maxHeight: "92vh", height: "auto" }}
         className="bg-canvas w-full max-w-lg rounded-3xl border border-border-subtle shadow-2xl relative flex flex-col min-h-0 z-10 will-change-transform overflow-hidden my-auto"
       >
         {/* Header */}

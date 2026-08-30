@@ -242,7 +242,7 @@ export default function Navbar({ onOpenScheduleTour, theme = "dark" }: NavbarPro
       {isRendered && (
         <div
           ref={menuOverlayRef}
-          className="fixed inset-0 z-50 bg-timber-950/98 backdrop-blur-2xl text-white flex flex-col justify-between p-6 sm:p-10 md:hidden"
+          className="fixed inset-0 z-50 bg-timber-950/98 backdrop-blur-2xl text-white flex flex-col justify-between p-6 sm:p-10 md:hidden overflow-y-auto modal-scrollbar"
         >
           <div className="flex items-center justify-between border-b border-white/10 pb-5">
             <div className="flex items-center gap-3">

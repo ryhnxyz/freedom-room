@@ -151,12 +151,12 @@ export const SENTUL_PLOTS: MasterplanPlot[] = [
 ];
 
 const FLOOR_FILTERS = [
-  { id: "all", label: "Semua Unit (9)" },
-  { id: "Lantai 3", label: "Lantai 3 (2)" },
-  { id: "Lantai 6", label: "Lantai 6 (1)" },
-  { id: "Lantai 8", label: "Lantai 8 (1)" },
-  { id: "Lantai 10", label: "Lantai 10 (4)" },
-  { id: "Lantai 11", label: "Lantai 11 (1)" },
+  { id: "all", label: "Semua (9)" },
+  { id: "Lantai 3", label: "Lt 3 (2)" },
+  { id: "Lantai 6", label: "Lt 6 (1)" },
+  { id: "Lantai 8", label: "Lt 8 (1)" },
+  { id: "Lantai 10", label: "Lt 10 (4)" },
+  { id: "Lantai 11", label: "Lt 11 (1)" },
 ];
 
 interface MasterplanProps {
@@ -184,13 +184,13 @@ export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
   }, [selectedPlot]);
 
   return (
-    <section id="masterplan" className="py-16 sm:py-24 bg-surface border-b border-border-subtle">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 space-y-8 sm:space-y-10">
+    <section id="masterplan" className="py-14 sm:py-24 bg-surface border-b border-border-subtle overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 space-y-6 sm:space-y-10">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div className="space-y-3 max-w-2xl">
-            <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-primary">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-5">
+          <div className="space-y-2.5 max-w-2xl">
+            <h2 className="font-heading text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-primary leading-tight">
               Denah Visual Lantai & Peta Satelit Real
             </h2>
             <p className="text-xs sm:text-sm text-secondary leading-relaxed">
@@ -198,95 +198,65 @@ export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
             </p>
           </div>
 
-          {/* View Mode Toggle Buttons */}
-          <div className="inline-flex items-center p-1.5 bg-sand-200 rounded-2xl border border-border-subtle shrink-0">
+          {/* View Mode Toggle Buttons (Full-width on mobile, shrink-0 on desktop) */}
+          <div className="w-full sm:w-auto grid grid-cols-2 sm:inline-flex items-center p-1.5 bg-sand-200 rounded-2xl border border-border-subtle shrink-0 gap-1 sm:gap-0">
             <button
               type="button"
               onClick={() => setViewMode("realmap")}
-              className={`inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
+              className={`inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
                 viewMode === "realmap"
                   ? "bg-brand text-white shadow-sm"
                   : "text-secondary hover:text-primary hover:bg-white/50"
               }`}
             >
               <Icon icon="solar:map-bold" className="w-4 h-4 shrink-0" />
-              <span>Peta Satelit Real</span>
+              <span>Peta Satelit</span>
             </button>
 
             <button
               type="button"
               onClick={() => setViewMode("floorplan")}
-              className={`inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
+              className={`inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
                 viewMode === "floorplan"
                   ? "bg-brand text-white shadow-sm"
                   : "text-secondary hover:text-primary hover:bg-white/50"
               }`}
             >
               <Icon icon="solar:structure-bold" className="w-4 h-4 shrink-0" />
-              <span>Denah Lantai Unit</span>
+              <span>Denah Lantai</span>
             </button>
           </div>
         </div>
 
-        {/* Property Selector Bar (Single Active + Expansion Ready) */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-canvas p-4 rounded-2xl border border-border-subtle shadow-xs">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-brand/15 text-brand flex items-center justify-center font-bold text-sm shrink-0">
-              <Icon icon="solar:buildings-3-bold" className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h3 className="font-heading font-bold text-sm sm:text-base text-primary">
-                  Sentul Tower Apartment
-                </h3>
-                <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 uppercase tracking-wider">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
-                  Operasional Aktif
-                </span>
-              </div>
-              <p className="text-[11px] text-muted flex items-center gap-1 mt-0.5">
-                <Icon icon="solar:map-point-bold" className="w-3 h-3 text-brand shrink-0" />
-                Sentul City, Babakan Madang, Bogor • 9 Unit Pilihan (Lantai 3, 6, 8, 10, 11)
-              </p>
-            </div>
-          </div>
-
-          <div className="text-[11px] text-secondary bg-surface px-3 py-1.5 rounded-xl border border-border-subtle shrink-0">
-            <span className="font-medium text-muted">Lokasi apartemen, hotel & villa berikutnya segera hadir</span>
-          </div>
-        </div>
-
-        {/* ------------------------------------------------------------- */}
-        {/* MAIN GRID: Interactive Map / Floorplan & Detail Sidebar */}
-        {/* ------------------------------------------------------------- */}
+        {/* Master Content Layout: 12-Column Responsive Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
           
-          {/* Left Column: Interactive Map Display (8 Cols) */}
-          <div className="lg:col-span-8 bg-canvas border border-border-subtle rounded-3xl p-4 sm:p-6 shadow-sm flex flex-col justify-between space-y-4">
+          {/* Left Column: Interactive Map / Floorplan View (8 Cols) */}
+          <div className="lg:col-span-8 flex flex-col justify-between space-y-4 min-w-0">
             
             {viewMode === "realmap" ? (
-              /* MODE 1: SATELLITE REALMAP */
-              <div className="space-y-3 flex-1 flex flex-col">
-                <div className="flex flex-wrap items-center justify-between gap-2">
+              /* MODE 1: PETA SATELIT REAL */
+              <div className="space-y-4 flex-1 flex flex-col min-w-0">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-sand-100 p-3 sm:p-4 rounded-2xl border border-border-subtle text-xs">
                   <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-brand shrink-0" />
-                    <span className="text-xs font-mono font-bold text-primary truncate max-w-lg">
-                      Ruko STA Shopping Arcade A7, Citaringgul, Babakan Madang, Bogor 16810
+                    <Icon icon="solar:map-point-wave-bold" className="w-4 h-4 text-brand shrink-0" />
+                    <span className="font-semibold text-primary">
+                      Sentul City, Babakan Madang, Bogor • 9 Unit Pilihan (Lantai 3, 6, 8, 10, 11)
                     </span>
                   </div>
                   <a
-                    href="https://www.google.com/maps/dir/?api=1&destination=-6.575,106.862"
+                    href="https://maps.google.com/?q=Sentul+Tower+Apartment"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-brand hover:underline"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-brand hover:underline shrink-0"
                   >
                     <Icon icon="solar:map-arrow-square-bold" className="w-4 h-4" />
-                    <span>Petunjuk Arah Google Maps</span>
+                    <span>Buka Google Maps</span>
                   </a>
                 </div>
 
                 {/* Real Map Container */}
-                <div className="relative w-full h-[360px] sm:h-[440px] rounded-2xl overflow-hidden border border-border-subtle shadow-inner bg-timber-950 flex-1">
+                <div className="relative w-full h-[300px] sm:h-[400px] rounded-2xl overflow-hidden border border-border-subtle shadow-inner bg-timber-950 flex-1">
                   <iframe
                     title="Realmap Lokasi Apartemen Sentul Tower"
                     src="https://maps.google.com/maps?q=-6.575,106.862&t=k&z=17&ie=UTF8&iwloc=&output=embed"
@@ -299,19 +269,19 @@ export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
                     className="w-full h-full object-cover"
                   />
 
-                  {/* Floating Location Overlay Info */}
-                  <div className="absolute bottom-3 left-3 right-3 sm:right-auto sm:max-w-xs bg-surface/95 backdrop-blur-md p-3.5 rounded-2xl border border-border-subtle shadow-xl text-xs space-y-1.5">
+                  {/* Location Overlay Info */}
+                  <div className="hidden sm:block absolute bottom-3 left-3 bg-surface/95 backdrop-blur-md p-3 rounded-2xl border border-border-subtle shadow-xl text-xs space-y-1 max-w-xs">
                     <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-brand text-white flex items-center justify-center shrink-0 font-bold text-[10px]">
+                      <div className="w-5 h-5 rounded-full bg-brand text-white flex items-center justify-center shrink-0 font-bold text-[9px]">
                         FR
                       </div>
                       <div>
-                        <strong className="block text-primary font-bold">FreedomRoom Sentul Tower</strong>
-                        <span className="text-[11px] text-muted block">Ruko STA Shopping Arcade A7</span>
+                        <strong className="block text-primary font-bold text-[11px]">FreedomRoom Sentul Tower</strong>
+                        <span className="text-[10px] text-muted block">Ruko STA Shopping Arcade A7</span>
                       </div>
                     </div>
-                    <p className="text-[11px] text-secondary leading-relaxed">
-                      3 Menit dari Tol Sentul Selatan • 800m ke AEON Mall Sentul City & IKEA.
+                    <p className="text-[10px] text-secondary leading-relaxed">
+                      3 Menit dari Tol Sentul Selatan • 800m ke AEON Mall & IKEA.
                     </p>
                   </div>
                 </div>
@@ -319,14 +289,14 @@ export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
                 {/* Point of Interest Badges */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
                   {[
-                    { label: "Pintu Tol Sentul Selatan", dist: "3 Menit", icon: "solar:car-bold" },
-                    { label: "AEON Mall & IKEA Sentul", dist: "800 Meter", icon: "solar:bag-bold" },
-                    { label: "Kolam Renang Sentul", dist: "Lantai 3", icon: "solar:water-sun-bold" },
-                    { label: "Wisata Gunung Pancar", dist: "10 Menit", icon: "solar:mountains-bold" },
+                    { label: "Pintu Tol Sentul", dist: "3 Menit", icon: "solar:car-bold" },
+                    { label: "AEON Mall & IKEA", dist: "800 Meter", icon: "solar:bag-bold" },
+                    { label: "Kolam Renang", dist: "Lantai 3", icon: "solar:water-sun-bold" },
+                    { label: "Gunung Pancar", dist: "10 Menit", icon: "solar:mountains-bold" },
                   ].map((poi, idx) => (
-                    <div key={idx} className="bg-sand-100 p-2.5 rounded-xl border border-border-subtle flex items-center gap-2 text-xs">
+                    <div key={idx} className="bg-sand-100 p-2.5 rounded-xl border border-border-subtle flex items-center gap-2 text-xs min-w-0">
                       <Icon icon={poi.icon} className="w-4 h-4 text-brand shrink-0" />
-                      <div className="truncate">
+                      <div className="truncate min-w-0">
                         <span className="font-bold text-primary block truncate">{poi.label}</span>
                         <span className="text-[10px] text-muted block">{poi.dist}</span>
                       </div>
@@ -336,15 +306,15 @@ export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
               </div>
             ) : (
               /* MODE 2: DENAH LANTAI UNIT */
-              <div className="space-y-4 flex-1 flex flex-col">
+              <div className="space-y-4 flex-1 flex flex-col min-w-0">
                 {/* Floor Filter Tabs */}
-                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+                <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
                   {FLOOR_FILTERS.map((fl) => (
                     <button
                       key={fl.id}
                       type="button"
                       onClick={() => setSelectedFloor(fl.id)}
-                      className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
                         selectedFloor === fl.id
                           ? "bg-brand text-white shadow-xs"
                           : "bg-surface border border-border-subtle text-secondary hover:text-primary hover:bg-sand-100"
@@ -356,7 +326,7 @@ export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
                 </div>
 
                 {/* Floor Layout Card Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 flex-1 overflow-y-auto max-h-[380px] p-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 flex-1 overflow-y-auto max-h-[380px] p-1">
                   {filteredPlots.map((plot) => {
                     const isSelected = selectedPlot.id === plot.id;
 
@@ -364,14 +334,14 @@ export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
                       <div
                         key={plot.id}
                         onClick={() => setSelectedPlot(plot)}
-                        className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-2.5 ${
+                        className={`p-3 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-2 ${
                           isSelected
                             ? "border-brand bg-brand-light shadow-md ring-2 ring-brand/30"
                             : "border-border-subtle bg-surface hover:border-brand/40 hover:bg-sand-100"
                         }`}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="font-mono font-bold text-xs bg-timber-900 text-white px-2.5 py-0.5 rounded-md">
+                          <span className="font-mono font-bold text-xs bg-timber-900 text-white px-2 py-0.5 rounded-md">
                             {plot.plotNumber}
                           </span>
                           <span className="text-[10px] font-semibold text-brand bg-brand/15 px-2 py-0.5 rounded-full">
@@ -398,23 +368,20 @@ export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
                 </div>
 
                 {/* Notice */}
-                <div className="p-3 rounded-2xl bg-sand-100 border border-border-subtle flex items-center justify-between text-xs">
+                <div className="p-2.5 sm:p-3 rounded-2xl bg-sand-100 border border-border-subtle flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
                     <Icon icon="solar:compass-bold" className="w-4 h-4 text-brand shrink-0" />
                     <span className="text-secondary text-[11px]">
-                      Klik kartu kamar di atas untuk melihat spesifikasi detail & memesan unit.
+                      Klik kartu kamar untuk melihat spesifikasi detail & memesan.
                     </span>
                   </div>
-                  <span className="font-mono text-[10px] font-bold text-muted uppercase shrink-0">
-                    Sentul Tower
-                  </span>
                 </div>
               </div>
             )}
           </div>
 
           {/* Right Column: Selected Unit Detail Specification (4 Cols) */}
-          <div className="lg:col-span-4 bg-surface border border-border-subtle rounded-3xl p-5 sm:p-6 shadow-sm flex flex-col justify-between space-y-6">
+          <div className="lg:col-span-4 bg-surface border border-border-subtle rounded-3xl p-4 sm:p-6 shadow-sm flex flex-col justify-between space-y-5 min-w-0">
             
             <div className="space-y-4">
               {/* Unit Badge & Status */}
@@ -423,83 +390,70 @@ export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
                   {selectedPlot.plotNumber}
                 </span>
                 <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
-                  Siap Huni (Available)
+                  <Icon icon="solar:check-circle-bold" className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>Siap Huni (Available)</span>
                 </span>
               </div>
 
-              {/* Title & Floor */}
-              <div>
-                <h3 className="font-heading text-xl font-bold text-primary">
-                  {selectedPlot.modelAssigned}
-                </h3>
-                <p className="text-xs text-muted mt-0.5">Sentul Tower Apartment • {selectedPlot.floorLevel}</p>
-              </div>
-
-              {/* Unit Thumbnail Preview */}
-              <div className="relative h-44 w-full rounded-2xl overflow-hidden border border-border-subtle bg-sand-200">
+              {/* Unit Image Preview */}
+              <div className="relative h-44 sm:h-52 w-full rounded-2xl overflow-hidden bg-sand-200 border border-border-subtle">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={selectedPlot.image || linkedModel?.featuredImage || "/img/freedom-room/one-bed-102-1.png"}
+                  src={selectedPlot.image}
                   alt={selectedPlot.modelAssigned}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute top-2.5 right-2.5 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full text-white text-[10px] font-mono font-bold">
-                  {selectedPlot.size}
+                  {selectedPlot.floorLevel}
                 </div>
               </div>
 
-              {/* Specification Grid */}
-              <div className="grid grid-cols-2 gap-2.5">
-                <div className="bg-canvas p-2.5 rounded-xl border border-border-subtle">
-                  <span className="text-[10px] font-mono text-muted uppercase block">Tipe Kamar</span>
-                  <span className="font-heading font-bold text-xs text-primary">{selectedPlot.type}</span>
-                </div>
-                <div className="bg-canvas p-2.5 rounded-xl border border-border-subtle">
-                  <span className="text-[10px] font-mono text-muted uppercase block">Tarif Mulai</span>
-                  <span className="font-heading font-bold text-xs text-brand">{selectedPlot.price}</span>
-                </div>
-                <div className="bg-canvas p-2.5 rounded-xl border border-border-subtle">
-                  <span className="text-[10px] font-mono text-muted uppercase block">Posisi / Lantai</span>
-                  <span className="font-heading font-bold text-xs text-primary">{selectedPlot.floorLevel}</span>
-                </div>
-                <div className="bg-canvas p-2.5 rounded-xl border border-border-subtle">
-                  <span className="text-[10px] font-mono text-muted uppercase block">Kapasitas Tamu</span>
-                  <span className="font-heading font-bold text-xs text-primary">2 - 4 Orang</span>
-                </div>
-              </div>
-
-              {/* View & Description */}
-              <div className="bg-sand-100 p-3 rounded-xl border border-border-subtle space-y-1">
-                <span className="text-[10px] font-bold text-brand uppercase tracking-wider block">
-                  Karakteristik & Pemandangan
+              {/* Specs & Description */}
+              <div className="space-y-1.5">
+                <span className="text-[10px] font-mono uppercase text-muted tracking-wider block">
+                  {selectedPlot.type} • {selectedPlot.size}
                 </span>
-                <p className="text-xs text-secondary leading-relaxed">
+                <h3 className="font-heading font-bold text-lg sm:text-xl text-primary leading-snug">
+                  {selectedPlot.modelAssigned}
+                </h3>
+                <p className="text-xs text-secondary leading-relaxed line-clamp-2 font-sans">
                   {selectedPlot.viewDescription}
                 </p>
               </div>
+
+              {/* Price Callout */}
+              <div className="bg-sand-100 p-3 rounded-2xl border border-border-subtle flex items-center justify-between">
+                <div>
+                  <span className="text-[10px] font-mono uppercase text-muted block">TARIF TRANSIT MULAI</span>
+                  <span className="font-heading font-bold text-base text-brand">
+                    {selectedPlot.price}
+                  </span>
+                </div>
+                <span className="text-[10px] text-muted">24 Jam Standby</span>
+              </div>
             </div>
 
-            {/* CTA Action Buttons */}
-            <div className="space-y-3 pt-2 border-t border-border-subtle">
+            {/* Actions: View Details & Instant Booking */}
+            <div className="space-y-2 pt-2 border-t border-border-subtle">
               <Button
+                onClick={() => onOpenTourForPlot && onOpenTourForPlot(selectedPlot.plotNumber)}
                 variant="primary"
                 size="md"
                 fullWidth
-                iconLeading="solar:calendar-mark-bold"
-                onClick={() => onOpenTourForPlot?.(selectedPlot.plotNumber)}
+                icon="solar:calendar-bold"
+                className="font-bold shadow-sm"
               >
-                Booking Unit Ini Sekarang
+                Pesan Unit {selectedPlot.plotNumber}
               </Button>
 
-              <Link href={`/room/${linkedModel?.id || "one-bed-deluxe-lt-10-room102"}`} className="block w-full">
+              <Link href={`/room/${linkedModel.id}`} className="block">
                 <Button
                   variant="outline"
-                  size="sm"
+                  size="md"
                   fullWidth
-                  iconLeading="solar:eye-bold"
+                  icon="solar:eye-bold"
                 >
-                  Lihat Galeri & Fasilitas Lengkap
+                  Rincian Kamar
                 </Button>
               </Link>
             </div>
