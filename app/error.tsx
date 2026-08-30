@@ -1,14 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
+import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Button from '@/components/Button';
-
-const TourBookingModal = dynamic(() => import('@/components/TourBookingModal'), { ssr: false });
 
 export default function ErrorBoundary({
   error,
@@ -17,15 +14,13 @@ export default function ErrorBoundary({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  const [isTourModalOpen, setIsTourModalOpen] = useState(false);
-
   useEffect(() => {
     console.error('Runtime Application Error:', error);
   }, [error]);
 
   return (
     <main className="min-h-screen bg-canvas text-primary relative selection:bg-brand selection:text-white flex flex-col justify-between">
-      <Navbar onOpenScheduleTour={() => setIsTourModalOpen(true)} />
+      <Navbar />
 
       {/* 500 Error Section */}
       <section className="relative pt-36 pb-24 sm:pt-48 sm:pb-36 bg-timber-950 text-white overflow-hidden my-auto flex-1 flex items-center">
@@ -76,11 +71,6 @@ export default function ErrorBoundary({
       </section>
 
       <Footer />
-      <TourBookingModal
-        isOpen={isTourModalOpen}
-        onClose={() => setIsTourModalOpen(false)}
-        initialModelName="The Aspen"
-      />
     </main>
   );
 }

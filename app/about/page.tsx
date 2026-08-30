@@ -1,18 +1,12 @@
 'use client';
 
-import { useState } from 'react';
-import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Button from '@/components/Button';
 import { Icon } from '@iconify/react';
 
-const TourBookingModal = dynamic(() => import('@/components/TourBookingModal'), { ssr: false });
-
 export default function AboutPage() {
-  const [isTourModalOpen, setIsTourModalOpen] = useState(false);
-
   const TEAM_MEMBERS = [
     {
       name: "Dimas Faturahman",
@@ -66,7 +60,7 @@ export default function AboutPage() {
 
   return (
     <main className="min-h-screen bg-canvas text-primary relative selection:bg-brand selection:text-white">
-      <Navbar onOpenScheduleTour={() => setIsTourModalOpen(true)} />
+      <Navbar />
 
       {/* Standardized Dark Hero Section */}
       <section className="relative pt-32 pb-20 sm:pt-40 sm:pb-28 bg-timber-950 text-white overflow-hidden border-b border-border-subtle">
@@ -168,7 +162,6 @@ export default function AboutPage() {
       </section>
 
       <Footer />
-      <TourBookingModal isOpen={isTourModalOpen} onClose={() => setIsTourModalOpen(false)} />
     </main>
   );
 }

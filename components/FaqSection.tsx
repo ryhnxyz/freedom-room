@@ -6,7 +6,7 @@ import { Icon } from '@iconify/react';
 export const FAQS = [
   {
     q: "Bagaimana cara melakukan reservasi kamar di FreedomRoom?",
-    a: "Anda dapat memilih tipe unit kamar di website ini lalu klik 'Booking Kamar' atau langsung menghubungi Customer Service kami via WhatsApp resmi di +62 878 7890 6899 untuk konfirmasi instan.",
+    a: "Anda dapat memilih tipe unit dan melakukan reservasi melalui app.freedomroom.id, atau menghubungi Customer Service kami via WhatsApp resmi di +62 878 7890 6899 untuk bantuan.",
   },
   {
     q: "Apa saja pilihan durasi sewa yang tersedia?",

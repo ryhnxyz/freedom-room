@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 import { Icon } from "@iconify/react";
 
 interface NavbarProps {
-  onOpenScheduleTour?: () => void;
   theme?: "dark" | "light";
 }
 
@@ -18,7 +17,7 @@ const navLinks = [
   { href: "/journal", label: "Jurnal", icon: "solar:book-2-bold" },
 ];
 
-export default function Navbar({ onOpenScheduleTour }: NavbarProps) {
+export default function Navbar({ theme: _theme }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 

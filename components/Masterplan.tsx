@@ -1,10 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import Link from "next/link";
 import { Icon } from "@iconify/react";
-import { HOUSE_MODELS } from "@/data/houseModels";
-import Button from "@/components/Button";
 
 export interface MasterplanPlot {
   id: string;
@@ -159,11 +156,7 @@ const FLOOR_FILTERS = [
   { id: "Lantai 11", label: "Lt 11 (1)" },
 ];
 
-interface MasterplanProps {
-  onOpenTourForPlot?: (plotNumber: string) => void;
-}
-
-export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
+export default function Masterplan() {
   const [viewMode, setViewMode] = useState<"realmap" | "floorplan">("realmap");
   const [selectedFloor, setSelectedFloor] = useState<string>("all");
   const [selectedPlot, setSelectedPlot] = useState<MasterplanPlot>(SENTUL_PLOTS[4]); // Default to ST-1002
@@ -172,16 +165,6 @@ export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
     if (selectedFloor === "all") return SENTUL_PLOTS;
     return SENTUL_PLOTS.filter((p) => p.floorLevel.toLowerCase() === selectedFloor.toLowerCase());
   }, [selectedFloor]);
-
-  const linkedModel = useMemo(() => {
-    return (
-      HOUSE_MODELS.find(
-        (m) =>
-          m.unitNumber === selectedPlot.plotNumber ||
-          m.name.toLowerCase().includes(selectedPlot.modelAssigned.toLowerCase())
-      ) || HOUSE_MODELS[0]
-    );
-  }, [selectedPlot]);
 
   return (
     <section id="masterplan" className="overflow-hidden bg-canvas py-12 sm:py-16">
@@ -436,27 +419,15 @@ export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
 
             {/* Actions: View Details & Instant Booking */}
             <div className="space-y-2 pt-2 border-t border-border-subtle">
-              <Button
-                onClick={() => onOpenTourForPlot && onOpenTourForPlot(selectedPlot.plotNumber)}
-                variant="primary"
-                size="md"
-                fullWidth
-                icon="solar:calendar-bold"
-                className="font-bold shadow-sm"
-              >
-                Pesan Unit {selectedPlot.plotNumber}
-              </Button>
+              <a href="https://app.freedomroom.id" target="_blank" rel="noopener noreferrer" className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-brand px-3.5 py-2.5 text-sm font-bold tracking-wide text-white shadow-sm transition-colors hover:bg-brand-hover">
+                <Icon icon="solar:calendar-bold" className="h-4.5 w-4.5" />
+                <span>Pesan Unit {selectedPlot.plotNumber}</span>
+              </a>
 
-              <Link href={`/room/${linkedModel.id}`} className="block">
-                <Button
-                  variant="outline"
-                  size="md"
-                  fullWidth
-                  icon="solar:eye-bold"
-                >
-                  Rincian Kamar
-                </Button>
-              </Link>
+              <a href="https://app.freedomroom.id" target="_blank" rel="noopener noreferrer" className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-border-strong bg-transparent px-3.5 py-2.5 text-sm font-semibold tracking-wide text-primary transition-colors hover:bg-sand-100">
+                <Icon icon="solar:eye-bold" className="h-4.5 w-4.5" />
+                <span>Rincian Kamar</span>
+              </a>
             </div>
 
           </div>

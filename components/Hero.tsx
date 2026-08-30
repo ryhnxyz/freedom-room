@@ -1,13 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { Icon } from "@iconify/react";
 
-interface HeroProps {
-  onOpenScheduleTour: () => void;
-}
+const APP_URL = "https://app.freedomroom.id";
 
-export default function Hero({ onOpenScheduleTour }: HeroProps) {
+export default function Hero() {
   return (
     <section id="overview" aria-labelledby="hero-title" className="w-full pt-[72px]">
       <div className="relative min-h-[calc(100svh-72px)] w-full overflow-hidden bg-primary text-white sm:min-h-[720px] lg:min-h-[760px]">
@@ -41,13 +38,13 @@ export default function Hero({ onOpenScheduleTour }: HeroProps) {
                 Ruang menginap berkarakter untuk transit singkat, perjalanan bisnis, dan akhir pekan yang layak dinikmati lebih lama.
               </p>
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <Link href="/booking" className="inline-flex min-h-13 items-center justify-center gap-3 bg-brand px-6 py-3.5 text-xs font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-brand-hover">
+                <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-13 items-center justify-center gap-3 bg-brand px-6 py-3.5 text-xs font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-brand-hover">
                   Explore collection
                   <Icon icon="solar:arrow-right-up-linear" className="h-5 w-5" />
-                </Link>
-                <button type="button" onClick={onOpenScheduleTour} className="inline-flex min-h-13 items-center justify-center gap-3 border border-white/35 px-6 py-3.5 text-xs font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-white hover:text-primary">
+                </a>
+                <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-13 items-center justify-center gap-3 border border-white/35 px-6 py-3.5 text-xs font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-white hover:text-primary">
                   Reserve a stay
-                </button>
+                </a>
               </div>
             </div>
 
@@ -62,7 +59,7 @@ export default function Hero({ onOpenScheduleTour }: HeroProps) {
               </div>
               <div className="flex items-center justify-between gap-4 pt-5 text-xs text-white/65">
                 <span>Flexible stay · 3-24 hours</span>
-                <Link href="/booking" className="font-bold text-brand hover:text-white">View residence</Link>
+                <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="font-bold text-brand hover:text-white">View residence</a>
               </div>
             </aside>
           </div>

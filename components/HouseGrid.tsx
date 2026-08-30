@@ -1,14 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { Icon } from "@iconify/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { HOUSE_MODELS, formatRupiah } from "@/data/houseModels";
 import { api, RoomData } from "@/lib/api";
-import TourBookingModal from "@/components/TourBookingModal";
-import Button from "@/components/Button";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -16,9 +13,6 @@ if (typeof window !== "undefined") {
 
 export default function HouseGrid() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedRoomName, setSelectedRoomName] = useState<string | undefined>(undefined);
-  const [selectedUnitNumber, setSelectedUnitNumber] = useState<string | undefined>(undefined);
   const [liveRooms, setLiveRooms] = useState<RoomData[]>([]);
 
   // Fetch real-time status from VPS database
@@ -96,12 +90,6 @@ export default function HouseGrid() {
 
     return () => ctx.revert();
   }, []);
-
-  const openBooking = (name: string, unit: string) => {
-    setSelectedRoomName(name);
-    setSelectedUnitNumber(unit);
-    setIsModalOpen(true);
-  };
 
   return (
     <>
@@ -243,36 +231,26 @@ export default function HouseGrid() {
 
                       {/* Actions Row */}
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
-                        <Link
-                          href={`/room/${model.id}`}
+                         <a
+                           href="https://app.freedomroom.id"
+                           target="_blank"
+                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-2 text-xs font-semibold text-white hover:text-sand-200 transition-colors py-1"
                         >
                           <span>Lihat Rincian Foto & Fasilitas Kamar</span>
                           <Icon icon="solar:arrow-right-linear" className="w-4 h-4" />
-                        </Link>
+                         </a>
 
                         <div className="flex items-center gap-2 w-full sm:w-auto">
-                          <Link href={`/room/${model.id}`} className="flex-1 sm:flex-initial">
-                            <Button
-                              variant="secondary"
-                              size="md"
-                              fullWidth
-                              icon="solar:eye-bold"
-                            >
-                              Detail
-                            </Button>
-                          </Link>
+                           <a href="https://app.freedomroom.id" target="_blank" rel="noopener noreferrer" className="inline-flex h-10 flex-1 items-center justify-center gap-2 rounded-lg bg-surface px-3.5 py-2.5 text-sm font-semibold tracking-wide text-primary transition-colors hover:bg-sand-200 sm:flex-initial">
+                             <Icon icon="solar:eye-bold" className="h-4.5 w-4.5" />
+                             <span>Detail</span>
+                           </a>
 
-                          <Button
-                            onClick={() => openBooking(model.name, model.unitNumber)}
-                            variant="primary"
-                            size="md"
-                            fullWidth
-                            className="flex-1 sm:flex-initial"
-                            icon="solar:calendar-bold"
-                          >
-                            Booking Kamar
-                          </Button>
+                          <a href="https://app.freedomroom.id" target="_blank" rel="noopener noreferrer" className="inline-flex h-10 flex-1 items-center justify-center gap-2 rounded-lg bg-brand px-3.5 py-2.5 text-sm font-semibold tracking-wide text-white transition-colors hover:bg-brand-hover sm:flex-initial">
+                            <Icon icon="solar:calendar-bold" className="h-4.5 w-4.5" />
+                            <span>Booking Kamar</span>
+                          </a>
                         </div>
                       </div>
 
@@ -286,13 +264,6 @@ export default function HouseGrid() {
         </div>
       </section>
 
-      {/* Booking Modal */}
-      <TourBookingModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        initialModelName={selectedRoomName}
-        initialPlotNumber={selectedUnitNumber}
-      />
     </>
   );
 }

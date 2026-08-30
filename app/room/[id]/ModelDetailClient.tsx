@@ -12,7 +12,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Button from "@/components/Button";
 import { ReviewItemSkeleton } from "@/components/Skeleton";
-import TourBookingModal from "@/components/TourBookingModal";
 
 interface ModelDetailClientProps {
   model: HouseModel;
@@ -21,7 +20,6 @@ interface ModelDetailClientProps {
 export default function ModelDetailClient({ model }: ModelDetailClientProps) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
-  const [isTourModalOpen, setIsTourModalOpen] = useState(false);
 
   // Live Database Room State
   const [liveRoom, setLiveRoom] = useState<RoomData | null>(null);
@@ -136,7 +134,7 @@ export default function ModelDetailClient({ model }: ModelDetailClientProps) {
 
   return (
     <main className="min-h-screen bg-canvas text-primary relative selection:bg-brand selection:text-white pb-24 lg:pb-12">
-      <Navbar onOpenScheduleTour={() => setIsTourModalOpen(true)} />
+      <Navbar />
 
       {/* Breadcrumb & Quick Actions Header */}
       <div className="pt-24 sm:pt-28 pb-4 px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto border-b border-border-subtle">
@@ -144,7 +142,7 @@ export default function ModelDetailClient({ model }: ModelDetailClientProps) {
           <div className="flex items-center gap-2 text-xs text-secondary">
             <Link href="/" className="hover:text-brand transition-colors">Beranda</Link>
             <span>/</span>
-            <Link href="/booking" className="hover:text-brand transition-colors">Pilihan Unit</Link>
+            <a href="https://app.freedomroom.id" target="_blank" rel="noopener noreferrer" className="hover:text-brand transition-colors">Pilihan Unit</a>
             <span>/</span>
             <span className="text-primary font-semibold truncate max-w-[200px] sm:max-w-none">{model.name}</span>
           </div>
@@ -168,13 +166,15 @@ export default function ModelDetailClient({ model }: ModelDetailClientProps) {
               <span>Bagikan</span>
             </button>
 
-            <Link
-              href="/booking"
+            <a
+              href="https://app.freedomroom.id"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-surface hover:bg-sand-200 text-xs font-semibold text-secondary transition-all"
             >
               <Icon icon="solar:arrow-left-linear" className="w-3.5 h-3.5" />
               <span>Lihat Unit Lain</span>
-            </Link>
+            </a>
           </div>
         </div>
       </div>
@@ -464,14 +464,15 @@ export default function ModelDetailClient({ model }: ModelDetailClientProps) {
 
                     <div className="pt-2 border-t border-border-subtle flex justify-end">
                       {slot.isAvailable ? (
-                        <button
-                          type="button"
-                          onClick={() => setIsTourModalOpen(true)}
+                        <a
+                          href="https://app.freedomroom.id"
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="inline-flex items-center gap-1 text-[11px] font-bold text-brand hover:underline cursor-pointer"
                         >
                           <span>Pesan Slot Ini</span>
                           <Icon icon="solar:arrow-right-linear" className="w-3.5 h-3.5" />
-                        </button>
+                        </a>
                       ) : (
                         <span className="text-[10px] font-mono text-muted">Slot Terisi</span>
                       )}
@@ -730,15 +731,10 @@ export default function ModelDetailClient({ model }: ModelDetailClientProps) {
               </div>
             </div>
 
-            <Button
-              onClick={() => setIsTourModalOpen(true)}
-              variant="primary"
-              size="lg"
-              className="w-full justify-center"
-              icon="solar:calendar-bold"
-            >
-              Booking Kamar Ini Sekarang
-            </Button>
+            <a href="https://app.freedomroom.id" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-brand px-5 py-3 text-base font-semibold tracking-wide text-white transition-colors hover:bg-brand-hover">
+              <Icon icon="solar:calendar-bold" className="h-5 w-5" />
+              <span>Booking Kamar Ini Sekarang</span>
+            </a>
 
             <a
               href={`https://wa.me/6287878906899?text=${encodeURIComponent(
@@ -763,25 +759,14 @@ export default function ModelDetailClient({ model }: ModelDetailClientProps) {
           <span className="font-heading font-bold text-base text-brand">{currentVariantPrice}</span>
         </div>
 
-        <Button
-          onClick={() => setIsTourModalOpen(true)}
-          variant="primary"
-          size="md"
-          icon="solar:calendar-bold"
-        >
-          Booking Sekarang
-        </Button>
+        <a href="https://app.freedomroom.id" target="_blank" rel="noopener noreferrer" className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-brand px-3.5 py-2.5 text-sm font-semibold tracking-wide text-white transition-colors hover:bg-brand-hover">
+          <Icon icon="solar:calendar-bold" className="h-4.5 w-4.5" />
+          <span>Booking Sekarang</span>
+        </a>
       </div>
 
       <Footer />
 
-      {/* Unified Booking Modal */}
-      <TourBookingModal
-        isOpen={isTourModalOpen}
-        onClose={() => setIsTourModalOpen(false)}
-        initialModelName={model.name}
-        initialPlotNumber={model.unitNumber}
-      />
     </main>
   );
 }

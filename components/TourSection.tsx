@@ -3,11 +3,7 @@
 import Image from 'next/image';
 import { Icon } from '@iconify/react';
 
-interface TourSectionProps {
-  onOpenScheduleTour: () => void;
-}
-
-export default function TourSection({ onOpenScheduleTour }: TourSectionProps) {
+export default function TourSection() {
   return (
     <section id="tour" aria-labelledby="tour-section-title" className="relative overflow-hidden bg-canvas py-12 sm:py-16">
       
@@ -85,14 +81,15 @@ export default function TourSection({ onOpenScheduleTour }: TourSectionProps) {
 
             {/* CTA Button */}
             <div className="flex flex-col items-stretch gap-4 border-t border-white/15 pt-5 sm:flex-row sm:items-center">
-              <button
-                type="button"
-                onClick={onOpenScheduleTour}
+              <a
+                href="https://app.freedomroom.id"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex min-h-13 w-full cursor-pointer items-center justify-center gap-2 bg-brand px-8 py-3.5 text-xs font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-brand-hover sm:w-auto"
               >
                 <span>Booking Kamar Sekarang</span>
                 <Icon icon="solar:calendar-bold" className="w-4 h-4" />
-              </button>
+              </a>
 
               <span className="text-center text-xs text-white/50 sm:text-left">
                 WhatsApp concierge: <strong className="font-semibold text-white">+62 878 7890 6899</strong>

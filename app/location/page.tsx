@@ -1,19 +1,13 @@
 'use client';
 
-import { useState } from 'react';
-import dynamic from 'next/dynamic';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Neighborhood from '@/components/Neighborhood';
 
-const TourBookingModal = dynamic(() => import('@/components/TourBookingModal'), { ssr: false });
-
 export default function LocationPage() {
-  const [isTourModalOpen, setIsTourModalOpen] = useState(false);
-
   return (
     <main className="min-h-screen bg-canvas text-primary relative selection:bg-brand selection:text-white">
-      <Navbar theme="light" onOpenScheduleTour={() => setIsTourModalOpen(true)} />
+      <Navbar theme="light" />
 
       <div className="pt-28 pb-12 bg-surface border-b border-border-subtle">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 space-y-3">
@@ -29,10 +23,6 @@ export default function LocationPage() {
       <Neighborhood />
 
       <Footer />
-      <TourBookingModal
-        isOpen={isTourModalOpen}
-        onClose={() => setIsTourModalOpen(false)}
-      />
     </main>
   );
 }

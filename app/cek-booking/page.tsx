@@ -41,7 +41,7 @@ export default function CheckBookingPage() {
 
   return (
     <main className="min-h-screen bg-canvas text-primary relative selection:bg-brand selection:text-white">
-      <Navbar onOpenScheduleTour={() => {}} />
+      <Navbar />
 
       {/* Hero Header */}
       <section className="relative pt-32 pb-16 sm:pt-40 sm:pb-24 bg-timber-950 text-white overflow-hidden border-b border-border-subtle">

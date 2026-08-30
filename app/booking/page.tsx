@@ -1,10 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
-import Link from "next/link";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Button from "@/components/Button";
@@ -15,20 +11,14 @@ import { api, RoomData, ReservationData } from "@/lib/api";
 import { computeUnitAvailability } from "@/lib/availability";
 import { Icon } from "@iconify/react";
 
-const TourBookingModal = dynamic(() => import("@/components/TourBookingModal"), { ssr: false });
+const APP_URL = "https://app.freedomroom.id";
 
 export default function BookingCatalogPage() {
-  const router = useRouter();
   const [rooms, setRooms] = useState<RoomData[]>([]);
   const [reservations, setReservations] = useState<ReservationData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [filterType, setFilterType] = useState<string>("all");
   const [selectedDuration, setSelectedDuration] = useState<"3h" | "6h" | "8h" | "daily">("3h");
-
-  // Booking Modal State
-  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
-  const [selectedRoomName, setSelectedRoomName] = useState<string | undefined>(undefined);
-  const [selectedUnitNumber, setSelectedUnitNumber] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     async function fetchLiveRooms() {
@@ -51,13 +41,6 @@ export default function BookingCatalogPage() {
     }
     fetchLiveRooms();
   }, []);
-
-  const openBookingFor = (roomName: string, unitNumber: string, e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
-    setSelectedRoomName(roomName);
-    setSelectedUnitNumber(unitNumber);
-    setIsBookingModalOpen(true);
-  };
 
   // Merge Live VPS Rooms with Local Model details
   const displayItems = HOUSE_MODELS.map((local) => {
@@ -93,7 +76,7 @@ export default function BookingCatalogPage() {
 
   return (
     <main className="min-h-screen bg-canvas text-primary relative selection:bg-brand selection:text-white">
-      <Navbar onOpenScheduleTour={() => openBookingFor("", "")} />
+      <Navbar />
 
       {/* Hero Header */}
       <section className="relative pt-28 pb-12 sm:pt-36 sm:pb-20 bg-timber-950 text-white overflow-hidden border-b border-border-subtle">
@@ -195,7 +178,7 @@ export default function BookingCatalogPage() {
             return (
               <div
                 key={room.id}
-                onClick={() => router.push(`/room/${room.id}`)}
+                onClick={() => window.open(APP_URL, "_blank", "noopener,noreferrer")}
                 className="bg-surface rounded-3xl border border-border-subtle overflow-hidden shadow-sm flex flex-col justify-between group hover:border-brand/50 hover:shadow-xl transition-all duration-300 cursor-pointer transform-gpu hover:-translate-y-1"
               >
                 <div>
@@ -278,16 +261,18 @@ export default function BookingCatalogPage() {
                     </div>
 
                     <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
-                      <Link
-                        href={`/room/${room.id}`}
+                      <a
+                        href={APP_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="p-2.5 rounded-xl border border-border-subtle text-secondary hover:text-primary hover:bg-sand-100 transition-colors"
                         title="Lihat Detail Kamar"
                       >
                         <Icon icon="solar:eye-bold" className="w-4 h-4" />
-                      </Link>
+                      </a>
 
                       <Button
-                        onClick={() => openBookingFor(room.name, room.unitNumber)}
+                        onClick={() => window.open(APP_URL, "_blank", "noopener,noreferrer")}
                         variant="primary"
                         size="sm"
                         icon="solar:calendar-bold"
@@ -308,13 +293,6 @@ export default function BookingCatalogPage() {
 
       <Footer />
 
-      {/* Booking Modal */}
-      <TourBookingModal
-        isOpen={isBookingModalOpen}
-        onClose={() => setIsBookingModalOpen(false)}
-        initialModelName={selectedRoomName}
-        initialPlotNumber={selectedUnitNumber}
-      />
     </main>
   );
 }
