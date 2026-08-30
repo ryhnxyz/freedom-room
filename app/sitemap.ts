@@ -47,7 +47,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Dynamic Room pages
   const roomPages: MetadataRoute.Sitemap = HOUSE_MODELS.map((room) => ({
-    url: `${baseUrl}/models/${room.id}`,
+    url: `${baseUrl}/room/${room.id}`,
     lastModified,
     changeFrequency: "weekly",
     priority: 0.9,

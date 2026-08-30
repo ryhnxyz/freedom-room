@@ -4,9 +4,12 @@ import ModelDetailClient from "./ModelDetailClient";
 import type { Metadata } from "next";
 
 export function generateStaticParams() {
-  return HOUSE_MODELS.map((model) => ({
-    id: model.id,
-  }));
+  const ids = new Set<string>();
+  HOUSE_MODELS.forEach((m) => {
+    ids.add(m.id);
+    if (m.databaseId) ids.add(m.databaseId);
+  });
+  return Array.from(ids).map((id) => ({ id }));
 }
 
 export async function generateMetadata({
@@ -37,12 +40,12 @@ export async function generateMetadata({
       "penginapan murah sentul city",
     ],
     alternates: {
-      canonical: `https://freedomroom.id/models/${model.id}`,
+      canonical: `https://freedomroom.id/room/${model.id}`,
     },
     openGraph: {
       title,
       description,
-      url: `https://freedomroom.id/models/${model.id}`,
+      url: `https://freedomroom.id/room/${model.id}`,
       type: "article",
       images: [
         {
@@ -99,7 +102,7 @@ export default async function ModelDetailPage({
       price: model.startingPrice,
       priceCurrency: "IDR",
       availability: "https://schema.org/InStock",
-      url: `https://freedomroom.id/models/${model.id}`,
+      url: `https://freedomroom.id/room/${model.id}`,
     },
     containedInPlace: {
       "@type": "LodgingBusiness",

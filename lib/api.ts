@@ -1,4 +1,4 @@
-export const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://46.250.234.12:5000/api";
+export const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://api.freedomroom.id/api";
 
 export interface RoomData {
   id: string;

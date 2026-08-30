@@ -111,7 +111,7 @@ export function calculateRoomPrice(
 
 export const HOUSE_MODELS: HouseModel[] = [
   {
-    id: "aspen",
+    id: "one-bed-deluxe-lt-10-room102",
     databaseId: "one-bed-deluxe-lt-10-room102",
     unitNumber: "ST-1002",
     name: "One Bedroom Deluxe Lantai 10 (Room 102)",
@@ -165,7 +165,7 @@ export const HOUSE_MODELS: HouseModel[] = [
     highlights: ["Smart TV Netflix & YouTube", "High-Speed WiFi Dedicated", "Kitchenette & Kulkas Pribadi", "Balkon Udara Segar"],
   },
   {
-    id: "willow",
+    id: "one-bed-deluxe-lt-10",
     databaseId: "one-bed-deluxe-lt-10",
     unitNumber: "ST-1008",
     name: "One Bedroom Deluxe Lantai 10",
@@ -216,7 +216,7 @@ export const HOUSE_MODELS: HouseModel[] = [
     highlights: ["Meja Kerja Nyaman", "Pemandangan Kota Lantai 10", "Water Heater & AC"],
   },
   {
-    id: "cypress",
+    id: "one-bed-deluxe-lt-3",
     databaseId: "one-bed-deluxe-lt-3",
     unitNumber: "ST-0305",
     name: "One Bed Deluxe Lantai 3",
@@ -267,7 +267,7 @@ export const HOUSE_MODELS: HouseModel[] = [
     highlights: ["Dekat Kolam Renang Lantai 3", "Smart TV & WiFi Kencang", "Kamar Mandi Water Heater"],
   },
   {
-    id: "sequoia",
+    id: "type-2-bedroom-luxury-lt-10",
     databaseId: "type-2-bedroom-luxury-lt-10",
     unitNumber: "ST-1020",
     name: "Type 2 Bedroom Luxury Lantai 10",
@@ -320,7 +320,7 @@ export const HOUSE_MODELS: HouseModel[] = [
     highlights: ["2 Kamar Tidur Terpisah", "Living Room & Meja Makan", "View Spektakuler Gunung Pancar"],
   },
   {
-    id: "birch",
+    id: "studio-deluxe-lt-8",
     databaseId: "studio-deluxe-lt-8",
     unitNumber: "ST-0812",
     name: "Studio Deluxe Lantai 8",
@@ -373,7 +373,7 @@ export const HOUSE_MODELS: HouseModel[] = [
     highlights: ["Smart TV Netflix & YouTube", "High-Speed WiFi Dedicated", "Balkon View Lepas Kota Sentul"],
   },
   {
-    id: "juniper",
+    id: "one-bedroom-lt-6",
     databaseId: "one-bedroom-lt-6",
     unitNumber: "ST-0610",
     name: "One Bedroom Wood Panel Lantai 6",
@@ -580,12 +580,23 @@ export const HOUSE_MODELS: HouseModel[] = [
 
 export function getModelById(id: string): HouseModel | undefined {
   const clean = (id || "").toLowerCase().trim();
+  const legacyAliases: Record<string, string> = {
+    aspen: "one-bed-deluxe-lt-10-room102",
+    willow: "one-bed-deluxe-lt-10",
+    cypress: "one-bed-deluxe-lt-3",
+    sequoia: "type-2-bedroom-luxury-lt-10",
+    birch: "studio-deluxe-lt-8",
+    juniper: "one-bedroom-lt-6",
+  };
+  const targetId = legacyAliases[clean] || clean;
+
   return (
     HOUSE_MODELS.find(
       (m) =>
-        m.id.toLowerCase() === clean ||
-        m.databaseId.toLowerCase() === clean ||
-        m.unitNumber.toLowerCase() === clean
+        m.id.toLowerCase() === targetId ||
+        m.databaseId.toLowerCase() === targetId ||
+        m.unitNumber.toLowerCase() === targetId ||
+        m.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").includes(targetId)
     ) || HOUSE_MODELS[0]
   );
 }

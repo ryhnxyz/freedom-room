@@ -113,12 +113,12 @@ export default function Footer() {
               Pilihan Penginapan
             </h4>
             <ul className="space-y-2.5 text-gray-400">
-              <li><Link href="/models/aspen" className="hover:text-white transition-colors">One Bed Deluxe Room 102 (Lt 10)</Link></li>
-              <li><Link href="/models/willow" className="hover:text-white transition-colors">Studio Deluxe (Lt 8)</Link></li>
-              <li><Link href="/models/cypress" className="hover:text-white transition-colors">Type 2 Bedroom Luxury (Lt 10)</Link></li>
-              <li><Link href="/models/sequoia" className="hover:text-white transition-colors">One Bed Wood Panel (Lt 6)</Link></li>
-              <li><Link href="/models/birch" className="hover:text-white transition-colors">One Bed Skyline (Lt 11)</Link></li>
-              <li><Link href="/models/juniper" className="hover:text-white transition-colors">One Bed Luxury (Lt 3)</Link></li>
+              <li><Link href="/room/one-bed-deluxe-lt-10-room102" className="hover:text-white transition-colors">One Bed Deluxe Room 102 (Lt 10)</Link></li>
+              <li><Link href="/room/one-bed-deluxe-lt-10" className="hover:text-white transition-colors">Studio Deluxe (Lt 8)</Link></li>
+              <li><Link href="/room/one-bed-deluxe-lt-3" className="hover:text-white transition-colors">Type 2 Bedroom Luxury (Lt 10)</Link></li>
+              <li><Link href="/room/type-2-bedroom-luxury-lt-10" className="hover:text-white transition-colors">One Bed Wood Panel (Lt 6)</Link></li>
+              <li><Link href="/room/studio-deluxe-lt-8" className="hover:text-white transition-colors">One Bed Skyline (Lt 11)</Link></li>
+              <li><Link href="/room/one-bedroom-lt-6" className="hover:text-white transition-colors">One Bed Luxury (Lt 3)</Link></li>
             </ul>
           </div>
 

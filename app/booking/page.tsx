@@ -183,7 +183,7 @@ export default function BookingCatalogPage() {
             return (
               <div
                 key={room.id}
-                onClick={() => router.push(`/models/${room.id}`)}
+                onClick={() => router.push(`/room/${room.id}`)}
                 className="bg-surface rounded-3xl border border-border-subtle overflow-hidden shadow-sm flex flex-col justify-between group hover:border-brand/50 hover:shadow-xl transition-all duration-300 cursor-pointer transform-gpu hover:-translate-y-1"
               >
                 <div>
@@ -263,7 +263,7 @@ export default function BookingCatalogPage() {
 
                     <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
                       <Link
-                        href={`/models/${room.id}`}
+                        href={`/room/${room.id}`}
                         className="p-2.5 rounded-xl border border-border-subtle text-secondary hover:text-primary hover:bg-sand-100 transition-colors"
                         title="Lihat Detail Kamar"
                       >

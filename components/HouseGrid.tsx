@@ -221,7 +221,7 @@ export default function HouseGrid() {
                       {/* Actions Row */}
                       <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
                         <Link
-                          href={`/models/${model.id}`}
+                          href={`/room/${model.id}`}
                           className="inline-flex items-center gap-2 text-xs font-semibold text-white hover:text-sand-200 transition-colors py-2"
                         >
                           <span>Lihat Rincian Foto & Fasilitas Kamar</span>
@@ -229,7 +229,7 @@ export default function HouseGrid() {
                         </Link>
 
                         <div className="flex items-center gap-2">
-                          <Link href={`/models/${model.id}`}>
+                          <Link href={`/room/${model.id}`}>
                             <Button
                               variant="secondary"
                               size="md"

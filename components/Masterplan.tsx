@@ -416,7 +416,7 @@ export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
             </div>
 
             <div className="pt-4 border-t border-border-subtle space-y-2">
-              <Link href={`/models/${linkedModel?.id || "aspen"}`} className="block">
+              <Link href={`/room/${linkedModel?.id || "one-bed-deluxe-lt-10-room102"}`} className="block">
                 <Button variant="primary" size="md" className="w-full justify-center">
                   Lihat Foto & Detail Kamar
                 </Button>
