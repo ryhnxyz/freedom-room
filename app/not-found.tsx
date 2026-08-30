@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import Button from '@/components/Button';
-import Badge from '@/components/Badge';
 
 export default function NotFound() {
   return (
@@ -25,7 +24,6 @@ export default function NotFound() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10 text-center space-y-6 sm:space-y-8 py-16">
         
         <div className="inline-flex justify-center">
-          <Badge>404 NOT FOUND</Badge>
         </div>
 
         <div className="space-y-3">

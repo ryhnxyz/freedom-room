@@ -6,7 +6,6 @@ import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Button from '@/components/Button';
-import Badge from '@/components/Badge';
 import FaqSection from '@/components/FaqSection';
 import { HOUSE_MODELS } from '@/data/houseModels';
 import { Icon } from '@iconify/react';
@@ -47,7 +46,6 @@ export default function ContactPage() {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10 space-y-4">
-          <Badge>HUBUNGI KAMI</Badge>
           <h1 className="font-heading text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white w-full leading-[1.1]">
             Konsultasi & Reservasi Kamar.
           </h1>

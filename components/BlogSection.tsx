@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import Badge from '@/components/Badge';
 import Button from '@/components/Button';
 
 export interface JournalArticle {
@@ -53,7 +52,6 @@ export default function BlogSection() {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
-            <Badge>ARTIKEL & PANDUAN</Badge>
             <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-primary">
               Informasi & Tips Menginap di Sentul
             </h2>

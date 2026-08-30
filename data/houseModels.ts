@@ -1,3 +1,4 @@
+import { isWeekendOrHoliday, getCalendarRateInfo } from "@/lib/holidays";
 export interface HouseModel {
   id: string;
   databaseId: string;
@@ -53,22 +54,24 @@ export interface HouseModel {
   highlights: string[];
 }
 
-export function formatRupiah(amount: number): string {
+export function formatRupiah(amount: number | string | undefined | null): string {
+  if (amount == null || amount === "" || amount === undefined) {
+    return "Rp 150.000";
+  }
+  const clean = typeof amount === "string" ? parseFloat(amount.replace(/[^0-9.-]+/g, "")) : Number(amount);
+  if (isNaN(clean) || clean <= 0) {
+    return "Rp 150.000";
+  }
   return new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
     maximumFractionDigits: 0,
-  }).format(amount);
+  }).format(clean);
 }
 
 export function isWeekend(dateStr?: string): boolean {
-  if (!dateStr) {
-    const day = new Date().getDay();
-    return day === 0 || day === 5 || day === 6; // Friday, Saturday, Sunday
-  }
-  const d = new Date(dateStr);
-  const day = d.getDay();
-  return day === 0 || day === 5 || day === 6; // Friday, Saturday, Sunday
+  // Weekend Rate applies ONLY on Sabtu (Saturday), Minggu (Sunday), and Indonesian Tanggal Merah (Public Holidays)
+  return isWeekendOrHoliday(dateStr);
 }
 
 export function calculateRoomPrice(
@@ -156,7 +159,7 @@ export const HOUSE_MODELS: HouseModel[] = [
       { name: "Transit 3 Jam", typeId: "transit-3h", description: "Sesi transit 3 jam", sqftDiff: "36 m²", priceDelta: "Rp 150.000", priceAmount: 150000, highlights: ["Queen Bed", "Smart TV"] },
       { name: "Transit 6 Jam", typeId: "transit-6h", description: "Sesi transit 6 jam santai", sqftDiff: "36 m²", priceDelta: "Rp 200.000 (Wkday) / Rp 250.000 (Wkend)", priceAmount: 200000, highlights: ["Water Heater", "WiFi"] },
       { name: "Transit 8 Jam", typeId: "transit-8h", description: "Transit 8 jam daypass", sqftDiff: "36 m²", priceDelta: "Rp 250.000 (Wkday) / Rp 300.000 (Wkend)", priceAmount: 250000, highlights: ["Smart TV", "Kulkas"] },
-      { name: "Full Day (Mulai Jam 13:00)", typeId: "fullday-13", description: "Menginap 24 jam check-in siang", sqftDiff: "36 m²", priceDelta: "Rp 400.000 (Wkday) / Rp 500.000 (Wkend)", priceAmount: 400000, highlights: ["Check-in 13:00", "Access Card"] },
+      { name: "Full Day Menginap (Start 13:00)", typeId: "fullday-13", description: "Check-in mulai jam 13:00 · Out 12:00 besok", sqftDiff: "36 m²", priceDelta: "Rp 400.000 (Wkday) / Rp 500.000 (Wkend)", priceAmount: 400000, highlights: ["Check-in 13:00", "Access Card"] },
       { name: "Full Day (Mulai Jam 21:00)", typeId: "fullday-21", description: "Menginap malam hemat", sqftDiff: "36 m²", priceDelta: "Rp 300.000 (Wkday) / Rp 350.000 (Wkend)", priceAmount: 300000, highlights: ["Check-in 21:00", "Hemat"] },
     ],
     floorPlanSvg: "/images/floorplan-lt1.webp",
@@ -208,7 +211,7 @@ export const HOUSE_MODELS: HouseModel[] = [
     variants: [
       { name: "Transit 3 Jam", typeId: "transit-3h", description: "Transit 3 jam express", sqftDiff: "34 m²", priceDelta: "Rp 150.000", priceAmount: 150000, highlights: ["Work Desk", "WiFi"] },
       { name: "Transit 6 Jam", typeId: "transit-6h", description: "Transit 6 jam santai", sqftDiff: "34 m²", priceDelta: "Rp 200.000 (Wkday) / Rp 250.000 (Wkend)", priceAmount: 200000, highlights: ["Smart TV", "AC Dingin"] },
-      { name: "Full Day (Mulai Jam 13:00)", typeId: "fullday-13", description: "Sewa harian 24 jam", sqftDiff: "34 m²", priceDelta: "Rp 400.000 (Wkday) / Rp 500.000 (Wkend)", priceAmount: 400000, highlights: ["View Lantai 10"] },
+      { name: "Full Day Menginap (Start 13:00)", typeId: "fullday-13", description: "Check-in mulai jam 13:00 · Out 12:00 besok", sqftDiff: "34 m²", priceDelta: "Rp 400.000 (Wkday) / Rp 500.000 (Wkend)", priceAmount: 400000, highlights: ["View Lantai 10"] },
     ],
     floorPlanSvg: "/images/floorplan-lt1.webp",
     availablePlots: ["ST-1008"],
@@ -259,7 +262,7 @@ export const HOUSE_MODELS: HouseModel[] = [
     variants: [
       { name: "Transit 3 Jam", typeId: "transit-3h", description: "Transit 3 jam express", sqftDiff: "32 m²", priceDelta: "Rp 150.000", priceAmount: 150000, highlights: ["Queen Bed", "AC Dingin"] },
       { name: "Transit 6 Jam", typeId: "transit-6h", description: "Transit 6 jam santai", sqftDiff: "32 m²", priceDelta: "Rp 200.000 (Wkday) / Rp 250.000 (Wkend)", priceAmount: 200000, highlights: ["Smart TV", "WiFi"] },
-      { name: "Full Day (Mulai Jam 13:00)", typeId: "fullday-13", description: "Sewa harian 24 jam", sqftDiff: "32 m²", priceDelta: "Rp 400.000 (Wkday) / Rp 500.000 (Wkend)", priceAmount: 400000, highlights: ["Lantai 3 Cepat"] },
+      { name: "Full Day Menginap (Start 13:00)", typeId: "fullday-13", description: "Check-in mulai jam 13:00 · Out 12:00 besok", sqftDiff: "32 m²", priceDelta: "Rp 400.000 (Wkday) / Rp 500.000 (Wkend)", priceAmount: 400000, highlights: ["Lantai 3 Cepat"] },
     ],
     floorPlanSvg: "/images/floorplan-lt1.webp",
     availablePlots: ["ST-0305"],
@@ -311,7 +314,7 @@ export const HOUSE_MODELS: HouseModel[] = [
       { name: "Transit 3 Jam", typeId: "transit-3h", description: "Transit 3 jam 2 kamar", sqftDiff: "56 m²", priceDelta: "Rp 300.000", priceAmount: 300000, highlights: ["2 Kamar Tidur", "Living Room"] },
       { name: "Transit 6 Jam", typeId: "transit-6h", description: "Transit 6 jam keluarga", sqftDiff: "56 m²", priceDelta: "Rp 400.000 (Wkday) / Rp 450.000 (Wkend)", priceAmount: 400000, highlights: ["Smart TV 55 Inch", "Dapur"] },
       { name: "Transit 8 Jam", typeId: "transit-8h", description: "Transit 8 jam gathering", sqftDiff: "56 m²", priceDelta: "Rp 500.000 (Wkday) / Rp 550.000 (Wkend)", priceAmount: 500000, highlights: ["Kapasitas 4 Tamu"] },
-      { name: "Full Day (Mulai Jam 13:00)", typeId: "fullday-13", description: "Sewa harian 24 jam", sqftDiff: "56 m²", priceDelta: "Rp 700.000 (Wkday) / Rp 800.000 (Wkend)", priceAmount: 700000, highlights: ["View Gunung Pancar", "Dapur Lengkap"] },
+      { name: "Full Day Menginap (Start 13:00)", typeId: "fullday-13", description: "Check-in mulai jam 13:00 · Out 12:00 besok", sqftDiff: "56 m²", priceDelta: "Rp 700.000 (Wkday) / Rp 800.000 (Wkend)", priceAmount: 700000, highlights: ["View Gunung Pancar", "Dapur Lengkap"] },
       { name: "Full Day (Mulai Jam 21:00)", typeId: "fullday-21", description: "Menginap malam hemat", sqftDiff: "56 m²", priceDelta: "Rp 600.000 (Wkday) / Rp 700.000 (Wkend)", priceAmount: 600000, highlights: ["Check-in 21:00"] },
     ],
     floorPlanSvg: "/images/floorplan-lt1.webp",
@@ -364,7 +367,7 @@ export const HOUSE_MODELS: HouseModel[] = [
       { name: "Transit 3 Jam", typeId: "transit-3h", description: "Transit 3 jam hemat", sqftDiff: "28 m²", priceDelta: "Rp 150.000", priceAmount: 150000, highlights: ["Double Bed", "Smart TV"] },
       { name: "Transit 6 Jam", typeId: "transit-6h", description: "Transit 6 jam santai", sqftDiff: "28 m²", priceDelta: "Rp 200.000 (Wkday) / Rp 250.000 (Wkend)", priceAmount: 200000, highlights: ["WiFi Kencang", "AC"] },
       { name: "Transit 8 Jam", typeId: "transit-8h", description: "Transit 8 jam daypass", sqftDiff: "28 m²", priceDelta: "Rp 250.000 (Wkday) / Rp 300.000 (Wkend)", priceAmount: 250000, highlights: ["Balkon City View"] },
-      { name: "Full Day (Mulai Jam 13:00)", typeId: "fullday-13", description: "Menginap 24 jam", sqftDiff: "28 m²", priceDelta: "Rp 350.000 (Wkday) / Rp 450.000 (Wkend)", priceAmount: 350000, highlights: ["Check-in 13:00", "Access Card"] },
+      { name: "Full Day Menginap (Start 13:00)", typeId: "fullday-13", description: "Check-in mulai jam 13:00 · Out 12:00 besok", sqftDiff: "28 m²", priceDelta: "Rp 350.000 (Wkday) / Rp 450.000 (Wkend)", priceAmount: 350000, highlights: ["Check-in 13:00", "Access Card"] },
       { name: "Full Day (Mulai Jam 21:00)", typeId: "fullday-21", description: "Menginap malam hemat", sqftDiff: "28 m²", priceDelta: "Rp 250.000 (Wkday) / Rp 300.000 (Wkend)", priceAmount: 250000, highlights: ["Check-in 21:00", "Hemat"] },
     ],
     floorPlanSvg: "/images/floorplan-lt1.webp",
@@ -416,7 +419,7 @@ export const HOUSE_MODELS: HouseModel[] = [
     variants: [
       { name: "Transit 3 Jam", typeId: "transit-3h", description: "Transit 3 jam express", sqftDiff: "34 m²", priceDelta: "Rp 150.000", priceAmount: 150000, highlights: ["Queen Bed", "Wood Interior"] },
       { name: "Transit 6 Jam", typeId: "transit-6h", description: "Transit 6 jam santai", sqftDiff: "34 m²", priceDelta: "Rp 200.000 (Wkday) / Rp 250.000 (Wkend)", priceAmount: 200000, highlights: ["Smart TV 50 Inch"] },
-      { name: "Full Day (Mulai Jam 13:00)", typeId: "fullday-13", description: "Sewa harian 24 jam", sqftDiff: "34 m²", priceDelta: "Rp 350.000 (Wkday) / Rp 450.000 (Wkend)", priceAmount: 350000, highlights: ["Nuansa Villa Modern"] },
+      { name: "Full Day Menginap (Start 13:00)", typeId: "fullday-13", description: "Check-in mulai jam 13:00 · Out 12:00 besok", sqftDiff: "34 m²", priceDelta: "Rp 350.000 (Wkday) / Rp 450.000 (Wkend)", priceAmount: 350000, highlights: ["Nuansa Villa Modern"] },
     ],
     floorPlanSvg: "/images/floorplan-lt1.webp",
     availablePlots: ["ST-0610"],
@@ -467,7 +470,7 @@ export const HOUSE_MODELS: HouseModel[] = [
     variants: [
       { name: "Transit 3 Jam", typeId: "transit-3h", description: "Transit 3 jam skyline", sqftDiff: "36 m²", priceDelta: "Rp 150.000", priceAmount: 150000, highlights: ["Top Floor View"] },
       { name: "Transit 6 Jam", typeId: "transit-6h", description: "Transit 6 jam", sqftDiff: "36 m²", priceDelta: "Rp 200.000 (Wkday) / Rp 250.000 (Wkend)", priceAmount: 200000, highlights: ["Smart TV 50 Inch"] },
-      { name: "Full Day (Mulai Jam 13:00)", typeId: "fullday-13", description: "Sewa harian 24 jam", sqftDiff: "36 m²", priceDelta: "Rp 350.000 (Wkday) / Rp 450.000 (Wkend)", priceAmount: 350000, highlights: ["Skyline View"] },
+      { name: "Full Day Menginap (Start 13:00)", typeId: "fullday-13", description: "Check-in mulai jam 13:00 · Out 12:00 besok", sqftDiff: "36 m²", priceDelta: "Rp 350.000 (Wkday) / Rp 450.000 (Wkend)", priceAmount: 350000, highlights: ["Skyline View"] },
     ],
     floorPlanSvg: "/images/floorplan-lt1.webp",
     availablePlots: ["ST-1102"],
@@ -518,7 +521,7 @@ export const HOUSE_MODELS: HouseModel[] = [
     variants: [
       { name: "Transit 3 Jam", typeId: "transit-3h", description: "Transit 3 jam express", sqftDiff: "35 m²", priceDelta: "Rp 150.000", priceAmount: 150000, highlights: ["King Bed", "Dekat Pool"] },
       { name: "Transit 6 Jam", typeId: "transit-6h", description: "Transit 6 jam santai", sqftDiff: "35 m²", priceDelta: "Rp 200.000 (Wkday) / Rp 250.000 (Wkend)", priceAmount: 200000, highlights: ["Smart TV 50 Inch"] },
-      { name: "Full Day (Mulai Jam 13:00)", typeId: "fullday-13", description: "Sewa harian 24 jam", sqftDiff: "35 m²", priceDelta: "Rp 350.000 (Wkday) / Rp 450.000 (Wkend)", priceAmount: 350000, highlights: ["Akses Cepat Lantai 3"] },
+      { name: "Full Day Menginap (Start 13:00)", typeId: "fullday-13", description: "Check-in mulai jam 13:00 · Out 12:00 besok", sqftDiff: "35 m²", priceDelta: "Rp 350.000 (Wkday) / Rp 450.000 (Wkend)", priceAmount: 350000, highlights: ["Akses Cepat Lantai 3"] },
     ],
     floorPlanSvg: "/images/floorplan-lt1.webp",
     availablePlots: ["ST-0308"],
@@ -569,7 +572,7 @@ export const HOUSE_MODELS: HouseModel[] = [
     variants: [
       { name: "Transit 3 Jam", typeId: "transit-3h", description: "Transit 3 jam express", sqftDiff: "32 m²", priceDelta: "Rp 150.000", priceAmount: 150000, highlights: ["Queen Bed", "AC Dingin"] },
       { name: "Transit 6 Jam", typeId: "transit-6h", description: "Transit 6 jam santai", sqftDiff: "32 m²", priceDelta: "Rp 200.000 (Wkday) / Rp 250.000 (Wkend)", priceAmount: 200000, highlights: ["WiFi Kencang"] },
-      { name: "Full Day (Mulai Jam 13:00)", typeId: "fullday-13", description: "Sewa harian 24 jam", sqftDiff: "32 m²", priceDelta: "Rp 350.000 (Wkday) / Rp 450.000 (Wkend)", priceAmount: 350000, highlights: ["Privasi Penuh"] },
+      { name: "Full Day Menginap (Start 13:00)", typeId: "fullday-13", description: "Check-in mulai jam 13:00 · Out 12:00 besok", sqftDiff: "32 m²", priceDelta: "Rp 350.000 (Wkday) / Rp 450.000 (Wkend)", priceAmount: 350000, highlights: ["Privasi Penuh"] },
     ],
     floorPlanSvg: "/images/floorplan-lt1.webp",
     availablePlots: ["ST-1014"],

@@ -2,13 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { HouseModel, formatRupiah } from "@/data/houseModels";
-import { api, RoomData, ReviewData } from "@/lib/api";
+import { api, RoomData, ReviewData, ReservationData } from "@/lib/api";
+import { computeUnitAvailability } from "@/lib/availability";
+import { getCalendarRateInfo } from "@/lib/holidays";
 import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Button from "@/components/Button";
+import { ReviewItemSkeleton } from "@/components/Skeleton";
 import TourBookingModal from "@/components/TourBookingModal";
 
 interface ModelDetailClientProps {
@@ -22,10 +25,12 @@ export default function ModelDetailClient({ model }: ModelDetailClientProps) {
 
   // Live Database Room State
   const [liveRoom, setLiveRoom] = useState<RoomData | null>(null);
+  const [allReservations, setAllReservations] = useState<ReservationData[]>([]);
+  const [selectedScheduleDate, setSelectedScheduleDate] = useState<string>(new Date().toISOString().split("T")[0]);
 
   // Live Database Reviews State (100% From VPS Database)
   const [reviews, setReviews] = useState<ReviewData[]>([]);
-  const [loadingReviews, setLoadingReviews] = useState(true);
+  const [loadingReviews, setLoadingReviews] = useState<boolean>(true);
 
   // New Review Form State
   const [showReviewForm, setShowReviewForm] = useState(false);
@@ -106,12 +111,13 @@ export default function ModelDetailClient({ model }: ModelDetailClientProps) {
   const currentVariant = model.variants[selectedVariantIndex] || model.variants[0];
   const activeImage = model.gallery[activeImageIndex] || { url: model.featuredImage, caption: model.name };
 
-  const isAvailable = (liveRoom?.status || model.status) === "Available";
+  const availabilityInfo = computeUnitAvailability(model.unitNumber, model.name, allReservations, selectedScheduleDate);
+  const isAvailable = availabilityInfo.isAvailableNow;
 
-  const displayRate3h = liveRoom?.rate_transit_3h || model.rateTransit3h;
-  const displayRate6h = liveRoom?.rate_transit_6h || model.rateTransit6h;
-  const displayRate8h = liveRoom?.rate_transit_8h || model.rateTransit8h;
-  const displayRateDaily = liveRoom?.rate_full_day || model.rateFullDay;
+  const displayRate3h = Number(liveRoom?.rate_3h || liveRoom?.rate_transit_3h || model.rateTransit3h || 150000);
+  const displayRate6h = Number(liveRoom?.rate_6h || liveRoom?.rate_transit_6h || model.rateTransit6h || 200000);
+  const displayRate8h = Number(liveRoom?.rate_8h || liveRoom?.rate_transit_8h || model.rateTransit8h || 250000);
+  const displayRateDaily = Number(liveRoom?.rate_daily || liveRoom?.rate_full_day || model.rateFullDay || 350000);
 
   const currentVariantPrice =
     currentVariant.typeId === "transit-3h"
@@ -332,6 +338,154 @@ export default function ModelDetailClient({ model }: ModelDetailClientProps) {
                     <span className="text-xs font-medium text-primary">{h}</span>
                   </div>
                 ))}
+              </div>
+            </div>
+
+                        {/* ------------------------------------------------------------- */}
+            {/* REAL CALENDAR & LIVE SCHEDULE SLOT TRACKER (24 JAM & TANGGAL MERAH) */}
+            {/* ------------------------------------------------------------- */}
+            <div className="bg-surface rounded-3xl p-6 sm:p-8 border border-border-subtle shadow-sm space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border-subtle pb-4">
+                <div>
+                  <h3 className="font-heading text-xl font-bold text-primary flex items-center gap-2">
+                    <Icon icon="solar:calendar-date-bold" className="w-5 h-5 text-brand" />
+                    <span>Jadwal & Ketersediaan Real Kalender</span>
+                  </h3>
+                  <p className="text-xs text-secondary mt-0.5">
+                    Tarif Weekend berlaku khusus Sabtu & Minggu serta Hari Libur Nasional (Tanggal Merah).
+                  </p>
+                </div>
+
+                <div className={`px-3 py-1 rounded-full text-xs font-semibold w-fit flex items-center gap-1.5 ${
+                  availabilityInfo.statusBadgeColor === "emerald"
+                    ? "bg-emerald-100 text-emerald-800"
+                    : availabilityInfo.statusBadgeColor === "amber"
+                    ? "bg-amber-100 text-amber-800"
+                    : "bg-rose-100 text-rose-800"
+                }`}>
+                  <span className={`w-2 h-2 rounded-full animate-pulse ${
+                    availabilityInfo.statusBadgeColor === "emerald" ? "bg-emerald-600" : "bg-amber-600"
+                  }`} />
+                  <span>{availabilityInfo.statusText}</span>
+                </div>
+              </div>
+
+              {/* Date Selector with Real Calendar Tanggal Merah Indicators */}
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-muted block">
+                    PILIH TANGGAL (REALTIME KALENDER INDONESIA):
+                  </span>
+                  {(() => {
+                    const cal = getCalendarRateInfo(selectedScheduleDate);
+                    return (
+                      <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase ${
+                        cal.badgeTone === "holiday"
+                          ? "bg-rose-100 text-rose-800 border border-rose-300"
+                          : cal.badgeTone === "weekend"
+                          ? "bg-amber-100 text-amber-800 border border-amber-300"
+                          : "bg-blue-50 text-blue-800 border border-blue-200"
+                      }`}>
+                        {cal.label}
+                      </span>
+                    );
+                  })()}
+                </div>
+
+                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+                  {[0, 1, 2, 3, 4, 5, 6].map((offset) => {
+                    const d = new Date();
+                    d.setDate(d.getDate() + offset);
+                    const ymd = d.toISOString().split("T")[0];
+                    const cal = getCalendarRateInfo(ymd);
+
+                    const label =
+                      offset === 0
+                        ? "Hari Ini"
+                        : offset === 1
+                        ? "Besok"
+                        : `${cal.dayName}`;
+
+                    const isSelected = selectedScheduleDate === ymd;
+
+                    return (
+                      <button
+                        key={ymd}
+                        type="button"
+                        onClick={() => setSelectedScheduleDate(ymd)}
+                        className={`px-3.5 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap flex flex-col items-center gap-0.5 ${
+                          isSelected
+                            ? "bg-brand text-white shadow-sm ring-2 ring-brand/30"
+                            : "bg-canvas border border-border-subtle text-secondary hover:text-primary hover:bg-sand-100"
+                        }`}
+                      >
+                        <span className="font-bold">{label}</span>
+                        <span className={`text-[10px] ${
+                          isSelected ? "text-white/80" : cal.isHoliday ? "text-rose-600 font-bold" : cal.isSaturdayOrSunday ? "text-amber-700 font-semibold" : "text-muted"
+                        }`}>
+                          {d.toLocaleDateString("id-ID", { day: "numeric", month: "short" })}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Time Slots Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                {availabilityInfo.todaySlots.map((slot) => (
+                  <div
+                    key={slot.id}
+                    className={`p-3.5 rounded-2xl border transition-all flex flex-col justify-between space-y-2.5 ${
+                      slot.isAvailable
+                        ? "bg-canvas border-border-subtle hover:border-brand/40"
+                        : "bg-sand-200/60 border-border-subtle/80 opacity-75"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono font-bold text-xs text-primary">{slot.timeRange}</span>
+                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
+                        slot.isAvailable
+                          ? "bg-emerald-100 text-emerald-800"
+                          : "bg-amber-100 text-amber-800"
+                      }`}>
+                        {slot.isAvailable ? "Tersedia" : "Terisi"}
+                      </span>
+                    </div>
+
+                    <div>
+                      <h4 className="font-heading font-bold text-xs text-primary">{slot.label}</h4>
+                      <p className="text-[11px] text-muted mt-0.5">
+                        {slot.isAvailable
+                          ? "Slot terbuka untuk booking instan"
+                          : slot.reason || "Sedang digunakan tamu"}
+                      </p>
+                    </div>
+
+                    <div className="pt-2 border-t border-border-subtle flex justify-end">
+                      {slot.isAvailable ? (
+                        <button
+                          type="button"
+                          onClick={() => setIsTourModalOpen(true)}
+                          className="inline-flex items-center gap-1 text-[11px] font-bold text-brand hover:underline cursor-pointer"
+                        >
+                          <span>Pesan Slot Ini</span>
+                          <Icon icon="solar:arrow-right-linear" className="w-3.5 h-3.5" />
+                        </button>
+                      ) : (
+                        <span className="text-[10px] font-mono text-muted">Slot Terisi</span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="p-3 bg-sand-100 rounded-2xl border border-border-subtle flex items-center justify-between text-xs">
+                <span className="text-secondary flex items-center gap-1.5">
+                  <Icon icon="solar:info-circle-bold" className="w-4 h-4 text-brand shrink-0" />
+                  <span>Kalkulasi tarif weekend otomatis aktif pada Sabtu, Minggu & Tanggal Merah resmi.</span>
+                </span>
+                <span className="font-mono text-[10px] text-muted shrink-0 font-bold">24 JAM STANDBY</span>
               </div>
             </div>
 

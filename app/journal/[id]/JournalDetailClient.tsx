@@ -7,7 +7,6 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Button from '@/components/Button';
-import Badge from '@/components/Badge';
 
 const TourBookingModal = dynamic(() => import('@/components/TourBookingModal'), { ssr: false });
 
@@ -129,7 +128,6 @@ export default function JournalDetailClient({ article }: { article: ArticleData 
         <section className="py-12 bg-surface border-t border-border-subtle">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-8">
             <div className="space-y-2">
-              <Badge addon="RECOMMENDED">SUGGESTED READS</Badge>
               <h3 className="font-heading text-2xl sm:text-3xl font-bold text-primary">
                 Explore More Journal Articles
               </h3>

@@ -8,9 +8,11 @@ import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Button from "@/components/Button";
+import { RoomCardSkeleton } from "@/components/Skeleton";
 import Badge from "@/components/Badge";
 import { HOUSE_MODELS, formatRupiah } from "@/data/houseModels";
-import { api, RoomData } from "@/lib/api";
+import { api, RoomData, ReservationData } from "@/lib/api";
+import { computeUnitAvailability } from "@/lib/availability";
 import { Icon } from "@iconify/react";
 
 const TourBookingModal = dynamic(() => import("@/components/TourBookingModal"), { ssr: false });
@@ -18,6 +20,7 @@ const TourBookingModal = dynamic(() => import("@/components/TourBookingModal"), 
 export default function BookingCatalogPage() {
   const router = useRouter();
   const [rooms, setRooms] = useState<RoomData[]>([]);
+  const [reservations, setReservations] = useState<ReservationData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [filterType, setFilterType] = useState<string>("all");
   const [selectedDuration, setSelectedDuration] = useState<"3h" | "6h" | "8h" | "daily">("3h");
@@ -30,9 +33,15 @@ export default function BookingCatalogPage() {
   useEffect(() => {
     async function fetchLiveRooms() {
       try {
-        const data = await api.getRooms();
-        if (Array.isArray(data) && data.length > 0) {
-          setRooms(data);
+        const [roomsData, resData] = await Promise.all([
+          api.getRooms().catch(() => []),
+          api.getReservations().catch(() => [])
+        ]);
+        if (Array.isArray(roomsData) && roomsData.length > 0) {
+          setRooms(roomsData);
+        }
+        if (Array.isArray(resData)) {
+          setReservations(resData);
         }
       } catch (err) {
         console.warn("Using local fallback models:", err);
@@ -64,10 +73,10 @@ export default function BookingCatalogPage() {
       size: live?.size || `${local.sqft} m²`,
       image: live?.image || local.featuredImage,
       amenities: live?.amenities || local.highlights,
-      rate3h: live?.rate_transit_3h || local.rateTransit3h,
-      rate6h: live?.rate_transit_6h || local.rateTransit6h,
-      rate8h: live?.rate_transit_8h || local.rateTransit8h,
-      rateDaily: live?.rate_full_day || local.rateFullDay,
+      rate3h: Number(live?.rate_3h || live?.rate_transit_3h || local.rateTransit3h || 150000),
+      rate6h: Number(live?.rate_6h || live?.rate_transit_6h || local.rateTransit6h || 200000),
+      rate8h: Number(live?.rate_8h || live?.rate_transit_8h || local.rateTransit8h || 250000),
+      rateDaily: Number(live?.rate_daily || live?.rate_full_day || local.rateFullDay || 350000),
       tagline: local.tagline,
       beds: local.beds,
       baths: local.baths,
@@ -99,11 +108,6 @@ export default function BookingCatalogPage() {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10 space-y-3 sm:space-y-4 text-center max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 rounded-full border border-brand/30 bg-white/10 px-4 py-1.5 text-xs font-semibold text-brand uppercase backdrop-blur-md">
-            <span className="h-2 w-2 rounded-full bg-brand/15 animate-pulse" />
-            Pilihan Penginapan Apartemen, Hotel & Villa
-          </div>
-
           <h1 className="font-heading text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.15]">
             Pilih Penginapan, Kamar & Durasi Sewa
           </h1>
@@ -166,7 +170,14 @@ export default function BookingCatalogPage() {
         </div>
 
         {/* Room Grid: Ultra UX-friendly Clickable Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+            {Array.from({ length: 6 }).map((_, idx) => (
+              <RoomCardSkeleton key={idx} />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {filteredItems.map((room) => {
             const currentRate =
               selectedDuration === "3h"
@@ -178,7 +189,8 @@ export default function BookingCatalogPage() {
                 : room.rateDaily;
 
             const durationSuffix = selectedDuration === "daily" ? "/ Malam" : "/ 3 Jam";
-            const isAvailable = room.status === "Available";
+            const availInfo = computeUnitAvailability(room.unitNumber, room.name, reservations);
+            const isAvailable = availInfo.isAvailableNow;
 
             return (
               <div
@@ -196,12 +208,16 @@ export default function BookingCatalogPage() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     
-                    {/* Status Badge */}
+                    {/* Status Badge with Live Schedule */}
                     <div className={`absolute top-3.5 left-3.5 flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold shadow-md ${
-                      isAvailable ? "bg-emerald-600 text-white" : "bg-amber-600 text-white"
+                      availInfo.statusBadgeColor === "emerald"
+                        ? "bg-emerald-600 text-white"
+                        : availInfo.statusBadgeColor === "amber"
+                        ? "bg-amber-600 text-white"
+                        : "bg-rose-600 text-white"
                     }`}>
                       <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                      <span>{isAvailable ? "Siap Huni (Available)" : room.status || "Booked"}</span>
+                      <span>{availInfo.statusText}</span>
                     </div>
 
                     {/* Floor Badge */}
@@ -285,7 +301,8 @@ export default function BookingCatalogPage() {
               </div>
             );
           })}
-        </div>
+          </div>
+        )}
 
       </section>
 

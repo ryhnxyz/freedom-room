@@ -4,7 +4,7 @@ import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Button from "@/components/Button";
-import Badge from "@/components/Badge";
+import { ReservationResultSkeleton } from "@/components/Skeleton";
 import { api, ReservationData } from "@/lib/api";
 import { formatRupiah } from "@/data/houseModels";
 import { Icon } from "@iconify/react";
@@ -46,7 +46,6 @@ export default function CheckBookingPage() {
       {/* Hero Header */}
       <section className="relative pt-32 pb-16 sm:pt-40 sm:pb-24 bg-timber-950 text-white overflow-hidden border-b border-border-subtle">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10 space-y-4 text-center max-w-3xl mx-auto">
-          <Badge>PELACAKAN REALTIME</Badge>
           <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.15]">
             Cek Status Reservasi Tamu
           </h1>
@@ -86,7 +85,9 @@ export default function CheckBookingPage() {
 
       {/* Result Section */}
       <section className="py-12 sm:py-20 max-w-3xl mx-auto px-4 sm:px-6 space-y-6">
-        {errorMsg && (
+        {loading && <ReservationResultSkeleton />}
+
+        {errorMsg && !loading && (
           <div className="p-4 rounded-2xl bg-amber-50 text-amber-800 border border-amber-200 text-sm flex items-start gap-3 shadow-xs">
             <Icon icon="solar:danger-triangle-bold" className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
             <div className="space-y-1">
@@ -96,7 +97,7 @@ export default function CheckBookingPage() {
           </div>
         )}
 
-        {reservation && (
+        {reservation && !loading && (
           <div className="bg-surface rounded-3xl p-6 sm:p-8 border border-border-subtle shadow-xl space-y-6 animate-in fade-in zoom-in-95 duration-300">
             
             {/* Header Status */}

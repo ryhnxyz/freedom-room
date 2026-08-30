@@ -7,7 +7,6 @@ import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Button from '@/components/Button';
-import Badge from '@/components/Badge';
 
 const TourBookingModal = dynamic(() => import('@/components/TourBookingModal'), { ssr: false });
 
@@ -46,7 +45,6 @@ export default function ErrorBoundary({
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10 text-center space-y-6 sm:space-y-8">
           
           <div className="inline-flex justify-center">
-            <Badge>SYSTEM EXCEPTION</Badge>
           </div>
 
           <div className="space-y-3">

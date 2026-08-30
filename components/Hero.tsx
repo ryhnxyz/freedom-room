@@ -33,11 +33,6 @@ export default function Hero({ onOpenScheduleTour }: HeroProps) {
 
       {/* Hero Central Content */}
       <div className="relative z-30 max-w-4xl mx-auto px-4 sm:px-6 pt-32 sm:pt-44 pb-16 text-center space-y-6">
-        <div className="inline-flex items-center gap-2 rounded-full border border-brand/30 bg-black/40 px-4 py-1.5 text-xs font-semibold tracking-wider text-brand uppercase backdrop-blur-md">
-          <span className="h-2 w-2 rounded-full bg-brand animate-pulse" />
-          FreedomRoom · Booking Apartemen, Hotel & Villa
-        </div>
-
         <h1
           id="hero-title"
           className="font-heading text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.12] drop-shadow-md"
@@ -73,25 +68,7 @@ export default function Hero({ onOpenScheduleTour }: HeroProps) {
           </Button>
         </div>
 
-        {/* Quick Highlights Strip */}
-        <div className="pt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto text-left">
-          <div className="bg-black/40 backdrop-blur-md p-3 rounded-2xl border border-white/10 text-white">
-            <span className="text-[10px] font-mono text-brand uppercase block">TARIF TRANSIT</span>
-            <span className="font-heading font-bold text-sm sm:text-base">Mulai Rp 150.000</span>
-          </div>
-          <div className="bg-black/40 backdrop-blur-md p-3 rounded-2xl border border-white/10 text-white">
-            <span className="text-[10px] font-mono text-brand uppercase block">KATEGORI LENGKAP</span>
-            <span className="font-heading font-bold text-sm sm:text-base">Apartemen, Hotel & Villa</span>
-          </div>
-          <div className="bg-black/40 backdrop-blur-md p-3 rounded-2xl border border-white/10 text-white">
-            <span className="text-[10px] font-mono text-brand uppercase block">LAYANAN TAMU</span>
-            <span className="font-heading font-bold text-sm sm:text-base">Standby 24 Jam</span>
-          </div>
-          <div className="bg-black/40 backdrop-blur-md p-3 rounded-2xl border border-white/10 text-white">
-            <span className="text-[10px] font-mono text-brand uppercase block">KEBERSIHAN</span>
-            <span className="font-heading font-bold text-sm sm:text-base">100% Steril & Rapi</span>
-          </div>
-        </div>
+
       </div>
 
       {/* Empty bottom bumper for spacing */}

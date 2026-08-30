@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { HOUSE_MODELS, formatRupiah, calculateRoomPrice, isWeekend } from "@/data/houseModels";
+import { HOUSE_MODELS, formatRupiah, calculateRoomPrice } from "@/data/houseModels";
+import { getCalendarRateInfo } from "@/lib/holidays";
 import { api, RoomData, ReservationData } from "@/lib/api";
 import { Icon } from "@iconify/react";
 import Button from "@/components/Button";
@@ -14,6 +15,34 @@ interface TourBookingModalProps {
   initialModelName?: string;
   initialPlotNumber?: string;
 }
+
+const HOURS_DATA = [
+  {
+    category: "Pagi",
+    icon: "solar:sun-2-bold",
+    hours: ["06:00", "07:00", "08:00", "09:00", "10:00", "11:00"],
+  },
+  {
+    category: "Siang",
+    icon: "solar:sun-bold",
+    hours: ["12:00", "13:00", "14:00", "15:00"],
+  },
+  {
+    category: "Sore",
+    icon: "solar:sunset-bold",
+    hours: ["16:00", "17:00"],
+  },
+  {
+    category: "Malam",
+    icon: "solar:moon-bold",
+    hours: ["18:00", "19:00", "20:00", "21:00", "22:00", "23:00"],
+  },
+  {
+    category: "Dini Hari",
+    icon: "solar:stars-bold",
+    hours: ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00"],
+  },
+];
 
 export default function TourBookingModal({
   isOpen,
@@ -31,20 +60,22 @@ export default function TourBookingModal({
   const [selectedRoomId, setSelectedRoomId] = useState<string>("");
 
   // Booking Form State
-  const [packageType, setPackageType] = useState<"transit-3h" | "transit-6h" | "transit-8h" | "fullday-13" | "fullday-21">("transit-3h");
+  const [packageType, setPackageType] = useState<"transit-3h" | "transit-6h" | "transit-8h" | "fullday">("transit-3h");
   const [checkInDate, setCheckInDate] = useState<string>("");
   const [checkInTime, setCheckInTime] = useState<string>("14:00");
   const [nights, setNights] = useState<number>(1);
   const [fullName, setFullName] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
-  const [adults, setAdults] = useState<number>(2);
   const [paymentMethod, setPaymentMethod] = useState<string>("Transfer Bank BCA");
   const [notes, setNotes] = useState<string>("");
+
+  // Time Picker Modal State
+  const [isTimePickerOpen, setIsTimePickerOpen] = useState(false);
 
   // Success Confirmation State
   const [confirmedReservation, setConfirmedReservation] = useState<ReservationData | null>(null);
 
-  // Refs for animation & touch dismiss
+  // Refs for animation
   const modalOverlayRef = useRef<HTMLDivElement>(null);
   const sheetContainerRef = useRef<HTMLDivElement>(null);
   const scrollableBodyRef = useRef<HTMLDivElement>(null);
@@ -54,9 +85,9 @@ export default function TourBookingModal({
     const now = new Date();
     const pad = (n: number) => n.toString().padStart(2, "0");
     const todayStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
-    const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    const nextHour = (now.getHours() + 1) % 24;
     setCheckInDate(todayStr);
-    setCheckInTime(timeStr);
+    setCheckInTime(`${pad(nextHour)}:00`);
   }, []);
 
   // Fetch Live Rooms from VPS Database
@@ -101,54 +132,72 @@ export default function TourBookingModal({
   const selectedRoomLocal = HOUSE_MODELS.find((m) => m.databaseId === selectedRoomId || m.id === selectedRoomId) || HOUSE_MODELS[0];
   const activeRoomObj = selectedRoomDb || selectedRoomLocal;
 
-  // Auto-adjust default check-in time when package is selected
-  useEffect(() => {
-    if (packageType === "fullday-13") {
-      setCheckInTime("13:00");
-    } else if (packageType === "fullday-21") {
-      setCheckInTime("21:00");
-    }
-  }, [packageType]);
-
   // Calculate Price Dynamically based on date (Weekday/Weekend) and Unit Category
-  const isSelectedWeekend = isWeekend(checkInDate);
-  const isFullday = packageType === "fullday-13" || packageType === "fullday-21";
+  const calendarRateInfo = getCalendarRateInfo(checkInDate);
+  const isSelectedWeekend = calendarRateInfo.isWeekendRate;
+  const isFullday = packageType === "fullday";
+  const durationHours = packageType === "transit-3h" ? 3 : packageType === "transit-6h" ? 6 : packageType === "transit-8h" ? 8 : 24;
   const totalPrice = calculateRoomPrice(activeRoomObj, packageType, checkInDate, isFullday ? nights : 1);
+
+  // Compute Check-out Time
+  const calculateCheckOutDisplay = () => {
+    if (isFullday) {
+      return "Pkl 12:00 WIB (Besok Siang)";
+    }
+    const [h, m] = checkInTime.split(":").map(Number);
+    const endH = (h + durationHours) % 24;
+    const isNextDay = h + durationHours >= 24;
+    return `Pkl ${endH.toString().padStart(2, "0")}:${(m || 0).toString().padStart(2, "0")} WIB${isNextDay ? " (+1 Hari)" : ""}`;
+  };
 
   // Handle Lenis Scroll Lock and GSAP Modal Animations
   useEffect(() => {
     if (isOpen) {
-      if (!isRendered) {
-        setIsRendered(true);
-        return;
-      }
-      
-      // Stop Lenis and Lock Body Scroll
+      setIsRendered(true);
       if (lenis) lenis.stop();
       document.body.style.overflow = "hidden";
-      document.documentElement.style.overflow = "hidden";
 
-      const ctx = gsap.context(() => {
-        if (modalOverlayRef.current) {
-          gsap.fromTo(modalOverlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" });
-        }
-        if (sheetContainerRef.current) {
-          gsap.fromTo(sheetContainerRef.current, { scale: 0.95, opacity: 0, y: 15 }, { scale: 1, opacity: 1, y: 0, duration: 0.3, ease: "power3.out" });
+      requestAnimationFrame(() => {
+        if (modalOverlayRef.current && sheetContainerRef.current) {
+          gsap.fromTo(
+            modalOverlayRef.current,
+            { opacity: 0 },
+            { opacity: 1, duration: 0.25, ease: "power2.out" }
+          );
+          gsap.fromTo(
+            sheetContainerRef.current,
+            { y: 30, opacity: 0, scale: 0.98 },
+            { y: 0, opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.1)" }
+          );
         }
       });
-      return () => {
-        ctx.revert();
+    } else if (isRendered) {
+      if (modalOverlayRef.current && sheetContainerRef.current) {
+        gsap.to(sheetContainerRef.current, {
+          y: 20,
+          opacity: 0,
+          scale: 0.98,
+          duration: 0.2,
+          ease: "power2.in",
+        });
+        gsap.to(modalOverlayRef.current, {
+          opacity: 0,
+          duration: 0.2,
+          ease: "power2.in",
+          onComplete: () => {
+            setIsRendered(false);
+            if (lenis) lenis.start();
+            document.body.style.overflow = "unset";
+          },
+        });
+      } else {
+        setIsRendered(false);
         if (lenis) lenis.start();
         document.body.style.overflow = "unset";
-        document.documentElement.style.overflow = "unset";
-      };
-    } else {
-      if (lenis) lenis.start();
-      document.body.style.overflow = "unset";
-      document.documentElement.style.overflow = "unset";
-      setIsRendered(false);
+      }
       setConfirmedReservation(null);
       setErrorMsg(null);
+      setIsTimePickerOpen(false);
     }
   }, [isOpen, isRendered, lenis]);
 
@@ -159,9 +208,7 @@ export default function TourBookingModal({
       ? "Transit 6 Jam"
       : packageType === "transit-8h"
       ? "Transit 8 Jam"
-      : packageType === "fullday-21"
-      ? `Full Day Check-in 21:00 (${nights} Malam)`
-      : `Full Day Check-in 13:00 (${nights} Malam)`;
+      : `Full Day Menginap (${nights} Malam) [Start 13:00]`;
 
   // Form Submit Handler -> VPS Database
   const handleBookingSubmit = async (e: React.FormEvent) => {
@@ -172,10 +219,10 @@ export default function TourBookingModal({
     setErrorMsg(null);
 
     try {
-      const checkInDateTime = new Date(`${checkInDate}T${checkInTime || "14:00"}:00`);
+      const checkInDateTime = new Date(`${checkInDate}T${isFullday ? "13:00" : checkInTime}:00`);
       const checkOutDateTime = new Date(checkInDateTime.getTime());
 
-      let checkOutTimeStr = "17:00";
+      let checkOutTimeStr = "12:00";
       if (packageType === "transit-3h") {
         checkOutDateTime.setHours(checkOutDateTime.getHours() + 3);
         checkOutTimeStr = `${checkOutDateTime.getHours().toString().padStart(2, "0")}:${checkOutDateTime.getMinutes().toString().padStart(2, "0")}`;
@@ -201,12 +248,13 @@ export default function TourBookingModal({
         unit_code: selectedRoomDb?.unit_number || selectedRoomLocal.unitNumber,
         check_in: checkInDateTime.toISOString(),
         check_out: checkOutDateTime.toISOString(),
-        check_in_time: checkInTime || "14:00",
+        check_in_time: isFullday ? "13:00" : checkInTime,
         check_out_time: checkOutTimeStr,
-        guests: adults || 2,
+        guests: 2,
         status: "Active (In-Room)",
         source: "Website Tumbuh App",
         payment_method: paymentMethod,
+        payment_status: "Lunas",
         total: totalPrice,
         notes: notes.trim(),
       };
@@ -219,83 +267,50 @@ export default function TourBookingModal({
       }
     } catch (err: any) {
       console.error("Booking error:", err);
-      setErrorMsg("Gagal menyimpan ke database server. Silakan hubungi CS langsung atau coba kembali.");
+      setErrorMsg(err.message || "Gagal menyimpan reservasi ke server database. Silakan coba lagi.");
     } finally {
       setLoading(false);
     }
   };
 
+  const handleSendWhatsApp = () => {
+    if (!confirmedReservation) return;
+    const phoneNo = "62895325608444";
+    const text = `Halo Admin FreedomRoom, saya sudah booking kamar via website:%0A%0A*Kode Booking:* ${confirmedReservation.ref}%0A*Nama Tamu:* ${confirmedReservation.guest}%0A*Unit Kamar:* ${confirmedReservation.unit_code} - ${confirmedReservation.unit_name}%0A*Paket:* ${confirmedReservation.package}%0A*Jadwal Check-in:* ${checkInDate} (Pkl ${isFullday ? "13:00" : checkInTime} WIB)%0A*Total Bayar:* ${formatRupiah(confirmedReservation.total)}%0A*Metode Bayar:* ${confirmedReservation.payment_method}%0A%0AMohon info pengambilan akses kartu kunci & panduan check-in. Terima kasih!`;
+    window.open(`https://wa.me/${phoneNo}?text=${text}`, "_blank");
+  };
+
   if (!isRendered) return null;
-
-  const roomDisplayTitle = selectedRoomDb ? `${selectedRoomDb.unit_number} - ${selectedRoomDb.name}` : `${selectedRoomLocal.unitNumber} - ${selectedRoomLocal.name}`;
-
-  const whatsappMessageUrl = confirmedReservation
-    ? `https://wa.me/6287878906899?text=${encodeURIComponent(
-        `Halo Admin FreedomRoom Sentul Tower, saya telah melakukan reservasi online:
-
-` +
-          `• Kode Booking: *${confirmedReservation.ref}*
-` +
-          `• Nama Tamu: *${confirmedReservation.guest}*
-` +
-          `• No WhatsApp: *${confirmedReservation.phone}*
-` +
-          `• Unit: *${confirmedReservation.unit_code} - ${confirmedReservation.unit_name}*
-` +
-          `• Paket: *${confirmedReservation.package}*
-` +
-          `• Check-In: *${new Date(confirmedReservation.check_in).toLocaleDateString("id-ID", { dateStyle: "medium" })} jam ${confirmedReservation.check_in_time || "14:00"}*
-` +
-          `• Total Biaya: *${formatRupiah(confirmedReservation.total)}*
-` +
-          `• Metode Bayar: *${confirmedReservation.payment_method}*
-
-` +
-          `Mohon informasi ketersediaan kunci kamar dan nomor rekening pembayaran. Terima kasih!`
-      )}`
-    : "#";
 
   return (
     <div
+      ref={modalOverlayRef}
       role="dialog"
       aria-modal="true"
-      data-lenis-prevent="true"
-      onWheel={(e) => e.stopPropagation()}
-      onTouchMove={(e) => e.stopPropagation()}
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-hidden"
+      aria-labelledby="booking-modal-title"
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/75 backdrop-blur-md overflow-hidden"
     >
-      {/* Backdrop */}
-      <div
-        ref={modalOverlayRef}
-        onClick={onClose}
-        className="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity cursor-pointer"
-        aria-hidden="true"
-      />
-
-      {/* Modal Card */}
       <div
         ref={sheetContainerRef}
-        data-lenis-prevent="true"
-        onWheel={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
         onTouchMove={(e) => e.stopPropagation()}
-        style={{ maxHeight: "88vh", height: "auto" }}
-        className="bg-canvas w-full max-w-xl rounded-3xl border border-border-subtle shadow-2xl relative flex flex-col min-h-0 z-10 will-change-transform overflow-hidden my-auto"
+        style={{ maxHeight: "90vh", height: "auto" }}
+        className="bg-canvas w-full max-w-lg rounded-3xl border border-border-subtle shadow-2xl relative flex flex-col min-h-0 z-10 will-change-transform overflow-hidden my-auto"
       >
-        {/* Sticky Header */}
+        {/* Header */}
         <div className="bg-surface px-5 sm:px-6 py-4 border-b border-border-subtle flex items-center justify-between sticky top-0 z-20 shrink-0 shadow-xs">
           <div className="space-y-0.5">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-brand animate-pulse" />
-              <span className="text-[10px] font-mono font-bold tracking-widest text-brand uppercase">
-                PRICELIST RESMI FREEDOMROOM
-              </span>
-            </div>
-            <h2 className="font-heading text-base sm:text-lg font-bold text-primary">
-              {confirmedReservation ? "Konfirmasi Booking Berhasil!" : "Form Reservasi Sentul Tower"}
+            <h2 id="booking-modal-title" className="font-heading text-base sm:text-lg font-bold text-primary">
+              {confirmedReservation ? "Konfirmasi Booking Berhasil!" : "Pesan Kamar Sentul Tower"}
             </h2>
+            <p className="text-[11px] text-muted">
+              {confirmedReservation ? "Detail pemesanan tercatat di database" : "Layanan Booking Fleksibel 24 Jam"}
+            </p>
           </div>
 
           <button
+            type="button"
             onClick={onClose}
             className="w-8 h-8 rounded-full bg-sand-200 hover:bg-sand-300 border border-border-subtle text-primary flex items-center justify-center transition-all cursor-pointer"
             aria-label="Tutup modal"
@@ -321,253 +336,259 @@ export default function TourBookingModal({
           {confirmedReservation ? (
             /* Confirmation View */
             <div className="py-3 text-center space-y-4 animate-in fade-in zoom-in-95 duration-300">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-brand/15 text-brand flex items-center justify-center mx-auto shadow-md ring-4 ring-brand/30">
-                <Icon icon="solar:check-circle-bold" className="w-8 h-8 sm:w-10 sm:h-10" />
+              <div className="w-14 h-14 rounded-2xl bg-brand/15 text-brand flex items-center justify-center mx-auto shadow-md ring-4 ring-brand/30">
+                <Icon icon="solar:check-circle-bold" className="w-8 h-8" />
               </div>
 
               <div className="space-y-1">
-                <span className="text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-widest text-brand block">
-                  RESERVASI TERSIMPAN DI DATABASE
+                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-brand block">
+                  RESERVASI TERCATAT SUKSES
                 </span>
-                <h3 className="font-heading text-xl sm:text-2xl font-bold text-primary">
+                <h3 className="font-heading text-xl font-bold text-primary">
                   Terima Kasih, {confirmedReservation.guest}!
                 </h3>
-                <p className="text-xs text-secondary max-w-md mx-auto leading-relaxed">
-                  Pesanan kamar Anda telah berhasil dicatat di sistem FreedomRoom. Silakan konfirmasi melalui WhatsApp untuk pengambilan kartu akses lift & kunci kamar.
+                <p className="text-xs text-secondary max-w-sm mx-auto leading-relaxed">
+                  Pemesanan kamar Anda telah tersimpan. Silakan konfirmasi via WhatsApp untuk pengambilan kartu akses & kunci kamar.
                 </p>
               </div>
 
-              {/* Receipt Card */}
-              <div className="bg-surface rounded-2xl p-4 sm:p-5 border border-border-subtle text-left space-y-2.5 shadow-xs max-w-md mx-auto text-xs">
-                <div className="flex items-center justify-between pb-2 border-b border-border-subtle">
-                  <span className="text-secondary font-medium">Kode Booking</span>
-                  <span className="font-mono font-bold text-brand text-sm sm:text-base tracking-wider">
-                    {confirmedReservation.ref}
-                  </span>
+              {/* Receipt Summary */}
+              <div className="bg-surface rounded-2xl p-4 border border-border-subtle text-left space-y-2 shadow-xs text-xs">
+                <div className="flex justify-between pb-1.5 border-b border-border-subtle">
+                  <span className="text-muted">Kode Booking</span>
+                  <span className="font-mono font-bold text-brand text-sm">{confirmedReservation.ref}</span>
                 </div>
-
-                <div className="flex items-center justify-between pb-2 border-b border-border-subtle">
-                  <span className="text-secondary font-medium">Unit Kamar</span>
-                  <span className="font-semibold text-primary text-right">
-                    {confirmedReservation.unit_code} - {confirmedReservation.unit_name}
-                  </span>
+                <div className="flex justify-between pb-1.5 border-b border-border-subtle">
+                  <span className="text-muted">Unit Kamar</span>
+                  <span className="font-semibold text-primary">{confirmedReservation.unit_code} - {confirmedReservation.unit_name}</span>
                 </div>
-
-                <div className="flex items-center justify-between pb-2 border-b border-border-subtle">
-                  <span className="text-secondary font-medium">Paket Sewa</span>
+                <div className="flex justify-between pb-1.5 border-b border-border-subtle">
+                  <span className="text-muted">Paket Sewa</span>
                   <span className="font-semibold text-primary">{confirmedReservation.package}</span>
                 </div>
-
-                <div className="flex items-center justify-between pb-2 border-b border-border-subtle">
-                  <span className="text-secondary font-medium">Waktu Check-In</span>
-                  <span className="font-semibold text-primary">
-                    {new Date(confirmedReservation.check_in).toLocaleDateString("id-ID", { dateStyle: "medium" })} jam {confirmedReservation.check_in_time || "14:00"}
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between pb-2 border-b border-border-subtle">
-                  <span className="text-secondary font-medium">Metode Pembayaran</span>
-                  <span className="font-semibold text-primary">{confirmedReservation.payment_method}</span>
-                </div>
-
-                <div className="flex items-center justify-between pt-1 text-sm">
-                  <span className="text-primary font-bold">Total Pembayaran</span>
-                  <span className="font-bold font-display text-brand text-base sm:text-lg">
-                    {formatRupiah(confirmedReservation.total)}
-                  </span>
+                <div className="flex justify-between pt-1 font-bold text-sm">
+                  <span className="text-primary">Total Biaya</span>
+                  <span className="text-brand font-display">{formatRupiah(confirmedReservation.total)}</span>
                 </div>
               </div>
 
-              {/* Actions */}
-              <div className="pt-1 space-y-2 max-w-md mx-auto">
-                <a
-                  href={whatsappMessageUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-full bg-[#25D366] hover:bg-[#1EBE5D] text-white font-semibold text-xs uppercase tracking-wider transition-all shadow-md"
-                >
-                  <Icon icon="solar:chat-round-call-bold" className="w-4 h-4" />
-                  Konfirmasi ke WhatsApp CS
-                </a>
-
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="w-full py-2 text-xs font-semibold text-secondary hover:text-primary transition-colors cursor-pointer"
-                >
-                  Selesai & Tutup
-                </button>
-              </div>
+              <Button
+                variant="primary"
+                size="lg"
+                fullWidth
+                iconLeading="solar:chat-round-dots-bold"
+                onClick={handleSendWhatsApp}
+                className="bg-[#25D366] hover:bg-[#1EBE5D] border-transparent text-white font-bold"
+              >
+                Konfirmasi Booking ke WhatsApp CS
+              </Button>
             </div>
           ) : (
             /* Booking Form */
             <form onSubmit={handleBookingSubmit} className="space-y-4">
+              
               {errorMsg && (
-                <div className="p-3 rounded-xl bg-red-50 text-red-700 border border-red-200 text-xs flex items-center gap-2">
-                  <Icon icon="solar:danger-triangle-bold" className="w-4 h-4 shrink-0" />
+                <div className="p-3 bg-rose-50 text-rose-800 border border-rose-200 rounded-xl text-xs flex items-center gap-2">
+                  <Icon icon="solar:danger-triangle-bold" className="w-4 h-4 text-rose-600 shrink-0" />
                   <span>{errorMsg}</span>
                 </div>
               )}
 
-              {/* Tanggal Check-in & Indikator Hari */}
-              <div className="space-y-1.5">
+              {/* 1. Unit Info Terkunci (Per-Room Context) */}
+              <div className="bg-surface p-3.5 rounded-2xl border border-border-subtle flex items-center justify-between shadow-xs">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-brand/15 text-brand flex items-center justify-center font-bold font-mono text-xs shrink-0 border border-brand/30">
+                    {selectedRoomLocal.unitNumber}
+                  </div>
+                  <div>
+                    <h3 className="font-heading font-bold text-xs sm:text-sm text-primary leading-tight">
+                      {selectedRoomDb?.name || selectedRoomLocal.name}
+                    </h3>
+                    <p className="text-[11px] text-muted mt-0.5">
+                      {selectedRoomLocal.type} · {selectedRoomLocal.floor} · Sentul Tower
+                    </p>
+                  </div>
+                </div>
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 shrink-0">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+                  Unit Terpilih
+                </span>
+              </div>
+
+              {/* 2. Pilih Paket Sewa (Pilihan Jelas & Simple) */}
+              <div className="space-y-2">
+                <label className="block font-semibold text-primary text-xs">
+                  1. Pilih Paket Durasi Sewa
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    {
+                      id: "transit-3h",
+                      label: "Transit 3 Jam",
+                      desc: "24 Jam Fleksibel",
+                      price: calculateRoomPrice(activeRoomObj, "transit-3h", checkInDate),
+                    },
+                    {
+                      id: "transit-6h",
+                      label: "Transit 6 Jam",
+                      desc: isSelectedWeekend ? "Weekend rate" : "Weekday rate",
+                      price: calculateRoomPrice(activeRoomObj, "transit-6h", checkInDate),
+                    },
+                    {
+                      id: "transit-8h",
+                      label: "Transit 8 Jam",
+                      desc: "Daypass Santai",
+                      price: calculateRoomPrice(activeRoomObj, "transit-8h", checkInDate),
+                    },
+                    {
+                      id: "fullday",
+                      label: "Full Day (Menginap)",
+                      desc: "Start Jam 13:00",
+                      price: calculateRoomPrice(activeRoomObj, "fullday", checkInDate),
+                    },
+                  ].map((p) => {
+                    const active = packageType === p.id;
+                    return (
+                      <button
+                        key={p.id}
+                        type="button"
+                        onClick={() => setPackageType(p.id as any)}
+                        className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between space-y-1.5 ${
+                          active
+                            ? "border-brand bg-brand-light font-bold ring-2 ring-brand/30 shadow-xs"
+                            : "border-border-subtle bg-surface hover:bg-sand-100 text-secondary"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between w-full">
+                          <span className="font-heading font-bold text-xs text-primary">{p.label}</span>
+                          {active && <Icon icon="solar:check-circle-bold" className="w-4 h-4 text-brand" />}
+                        </div>
+                        <div className="flex items-baseline justify-between w-full pt-1 border-t border-border-subtle/60">
+                          <span className="text-[10px] text-muted truncate">{p.desc}</span>
+                          <span className="font-mono font-bold text-brand text-xs">
+                            {formatRupiah(p.price)}
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* 3. Tanggal & Jam (Jadwal Bersih & Tidak Bikin Pusing) */}
+              <div className="space-y-2.5 bg-surface p-3.5 sm:p-4 rounded-2xl border border-border-subtle">
                 <div className="flex items-center justify-between">
                   <label className="block font-semibold text-primary text-xs">
-                    Pilih Tanggal Check-In
+                    2. Jadwal Check-in & Tanggal
                   </label>
                   <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${
-                    isSelectedWeekend ? "bg-amber-100 text-amber-800 border border-amber-300" : "bg-blue-50 text-blue-800 border border-blue-200"
+                    calendarRateInfo.badgeTone === "holiday"
+                      ? "bg-rose-100 text-rose-800 border border-rose-300"
+                      : calendarRateInfo.badgeTone === "weekend"
+                      ? "bg-amber-100 text-amber-800 border border-amber-300"
+                      : "bg-blue-50 text-blue-800 border border-blue-200"
                   }`}>
-                    {isSelectedWeekend ? "Tarif Weekend (Jum-Min)" : "Tarif Weekday (Sen-Kam)"}
+                    {calendarRateInfo.label}
                   </span>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {/* Tanggal Input */}
                   <div>
+                    <label className="block text-[10px] uppercase font-bold text-muted mb-1">Pilih Tanggal</label>
                     <input
                       required
                       type="date"
                       value={checkInDate}
                       onChange={(e) => setCheckInDate(e.target.value)}
-                      className="w-full bg-surface border border-border-subtle rounded-xl px-3.5 py-2 text-xs text-primary focus:outline-none focus:ring-2 focus:ring-brand/30 font-medium"
+                      className="w-full bg-canvas border border-border-subtle rounded-xl px-3 py-2 text-xs text-primary focus:outline-none focus:ring-2 focus:ring-brand/30 font-medium"
                     />
                   </div>
+
+                  {/* Jam Selector: Khusus Transit pakai Modal Selector Jam, Full Day Otomatis  */}
                   <div>
-                    <input
-                      required
-                      type="time"
-                      value={checkInTime}
-                      onChange={(e) => setCheckInTime(e.target.value)}
-                      className="w-full bg-surface border border-border-subtle rounded-xl px-3.5 py-2 text-xs text-primary focus:outline-none focus:ring-2 focus:ring-brand/30 font-medium"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Unit Kamar */}
-              <div className="space-y-1.5">
-                <label className="block font-semibold text-primary text-xs">
-                  Pilih Unit Kamar Apartemen
-                </label>
-                <select
-                  value={selectedRoomId}
-                  onChange={(e) => setSelectedRoomId(e.target.value)}
-                  className="w-full bg-surface border border-border-subtle rounded-xl px-3.5 py-2.5 text-xs text-primary focus:outline-none focus:ring-2 focus:ring-brand/30 font-medium"
-                >
-                  {(rooms.length > 0 ? rooms : HOUSE_MODELS.map((h) => ({
-                    id: h.databaseId,
-                    name: h.name,
-                    unit_number: h.unitNumber,
-                    floor: h.floor,
-                    type: h.type,
-                  }))).map((r: any) => (
-                    <option key={r.id} value={r.id}>
-                      {r.unit_number} — {r.name} ({r.type || r.floor})
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Paket & Durasi Sewa Sesuai Pricelist */}
-              <div className="space-y-1.5">
-                <label className="block font-semibold text-primary text-xs">
-                  Pilih Paket & Durasi Sewa
-                </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {[
-                    {
-                      id: "transit-3h",
-                      label: "Transit 3 Jam",
-                      price: calculateRoomPrice(activeRoomObj, "transit-3h", checkInDate),
-                      desc: "Check-in fleksibel 3 jam",
-                    },
-                    {
-                      id: "transit-6h",
-                      label: "Transit 6 Jam",
-                      price: calculateRoomPrice(activeRoomObj, "transit-6h", checkInDate),
-                      desc: isSelectedWeekend ? "Weekend rate" : "Weekday rate",
-                    },
-                    {
-                      id: "transit-8h",
-                      label: "Transit 8 Jam",
-                      price: calculateRoomPrice(activeRoomObj, "transit-8h", checkInDate),
-                      desc: "Daypass santai 8 jam",
-                    },
-                    {
-                      id: "fullday-13",
-                      label: "Full Day (Jam 13:00)",
-                      price: calculateRoomPrice(activeRoomObj, "fullday-13", checkInDate),
-                      desc: "Check-in siang jam 13:00",
-                    },
-                    {
-                      id: "fullday-21",
-                      label: "Full Day (Jam 21:00)",
-                      price: calculateRoomPrice(activeRoomObj, "fullday-21", checkInDate),
-                      desc: "Check-in malam hemat",
-                    },
-                  ].map((p) => (
-                    <button
-                      key={p.id}
-                      type="button"
-                      onClick={() => setPackageType(p.id as any)}
-                      className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer flex items-center justify-between ${
-                        packageType === p.id
-                          ? "border-brand bg-brand-light font-bold ring-2 ring-brand/30 text-primary"
-                          : "border-border-subtle bg-surface hover:bg-sand-100 text-secondary"
-                      }`}
-                    >
+                    {isFullday ? (
                       <div>
-                        <span className="font-bold block text-primary text-xs">{p.label}</span>
-                        <span className="text-[10px] text-muted block mt-0.5">{p.desc}</span>
+                        <label className="block text-[10px] uppercase font-bold text-muted mb-1">Durasi Menginap</label>
+                        <div className="flex items-center gap-2 bg-canvas border border-border-subtle rounded-xl p-1">
+                          <button
+                            type="button"
+                            onClick={() => setNights(Math.max(1, nights - 1))}
+                            className="w-7 h-7 rounded-lg bg-sand-200 hover:bg-sand-300 flex items-center justify-center font-bold text-primary cursor-pointer"
+                          >
+                            -
+                          </button>
+                          <span className="flex-1 text-center font-bold text-xs text-primary">
+                            {nights} Malam
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => setNights(nights + 1)}
+                            className="w-7 h-7 rounded-lg bg-sand-200 hover:bg-sand-300 flex items-center justify-center font-bold text-primary cursor-pointer"
+                          >
+                            +
+                          </button>
+                        </div>
                       </div>
-                      <span className="font-mono font-bold text-brand text-xs sm:text-sm">
-                        {formatRupiah(p.price)}
-                      </span>
-                    </button>
-                  ))}
+                    ) : (
+                      <div>
+                        <label className="block text-[10px] uppercase font-bold text-muted mb-1">Jam Masuk (24 Jam)</label>
+                        <button
+                          type="button"
+                          onClick={() => setIsTimePickerOpen(true)}
+                          className="w-full bg-canvas border border-border-subtle hover:border-brand/50 rounded-xl px-3 py-2 text-xs text-primary flex items-center justify-between cursor-pointer transition-colors shadow-2xs"
+                        >
+                          <span className="font-mono font-bold flex items-center gap-1.5 text-brand">
+                            <Icon icon="solar:clock-circle-bold" className="w-3.5 h-3.5" />
+                            Pkl {checkInTime} WIB
+                          </span>
+                          <span className="text-[11px] font-semibold text-secondary flex items-center gap-0.5">
+                            Ubah <Icon icon="solar:alt-arrow-down-linear" className="w-3 h-3" />
+                          </span>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Banner Rincian Jam Otomatis */}
+                <div className="p-2.5 bg-sand-100 rounded-xl border border-border-subtle flex items-center justify-between text-[11px]">
+                  <div className="space-y-0.5">
+                    <span className="font-bold text-primary block">
+                      {isFullday
+                        ? "Check-in: Mulai 13:00 WIB"
+                        : `Masuk: Pkl ${checkInTime} WIB ➔ Keluar: ${calculateCheckOutDisplay()}`}
+                    </span>
+                    <span className="text-muted block text-[10px]">
+                      {isFullday
+                        ? `Check-out: Besok Siang Pkl 12:00 WIB (${nights} Malam)`
+                        : `Durasi Sewa ${durationHours} Jam Penuh (Sterilisasi Kamar Higienis)`}
+                    </span>
+                  </div>
+                  <span className="font-mono text-[10px] font-bold text-brand bg-brand/15 px-2 py-0.5 rounded-full shrink-0">
+                    24 JAM AKTIF
+                  </span>
                 </div>
               </div>
 
-              {/* Durasi Menginap jika Harian */}
-              {isFullday && (
-                <div className="grid grid-cols-2 gap-3 bg-sand-100 p-3 rounded-xl border border-border-subtle">
-                  <div>
-                    <label className="block font-semibold text-primary mb-1">Durasi Malam</label>
-                    <input
-                      type="number"
-                      min="1"
-                      max="30"
-                      value={nights}
-                      onChange={(e) => setNights(Number(e.target.value))}
-                      className="w-full bg-surface border border-border-subtle rounded-lg px-3 py-1.5 text-xs text-primary font-bold"
-                    />
-                  </div>
-                  <div className="flex flex-col justify-center">
-                    <span className="text-[10px] text-muted uppercase">Total Menginap</span>
-                    <span className="font-bold text-primary">{nights} Malam ({formatRupiah(totalPrice)})</span>
-                  </div>
-                </div>
-              )}
-
-              {/* Data Tamu */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block font-semibold text-primary mb-1">Nama Lengkap Tamu</label>
+              {/* 4. Data Tamu Sederhana (Hanya Nama & WhatsApp) */}
+              <div className="space-y-2">
+                <label className="block font-semibold text-primary text-xs">
+                  3. Data Pemesan
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <input
                     required
                     type="text"
-                    placeholder="Contoh: Rian Pratama"
+                    placeholder="Nama Lengkap Tamu"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     className="w-full bg-surface border border-border-subtle rounded-xl px-3.5 py-2 text-xs text-primary focus:outline-none focus:ring-2 focus:ring-brand/30"
                   />
-                </div>
-
-                <div>
-                  <label className="block font-semibold text-primary mb-1">Nomor WhatsApp Aktif</label>
                   <input
                     required
                     type="tel"
-                    placeholder="Contoh: 081288990011"
+                    placeholder="No. WhatsApp (08xxxxxxxxxx)"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     className="w-full bg-surface border border-border-subtle rounded-xl px-3.5 py-2 text-xs text-primary focus:outline-none focus:ring-2 focus:ring-brand/30"
@@ -575,77 +596,114 @@ export default function TourBookingModal({
                 </div>
               </div>
 
-              {/* Metode Bayar & Catatan */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block font-semibold text-primary mb-1">Metode Pembayaran</label>
-                  <select
-                    value={paymentMethod}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                    className="w-full bg-surface border border-border-subtle rounded-xl px-3.5 py-2 text-xs text-primary focus:outline-none focus:ring-2 focus:ring-brand/30"
-                  >
-                    <option value="Transfer Bank BCA">Transfer Bank BCA</option>
-                    <option value="QRIS Instan">QRIS (Semua E-Wallet/Bank)</option>
-                    <option value="Cash saat Check-in">Bayar Tunai di Tempat (Check-in)</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block font-semibold text-primary mb-1">Jumlah Tamu</label>
-                  <input
-                    type="number"
-                    min="1"
-                    max="6"
-                    value={adults}
-                    onChange={(e) => setAdults(Number(e.target.value))}
-                    className="w-full bg-surface border border-border-subtle rounded-xl px-3.5 py-2 text-xs text-primary focus:outline-none focus:ring-2 focus:ring-brand/30"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block font-semibold text-primary mb-1">Catatan Tambahan (Opsional)</label>
-                <textarea
-                  rows={2}
-                  placeholder="Contoh: Request handuk tambahan / late check-in."
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  className="w-full bg-surface border border-border-subtle rounded-xl px-3.5 py-1.5 text-xs text-primary focus:outline-none focus:ring-2 focus:ring-brand/30 resize-none"
-                />
-              </div>
-
-              {/* Price Summary Banner */}
-              <div className="p-3.5 rounded-2xl bg-surface border border-border-subtle flex items-center justify-between shadow-xs">
-                <div>
-                  <span className="text-[10px] font-mono text-muted uppercase block">
-                    Total Biaya ({isSelectedWeekend ? "Weekend" : "Weekday"})
-                  </span>
-                  <span className="font-heading font-bold text-base sm:text-lg text-brand">
+              {/* 5. Total & Tombol Pesan Langsung */}
+              <div className="pt-2 border-t border-border-subtle space-y-3">
+                <div className="flex items-center justify-between bg-sand-100 p-3 rounded-2xl border border-border-subtle">
+                  <div>
+                    <span className="text-[10px] text-muted uppercase font-bold block">Total Pembayaran</span>
+                    <span className="text-[11px] text-secondary">
+                      {isFullday ? `Menginap ${nights} Malam` : `Paket ${durationHours} Jam`} · {isSelectedWeekend ? "Weekend/Libur" : "Weekday"}
+                    </span>
+                  </div>
+                  <span className="font-display text-xl sm:text-2xl font-bold text-brand">
                     {formatRupiah(totalPrice)}
                   </span>
                 </div>
-                <span className="text-[10px] px-2.5 py-1 rounded-full bg-brand-light text-brand font-semibold border border-brand-border">
-                  Tanpa Biaya Tersembunyi
-                </span>
-              </div>
 
-              {/* Submit Button */}
-              <div className="pt-1 pb-1">
                 <Button
                   type="submit"
                   variant="primary"
                   size="lg"
+                  fullWidth
                   disabled={loading}
-                  className="w-full justify-center"
-                  icon="solar:calendar-bold"
+                  isLoading={loading}
+                  iconLeading="solar:calendar-mark-bold"
+                  className="font-bold shadow-md"
                 >
-                  {loading ? "Menghubungkan ke Server..." : "Konfirmasi Reservasi Sekarang"}
+                  Konfirmasi & Booking Kamar
                 </Button>
               </div>
+
             </form>
           )}
         </div>
       </div>
+
+      {/* ------------------------------------------------------------- */}
+      {/* VISUAL TIME PICKER MODAL (MODAL SELECTOR JAM 24 JAM) */}
+      {/* ------------------------------------------------------------- */}
+      {isTimePickerOpen && (
+        <div
+          onClick={() => setIsTimePickerOpen(false)}
+          className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-surface w-full max-w-sm rounded-3xl border border-border-subtle shadow-2xl p-5 space-y-4 animate-in zoom-in-95 duration-200 max-h-[85vh] overflow-y-auto modal-scrollbar"
+          >
+            <div className="flex items-center justify-between border-b border-border-subtle pb-3">
+              <div className="space-y-0.5">
+                <h3 className="font-heading font-bold text-sm text-primary flex items-center gap-1.5">
+                  <Icon icon="solar:clock-circle-bold" className="w-4 h-4 text-brand" />
+                  <span>Pilih Jam Masuk Check-in</span>
+                </h3>
+                <p className="text-[10px] text-muted">Layanan check-in standby 24 jam penuh</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsTimePickerOpen(false)}
+                className="w-7 h-7 rounded-full bg-sand-200 flex items-center justify-center text-secondary hover:text-primary cursor-pointer"
+              >
+                <Icon icon="solar:close-circle-bold" className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Time Slots Grid Grouped by Period */}
+            <div className="space-y-3.5">
+              {HOURS_DATA.map((grp) => (
+                <div key={grp.category} className="space-y-1.5">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-muted flex items-center gap-1">
+                    <Icon icon={grp.icon} className="w-3.5 h-3.5 text-brand" />
+                    <span>{grp.category}</span>
+                  </span>
+                  <div className="grid grid-cols-4 gap-1.5">
+                    {grp.hours.map((h) => {
+                      const isSelected = checkInTime === h;
+                      return (
+                        <button
+                          key={h}
+                          type="button"
+                          onClick={() => {
+                            setCheckInTime(h);
+                            setIsTimePickerOpen(false);
+                          }}
+                          className={`py-2 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                            isSelected
+                              ? "bg-brand text-white shadow-xs ring-2 ring-brand/30"
+                              : "bg-canvas border border-border-subtle text-primary hover:bg-sand-100"
+                          }`}
+                        >
+                          {h}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <Button
+              variant="outline"
+              size="sm"
+              fullWidth
+              onClick={() => setIsTimePickerOpen(false)}
+            >
+              Gunakan Jam Terpilih (Pkl {checkInTime} WIB)
+            </Button>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

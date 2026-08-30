@@ -6,7 +6,6 @@ import Link from "next/link";
 import { HOUSE_MODELS, formatRupiah } from "@/data/houseModels";
 import { api, RoomData } from "@/lib/api";
 import { Icon } from "@iconify/react";
-import Badge from "@/components/Badge";
 import Button from "@/components/Button";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -104,9 +103,6 @@ export default function HouseGrid() {
         {/* Intro Header Section */}
         <div className="bg-canvas py-16 sm:py-24 border-b border-border-subtle">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 space-y-4 text-center max-w-3xl mx-auto">
-            <Badge addon="INVENTARIS">
-              KOLEKSI UNIT RESIDENCE
-            </Badge>
             <h2
               id="collection-title"
               className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-primary"
@@ -124,7 +120,8 @@ export default function HouseGrid() {
           {HOUSE_MODELS.map((model, idx) => {
             const dbRoom = liveRooms.find((r) => r.id === model.databaseId || r.unit_number === model.unitNumber);
             const isAvailable = (dbRoom?.status || model.status) === "Available";
-            const displayRate = dbRoom ? formatRupiah(dbRoom.rate_transit_3h) : model.priceFormatted;
+            const rateVal = dbRoom ? (dbRoom.rate_3h || dbRoom.rate_transit_3h || model.rateTransit3h || model.startingPrice) : (model.rateTransit3h || model.startingPrice);
+            const displayRate = formatRupiah(rateVal);
 
             return (
               <div

@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import { Icon } from '@iconify/react';
-import Badge from '@/components/Badge';
 
 interface TourSectionProps {
   onOpenScheduleTour: () => void;
@@ -50,7 +49,6 @@ export default function TourSection({ onOpenScheduleTour }: TourSectionProps) {
             
             <div className="space-y-5 sm:space-y-6">
               <div className="space-y-3">
-                <Badge>RESERVASI SEWA</Badge>
                 <h2 id="tour-section-title" className="font-heading text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-primary leading-[1.15]">
                   Pesan Kamar & Nikmati Pengalaman Menginap Terbaik.
                 </h2>

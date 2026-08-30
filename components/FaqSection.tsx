@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Badge from '@/components/Badge';
 import { Icon } from '@iconify/react';
 
 export const FAQS = [
@@ -30,7 +29,6 @@ export default function FaqSection() {
     <section id="faq" className="py-16 sm:py-24 bg-surface border-t border-border-subtle">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 space-y-8 sm:space-y-12">
         <div className="space-y-3 text-center max-w-2xl mx-auto">
-          <Badge>TANYA JAWAB (FAQ)</Badge>
           <h2 className="font-heading font-bold text-3xl sm:text-4xl text-primary">
             Pertanyaan yang Sering Diajukan
           </h2>

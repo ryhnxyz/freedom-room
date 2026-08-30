@@ -6,7 +6,6 @@ import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Button from '@/components/Button';
-import Badge from '@/components/Badge';
 import { Icon } from '@iconify/react';
 
 const TourBookingModal = dynamic(() => import('@/components/TourBookingModal'), { ssr: false });
@@ -19,21 +18,21 @@ export default function AboutPage() {
       name: "Dimas Faturahman",
       role: "Owner & General Manager",
       bio: "Berpengalaman lebih dari 8 tahun dalam manajemen hospitality dan properti sewa apartemen di kawasan Sentul City dan Jabodetabek.",
-      image: "/img/people/avatar-8.webp",
+      image: "/img/freedom-room/team-1.jpg",
       badge: "Manajemen Utama",
     },
     {
       name: "Sari Wulandari",
       role: "Head of Housekeeping & Quality",
       bio: "Memimpin standar sterilisasi dan kebersihan prima unit apartemen dengan protokol sanitasi hotel bintang lima.",
-      image: "/img/people/avatar-47.webp",
+      image: "/img/freedom-room/team-2.jpg",
       badge: "Housekeeping Lead",
     },
     {
       name: "Arif Subekti",
       role: "Lead Facility & Maintenance",
       bio: "Menjaga keandalan pendingin udara (AC), kelistrikan, water heater, dan sistem smart lock agar selalu beroperasi 100% optimal.",
-      image: "/img/people/avatar-18.webp",
+      image: "/img/freedom-room/team-3.jpg",
       badge: "Teknisi & Maintenance",
     },
   ];
@@ -81,7 +80,6 @@ export default function AboutPage() {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10 space-y-5">
-          <Badge>TENTANG FREEDOMROOM</Badge>
           <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white max-w-3xl leading-[1.1]">
             Menghadirkan kenyamanan booking apartemen, hotel & villa terbaik.
           </h1>
@@ -121,7 +119,6 @@ export default function AboutPage() {
       <section className="py-16 sm:py-24 bg-surface border-b border-border-subtle">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-3">
-            <Badge>PERJALANAN KAMI</Badge>
             <h2 className="font-heading text-3xl sm:text-4xl font-bold text-primary">
               Dedikasi Melayani Tamu Penginapan
             </h2>
@@ -146,7 +143,6 @@ export default function AboutPage() {
       <section className="py-16 sm:py-24 bg-canvas border-b border-border-subtle">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-3">
-            <Badge>TIM KAMI</Badge>
             <h2 className="font-heading text-3xl sm:text-4xl font-bold text-primary">
               Pengelola Profesional & Siap Melayani
             </h2>

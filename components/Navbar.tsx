@@ -9,7 +9,7 @@ import gsap from "gsap";
 import Button from "@/components/Button";
 
 interface NavbarProps {
-  onOpenScheduleTour: () => void;
+  onOpenScheduleTour?: () => void;
   theme?: "dark" | "light";
 }
 
@@ -206,16 +206,15 @@ export default function Navbar({ onOpenScheduleTour, theme = "dark" }: NavbarPro
               </Link>
             </nav>
 
-            {/* Right Action Button */}
+            {/* Right Action Button: Daftar (Placeholder) */}
             <div className="hidden sm:flex items-center gap-3">
-              <Button
-                onClick={onOpenScheduleTour}
-                variant="primary"
-                size="md"
-                icon="solar:calendar-bold"
+              <a
+                href="http://localhost:3005"
+                className="inline-flex items-center justify-center gap-1.5 px-4.5 py-2 rounded-xl text-xs font-bold bg-brand text-white hover:bg-[#0A0A0A] transition-all cursor-pointer shadow-sm active:scale-95 border border-brand"
               >
-                Booking Kamar
-              </Button>
+                <Icon icon="solar:user-plus-bold" className="w-4 h-4" />
+                <span>Daftar / Portal App</span>
+              </a>
             </div>
 
             {/* Mobile Menu Trigger Button */}
@@ -296,18 +295,13 @@ export default function Navbar({ onOpenScheduleTour, theme = "dark" }: NavbarPro
           </div>
 
           <div ref={menuFooterRef} className="pt-6 border-t border-white/10 space-y-3">
-            <Button
-              onClick={() => {
-                closeMobileMenu();
-                onOpenScheduleTour();
-              }}
-              variant="primary"
-              size="lg"
-              className="w-full justify-center"
-              icon="solar:calendar-bold"
+            <a
+              href="http://localhost:3005"
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl text-sm font-bold bg-brand text-white hover:bg-[#0A0A0A] transition-all cursor-pointer shadow-md border border-brand"
             >
-              Booking Kamar Sekarang
-            </Button>
+              <Icon icon="solar:user-plus-bold" className="w-5 h-5" />
+              <span>Buka Portal Member App</span>
+            </a>
             <p className="text-center text-xs text-white/50">
               Layanan Booking Apartemen, Hotel & Villa 24 Jam
             </p>

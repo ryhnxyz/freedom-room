@@ -5,7 +5,6 @@ import dynamic from 'next/dynamic';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Neighborhood from '@/components/Neighborhood';
-import Badge from '@/components/Badge';
 
 const TourBookingModal = dynamic(() => import('@/components/TourBookingModal'), { ssr: false });
 
@@ -18,7 +17,6 @@ export default function LocationPage() {
 
       <div className="pt-28 pb-12 bg-surface border-b border-border-subtle">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 space-y-3">
-          <Badge addon="PROPERTI FREEDOMROOM">LOKASI & KONEKTIVITAS</Badge>
           <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-primary">
             Lokasi Strategis Properti Apartemen, Hotel & Villa
           </h1>
