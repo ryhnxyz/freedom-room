@@ -1,54 +1,23 @@
-'use client';
+"use client";
 
 import { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import CommunityOverview from "@/components/CommunityOverview";
+import Masterplan from "@/components/Masterplan";
 import HouseGrid from "@/components/HouseGrid";
 import Neighborhood from "@/components/Neighborhood";
 import BlogSection from "@/components/BlogSection";
+import FaqSection from "@/components/FaqSection";
+import TourSection from "@/components/TourSection";
+import TourBookingModal from "@/components/TourBookingModal";
 import Footer from "@/components/Footer";
-
-// Lazy load below-the-fold and modal components to reduce initial main-thread blocking time
-const Masterplan = dynamic(() => import("@/components/Masterplan"), { ssr: true });
-const FaqSection = dynamic(() => import("@/components/FaqSection"), { ssr: true });
-const TourSection = dynamic(() => import("@/components/TourSection"), { ssr: true });
-const TourBookingModal = dynamic(() => import("@/components/TourBookingModal"), { ssr: false });
 
 export default function Home() {
   // Modal State for Schedule Tour
   const [isScheduleTourOpen, setIsScheduleTourOpen] = useState(false);
-  const [tourInitialModel, setTourInitialModel] = useState<string | undefined>(
-    undefined,
-  );
-  const [tourInitialPlot, setTourInitialPlot] = useState<string | undefined>(
-    undefined,
-  );
-
-  useEffect(() => {
-    const asciiFlame = `
-                   ▄▄████▄
-                 ▄█████████
-                █████▀  ▀███
-               ████▀      ███       ▄▄
-              ████        ███     ▄███
-             ████    ▄▄▄   ███   █████
-            ████   ▄█████▄  ███ ██████
-           ████   █████████  █████████
-          ████   ████   ████  ████████
-          ████   ████   ████  ███████
-          ████   ████   ████  ██████
-           ████   ▀███████▀  ██████
-            ████▄    ▀▀▀   ▄██████
-              ██████▄▄▄▄▄███████▀
-                ▀▀██████████▀▀`;
-
-    console.log(
-      `%c${asciiFlame}\n\nPurchase this template on https://ui8.net/users/onfire-studio\n\nDesigned by Alifia Hamzah\nhttps://hamzah.design`,
-      "font-family: monospace; font-weight: bold; color: #FE3B02;",
-    );
-  }, []);
+  const [tourInitialModel, setTourInitialModel] = useState<string | undefined>(undefined);
+  const [tourInitialPlot, setTourInitialPlot] = useState<string | undefined>(undefined);
 
   // Handlers
   const handleOpenScheduleTour = (modelName?: string) => {
@@ -74,13 +43,13 @@ export default function Home() {
       {/* Community Overview & Vision (Bento Grid Layout) */}
       <CommunityOverview />
 
-      {/* Interactive Masterplan Map */}
+      {/* Interactive Realmap & Floorplan */}
       <Masterplan onOpenTourForPlot={handleOpenTourForPlot} />
 
-      {/* House Models Sticky Stacking Cards (100vh Full-Screen) */}
+      {/* House Models Sticky Stacking Cards */}
       <HouseGrid />
 
-      {/* Neighborhood & Location (Magazine Editorial Layout) */}
+      {/* Neighborhood & Location */}
       <Neighborhood />
 
       {/* Latest Architectural Journal & Blogs Section */}
@@ -95,7 +64,7 @@ export default function Home() {
       {/* Footer */}
       <Footer />
 
-      {/* Schedule Tour Booking Drawer Modal */}
+      {/* Booking Drawer Modal */}
       <TourBookingModal
         isOpen={isScheduleTourOpen}
         onClose={() => setIsScheduleTourOpen(false)}

@@ -197,13 +197,11 @@ export default function BookingCatalogPage() {
                     />
                     
                     {/* Status Badge */}
-                    <div className="absolute top-3.5 left-3.5 flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/65 backdrop-blur-md text-white text-[11px] font-semibold border border-white/20 shadow-md">
-                      <span
-                        className={`w-2 h-2 rounded-full ${
-                          isAvailable ? "bg-brand/15 animate-pulse" : "bg-amber-400"
-                        }`}
-                      />
-                      <span>{isAvailable ? "Siap Huni" : room.status}</span>
+                    <div className={`absolute top-3.5 left-3.5 flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold shadow-md ${
+                      isAvailable ? "bg-emerald-600 text-white" : "bg-amber-600 text-white"
+                    }`}>
+                      <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                      <span>{isAvailable ? "Siap Huni (Available)" : room.status || "Booked"}</span>
                     </div>
 
                     {/* Floor Badge */}

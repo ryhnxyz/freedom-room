@@ -113,7 +113,7 @@ export default function CheckBookingPage() {
               <div className="flex items-center gap-2">
                 <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                   reservation.status.includes("Active") || reservation.status.includes("Confirmed")
-                    ? "bg-brand/15 text-brand"
+                    ? "bg-brand-light text-brand border border-brand-border"
                     : reservation.status.includes("Checked")
                     ? "bg-gray-100 text-gray-700"
                     : "bg-red-50 text-red-600"

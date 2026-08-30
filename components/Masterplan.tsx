@@ -378,7 +378,7 @@ export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
                   </h3>
                 </div>
                 <span className="px-3 py-1 rounded-full bg-brand-light text-brand text-xs font-bold border border-brand-border">
-                  Siap Huni
+                  Siap Huni (Available)
                 </span>
               </div>
 

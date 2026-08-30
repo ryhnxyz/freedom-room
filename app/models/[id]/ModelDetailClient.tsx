@@ -268,7 +268,7 @@ export default function ModelDetailClient({ model }: ModelDetailClientProps) {
                 <span className="font-bold text-xs sm:text-sm flex items-center gap-1 mt-0.5">
                   <span className={`w-2 h-2 rounded-full ${isAvailable ? "bg-brand animate-pulse" : "bg-amber-500"}`} />
                   <span className={isAvailable ? "text-[#b39229]" : "text-amber-800"}>
-                    {isAvailable ? "Siap Huni" : liveRoom?.status || "Booked"}
+                    {isAvailable ? "Siap Huni (Available)" : liveRoom?.status || "Booked"}
                   </span>
                 </span>
               </div>
