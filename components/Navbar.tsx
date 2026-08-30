@@ -35,8 +35,8 @@ export default function Navbar({ onOpenScheduleTour }: NavbarProps) {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-40 px-3 pt-3 sm:px-5 sm:pt-4">
-        <div className="mx-auto flex h-[68px] max-w-[1400px] items-center gap-3 rounded-[22px] border border-black/5 bg-canvas/90 px-3 shadow-[0_10px_40px_rgba(17,17,17,0.08)] backdrop-blur-2xl sm:px-4">
+      <header className="fixed inset-x-0 top-0 z-40 border-b border-black/5 bg-canvas/90 shadow-sm backdrop-blur-2xl">
+        <div className="mx-auto flex h-[72px] max-w-[1440px] items-center gap-3 px-4 sm:px-6 lg:px-10">
           <Link href="/" aria-label="FreedomRoom - Beranda" className="flex shrink-0 items-center gap-3 rounded-2xl">
             <span className="relative h-10 w-10 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5">
               <Image src="/logo/freedom-logo.jpeg" alt="FreedomRoom" fill sizes="40px" priority className="object-cover" />
