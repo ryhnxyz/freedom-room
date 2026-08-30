@@ -64,7 +64,7 @@ export default function Neighborhood() {
           </div>
 
           <span className="inline-flex items-center gap-2 text-xs font-semibold text-brand bg-brand/15 px-4 py-2 rounded-full w-fit">
-            <span className="w-2 h-2 rounded-full bg-brand animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-brand" />
             3 Menit dari Pintu Tol Sentul Selatan
           </span>
         </div>

@@ -1379,7 +1379,7 @@ export default function ShowingCTA() {
                     <span className="text-xs font-semibold text-secondary uppercase tracking-wider block">2. Lot Availability Status Indicators</span>
                     <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
                       <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-brand-light text-brand border border-brand-border">
-                        <span className="w-2 h-2 rounded-full bg-brand animate-pulse shrink-0" />
+                        <span className="w-2 h-2 rounded-full bg-brand shrink-0" />
                         Available (Phase I)
                       </span>
                       <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
@@ -1407,7 +1407,7 @@ export default function ShowingCTA() {
 
 // Pulsing Live Availability Status
 <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-brand-light text-brand border border-brand-border">
-  <span className="w-2 h-2 rounded-full bg-brand animate-pulse" />
+  <span className="w-2 h-2 rounded-full bg-brand" />
   Available
 </span>`}
                 />

@@ -240,7 +240,7 @@ export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
                   Sentul Tower Apartment
                 </h3>
                 <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 uppercase tracking-wider">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
                   Operasional Aktif
                 </span>
               </div>
@@ -269,7 +269,7 @@ export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
               <div className="space-y-3 flex-1 flex flex-col">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-brand animate-pulse shrink-0" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-brand shrink-0" />
                     <span className="text-xs font-mono font-bold text-primary truncate max-w-lg">
                       Ruko STA Shopping Arcade A7, Citaringgul, Babakan Madang, Bogor 16810
                     </span>
@@ -423,7 +423,7 @@ export default function Masterplan({ onOpenTourForPlot }: MasterplanProps) {
                   {selectedPlot.plotNumber}
                 </span>
                 <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
                   Siap Huni (Available)
                 </span>
               </div>

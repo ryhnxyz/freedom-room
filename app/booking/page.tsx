@@ -216,7 +216,7 @@ export default function BookingCatalogPage() {
                         ? "bg-amber-600 text-white"
                         : "bg-rose-600 text-white"
                     }`}>
-                      <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                      <span className="w-2 h-2 rounded-full bg-white" />
                       <span>{availInfo.statusText}</span>
                     </div>
 

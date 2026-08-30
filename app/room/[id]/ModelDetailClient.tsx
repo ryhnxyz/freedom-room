@@ -207,7 +207,7 @@ export default function ModelDetailClient({ model }: ModelDetailClientProps) {
                   <span className={`px-3 py-1 rounded-full text-xs font-semibold shadow-md flex items-center gap-1.5 ${
                     isAvailable ? "bg-emerald-600 text-white" : "bg-amber-600 text-white"
                   }`}>
-                    <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                    <span className="w-2 h-2 rounded-full bg-white" />
                     <span>{isAvailable ? "Siap Huni (Available)" : liveRoom?.status || "Sedang Disewa"}</span>
                   </span>
                 </div>
@@ -272,7 +272,7 @@ export default function ModelDetailClient({ model }: ModelDetailClientProps) {
               <div className="bg-sand-100 p-2.5 rounded-xl border border-border-subtle">
                 <span className="text-[10px] font-mono uppercase text-muted block">Status Server Live</span>
                 <span className="font-bold text-xs sm:text-sm flex items-center gap-1 mt-0.5">
-                  <span className={`w-2 h-2 rounded-full ${isAvailable ? "bg-brand animate-pulse" : "bg-amber-500"}`} />
+                  <span className={`w-2 h-2 rounded-full ${isAvailable ? "bg-brand" : "bg-amber-500"}`} />
                   <span className={isAvailable ? "text-[#b39229]" : "text-amber-800"}>
                     {isAvailable ? "Siap Huni (Available)" : liveRoom?.status || "Booked"}
                   </span>
@@ -363,7 +363,7 @@ export default function ModelDetailClient({ model }: ModelDetailClientProps) {
                     ? "bg-amber-100 text-amber-800"
                     : "bg-rose-100 text-rose-800"
                 }`}>
-                  <span className={`w-2 h-2 rounded-full animate-pulse ${
+                  <span className={`w-2 h-2 rounded-full ${
                     availabilityInfo.statusBadgeColor === "emerald" ? "bg-emerald-600" : "bg-amber-600"
                   }`} />
                   <span>{availabilityInfo.statusText}</span>
@@ -494,7 +494,7 @@ export default function ModelDetailClient({ model }: ModelDetailClientProps) {
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-brand animate-pulse" />
+                    <span className="w-2 h-2 rounded-full bg-brand" />
                     <span className="text-[10px] font-mono font-bold tracking-widest text-brand uppercase">
                       SISTEM REVIEW REALTIME (VPS DATABASE)
                     </span>
