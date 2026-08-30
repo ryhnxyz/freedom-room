@@ -1,0 +1,174 @@
+@import "tailwindcss";
+
+@theme {
+  /* ========================================================
+     FREEDOM-ROOM THEME COLOR PALETTE (From ryhnxyz/freedom-room)
+     --ul-primary: #b39229 (Freedom Gold)
+     --ul-secondary: #000000 (Black)
+     --ul-black: #111111 (Onyx)
+     --ul-gray: #EBEBEB
+     --ul-gray2: #6C6E76
+     ======================================================== */
+
+  /* Freedom Gold Primitive Palette */
+  --color-gold-50: #FCFAF2;
+  --color-gold-100: #F7F1DE;
+  --color-gold-200: #EFE3BC;
+  --color-gold-300: #E3CE91;
+  --color-gold-400: #D4B763;
+  --color-gold-500: #b39229;
+  --color-gold-600: #9E7F21;
+  --color-gold-700: #7E641B;
+  --color-gold-800: #624E19;
+  --color-gold-900: #4B3C16;
+  --color-gold-950: #2C2209;
+
+  /* Timber / Onyx Palette */
+  --color-timber-50: #F9F9F9;
+  --color-timber-100: #F1F1F1;
+  --color-timber-200: #E2E2E2;
+  --color-timber-300: #C7C7C7;
+  --color-timber-400: #8E8E8E;
+  --color-timber-500: #5E5E5E;
+  --color-timber-600: #3E3E3E;
+  --color-timber-700: #2B2B2B;
+  --color-timber-800: #1C1C1C;
+  --color-timber-900: #111111;
+  --color-timber-950: #080808;
+
+  /* Neutral Surface Palette */
+  --color-sand-50: #FCFCFC;
+  --color-sand-100: #F8F8F8;
+  --color-sand-200: #F0F0F0;
+  --color-sand-300: #EBEBEB;
+  --color-sand-400: #DFDFDF;
+  --color-sand-500: #CCCCCC;
+
+  /* Charcoal Primitive */
+  --color-charcoal-950: #080808;
+  --color-charcoal-900: #111111;
+  --color-charcoal-800: #1F1F1F;
+  --color-charcoal-700: #333333;
+  --color-charcoal-600: #555555;
+  --color-charcoal-500: #6C6E76;
+  --color-charcoal-400: #999999;
+  --color-charcoal-300: #CCCCCC;
+
+  /* ========================================================
+     SEMANTIC ROLE TOKENS
+     ======================================================== */
+  --color-canvas: #F8F9FA;
+  --color-surface: #FFFFFF;
+  --color-surface-sand: #F0F0F0;
+  --color-surface-timber: #F7F1DE;
+  --color-surface-dark: #111111;
+
+  --color-primary: #111111;
+  --color-secondary: #555555;
+  --color-muted: #6C6E76;
+  
+  --color-brand: #b39229;
+  --color-brand-hover: #967a21;
+  --color-brand-light: #FAF5E8;
+  --color-brand-border: #E8DCB8;
+
+  --color-bottle: #b39229;
+  --color-pastel-green: #E8D8A0;
+
+  --color-border-subtle: #EBEBEB;
+
+  /* Typography Definitions */
+  --font-heading: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+  --font-sans: var(--font-inter), "Plus Jakarta Sans", sans-serif;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-primary);
+    font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading), sans-serif;
+  }
+}
+
+/* Glassmorphism Utilities */
+.glass-frost {
+  background: rgba(17, 17, 17, 0.78);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-pill:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.glass-pill-active {
+  border: 1px solid #b39229;
+  background: rgba(179, 146, 41, 0.22);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Freedom Brand Accent Utilities */
+.text-gold {
+  color: #b39229;
+}
+.bg-gold {
+  background-color: #b39229;
+}
+.border-gold {
+  border-color: #b39229;
+}
+
+/* Hide scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
+/* Modal Custom Visible Scrollbar */
+.modal-scrollbar {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #b39229 rgba(0, 0, 0, 0.05);
+}
+
+.modal-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  display: block;
+}
+
+.modal-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+}
+
+.modal-scrollbar::-webkit-scrollbar-thumb {
+  background: #b39229;
+  border-radius: 8px;
+}
+
+.modal-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #967a21;
+}
