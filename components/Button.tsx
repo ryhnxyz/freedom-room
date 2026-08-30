@@ -58,13 +58,12 @@ const sizeClasses: Record<ButtonSize, { root: string; icon: string }> = {
 };
 
 const variantClasses: Record<ButtonVariant, string> = {
-  // Timber Green Primary 900 -> 950 with inner top highlight
   primary:
-    'bg-[#b39229] text-white border border-[#b39229] shadow-[0_1px_2px_rgba(15,31,25,0.12),inset_0_1px_0_rgba(255,255,255,0.15)] hover:bg-[#0A0A0A] hover:border-[#0A0A0A] active:bg-[#0A0A0A] active:border-[#0A0A0A] focus-visible:ring-4 focus-visible:ring-[#E8DCB8]/60',
+    'bg-[#b39229] text-white border border-[#b39229] shadow-sm hover:bg-[#967a21] hover:border-[#967a21] active:bg-[#7E641B] active:border-[#7E641B] focus-visible:ring-4 focus-visible:ring-[#E8DCB8]/60',
 
   // Sand Secondary
   secondary:
-    'bg-[#F0EBE1] text-[#1A1A1A] border border-[#EAE5DC] shadow-[0_1px_2px_rgba(0,0,0,0.05)] hover:bg-[#FAF5E8] hover:text-[#b39229] hover:border-[#E8DCB8] active:bg-[#E8DCB8] active:text-[#0A0A0A] focus-visible:ring-4 focus-visible:ring-[#E8DCB8]/50',
+    'bg-white text-[#111111] border border-[#EBEBEB] shadow-sm hover:bg-[#FAF5E8] hover:text-[#b39229] hover:border-[#E8DCB8] active:bg-[#F0F0F0] focus-visible:ring-4 focus-visible:ring-[#E8DCB8]/50',
 
   // White Outline / Secondary-Gray
   'secondary-gray':

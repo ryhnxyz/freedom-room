@@ -91,8 +91,26 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  button, a, input, select, textarea {
+    -webkit-tap-highlight-color: transparent;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading), sans-serif;
+  }
+}
+
+@layer components {
+  .app-shell {
+    width: min(100% - 2rem, 1440px);
+    margin-inline: auto;
+  }
+
+  .app-panel {
+    border-radius: 28px;
+    background: var(--color-surface);
+    border: 1px solid rgba(17, 17, 17, 0.05);
+    box-shadow: 0 12px 40px rgba(17, 17, 17, 0.06);
   }
 }
 

@@ -1,310 +1,99 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icon } from "@iconify/react";
-import gsap from "gsap";
-import Button from "@/components/Button";
 
 interface NavbarProps {
   onOpenScheduleTour?: () => void;
   theme?: "dark" | "light";
 }
 
-export default function Navbar({ onOpenScheduleTour, theme = "dark" }: NavbarProps) {
-  const [scrolled, setScrolled] = useState(false);
+const navLinks = [
+  { href: "/booking", label: "Penginapan", icon: "solar:buildings-2-bold" },
+  { href: "/cek-booking", label: "Reservasi", icon: "solar:calendar-mark-bold" },
+  { href: "/location", label: "Lokasi", icon: "solar:map-point-bold" },
+  { href: "/about", label: "Tentang", icon: "solar:info-circle-bold" },
+];
+
+export default function Navbar({ onOpenScheduleTour }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isRendered, setIsRendered] = useState(false);
   const pathname = usePathname();
 
-  const isLight = theme === "light" || scrolled;
-
-  const menuOverlayRef = useRef<HTMLDivElement>(null);
-  const menuLinksRef = useRef<HTMLDivElement>(null);
-  const menuFooterRef = useRef<HTMLDivElement>(null);
-
-  const closeMobileMenu = () => {
-    document.body.style.overflow = "unset";
-    setMobileMenuOpen(false);
-    setIsRendered(false);
-  };
-
   useEffect(() => {
-    closeMobileMenu();
+    setMobileMenuOpen(false);
   }, [pathname]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
-    };
-    window.addEventListener("scroll", handleScroll);
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
     };
-  }, []);
-
-  useEffect(() => {
-    if (mobileMenuOpen) {
-      if (!isRendered) {
-        setIsRendered(true);
-        return;
-      }
-      document.body.style.overflow = "hidden";
-
-      if (!menuOverlayRef.current) return;
-
-      const ctx = gsap.context(() => {
-        if (menuOverlayRef.current) {
-          gsap.fromTo(
-            menuOverlayRef.current,
-            { x: "100%", opacity: 0.8 },
-            { x: "0%", opacity: 1, duration: 0.45, ease: "power3.out" }
-          );
-        }
-
-        if (menuLinksRef.current && menuLinksRef.current.children.length > 0) {
-          gsap.fromTo(
-            menuLinksRef.current.children,
-            { opacity: 0, x: 30 },
-            { opacity: 1, x: 0, duration: 0.35, stagger: 0.05, ease: "power2.out", delay: 0.15 }
-          );
-        }
-
-        if (menuFooterRef.current) {
-          gsap.fromTo(
-            menuFooterRef.current,
-            { opacity: 0, y: 15 },
-            { opacity: 1, y: 0, duration: 0.35, ease: "power2.out", delay: 0.3 }
-          );
-        }
-      });
-
-      return () => ctx.revert();
-    } else {
-      document.body.style.overflow = "unset";
-      if (menuOverlayRef.current && isRendered) {
-        gsap.to(menuOverlayRef.current, {
-          x: "100%",
-          opacity: 0.8,
-          duration: 0.3,
-          ease: "power3.in",
-          onComplete: () => {
-            setIsRendered(false);
-          },
-        });
-      } else {
-        setIsRendered(false);
-      }
-    }
-  }, [mobileMenuOpen, isRendered]);
+  }, [mobileMenuOpen]);
 
   return (
     <>
-      <header
-        role="banner"
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 py-3 sm:py-4 ${
-          isLight
-            ? "bg-surface/95 backdrop-blur-md shadow-sm border-b border-border-subtle"
-            : "bg-black/40 backdrop-blur-sm border-b border-white/10"
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-          <div className="flex items-center justify-between">
-            
-            {/* FreedomRoom Brand Logo from repo */}
-            <Link
-              href="/"
-              className="flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-md p-1 group"
-              aria-label="FreedomRoom - Beranda"
-            >
-              <div className="w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-full overflow-hidden border border-brand/40 shadow-sm relative">
-                <Image
-                  src="/logo/freedom-logo.jpeg"
-                  alt="FreedomRoom Logo"
-                  fill
-                  sizes="40px"
-                  priority
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
-              <div className="flex flex-col">
-                <span className={`font-heading font-bold text-xl sm:text-2xl tracking-tight leading-none transition-colors duration-300 ${
-                  isLight ? "text-primary" : "text-white drop-shadow-sm"
-                }`}>
-                  Freedom<span className="text-brand">Room</span>
-                </span>
-                <span className="text-[9px] font-mono tracking-widest uppercase text-muted leading-tight mt-0.5">
-                  Apartment, Hotel & Villa
-                </span>
-              </div>
-            </Link>
+      <header className="fixed inset-x-0 top-0 z-40 px-3 pt-3 sm:px-5 sm:pt-4">
+        <div className="mx-auto flex h-[68px] max-w-[1400px] items-center gap-3 rounded-[22px] border border-black/5 bg-canvas/90 px-3 shadow-[0_10px_40px_rgba(17,17,17,0.08)] backdrop-blur-2xl sm:px-4">
+          <Link href="/" aria-label="FreedomRoom - Beranda" className="flex shrink-0 items-center gap-3 rounded-2xl">
+            <span className="relative h-10 w-10 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5">
+              <Image src="/logo/freedom-logo.jpeg" alt="FreedomRoom" fill sizes="40px" priority className="object-cover" />
+            </span>
+            <span className="hidden leading-none sm:block">
+              <strong className="block font-heading text-lg font-extrabold tracking-tight text-primary">FreedomRoom</strong>
+              <span className="mt-1 block text-[9px] font-bold uppercase tracking-[0.16em] text-muted">Stay your way</span>
+            </span>
+          </Link>
 
-            {/* Navigation Links */}
-            <nav aria-label="Main Navigation" className="hidden md:flex items-center gap-7 text-xs font-semibold uppercase tracking-wider">
-              <Link
-                href="/booking"
-                className={`transition-colors py-1 cursor-pointer whitespace-nowrap ${
-                  pathname === "/booking"
-                    ? "text-brand font-bold border-b-2 border-brand pb-0.5"
-                    : isLight
-                    ? "text-primary hover:text-brand"
-                    : "text-white/90 hover:text-brand drop-shadow-sm"
-                }`}
-              >
-                Pilihan Penginapan
-              </Link>
-              <Link
-                href="/cek-booking"
-                className={`transition-colors py-1 cursor-pointer whitespace-nowrap ${
-                  pathname === "/cek-booking"
-                    ? "text-brand font-bold border-b-2 border-brand pb-0.5"
-                    : isLight
-                    ? "text-primary hover:text-brand"
-                    : "text-white/90 hover:text-brand drop-shadow-sm"
-                }`}
-              >
-                Cek Booking
-              </Link>
-              <Link
-                href="/location"
-                className={`transition-colors py-1 cursor-pointer whitespace-nowrap ${
-                  pathname === "/location"
-                    ? "text-brand font-bold border-b-2 border-brand pb-0.5"
-                    : isLight
-                    ? "text-primary hover:text-brand"
-                    : "text-white/90 hover:text-brand drop-shadow-sm"
-                }`}
-              >
-                Lokasi & Properti
-              </Link>
-              <Link
-                href="/about"
-                className={`transition-colors py-1 cursor-pointer whitespace-nowrap ${
-                  pathname === "/about"
-                    ? "text-brand font-bold border-b-2 border-brand pb-0.5"
-                    : isLight
-                    ? "text-primary hover:text-brand"
-                    : "text-white/90 hover:text-brand drop-shadow-sm"
-                }`}
-              >
-                Tentang Kami
-              </Link>
-              <Link
-                href="/contact"
-                className={`transition-colors py-1 cursor-pointer whitespace-nowrap ${
-                  pathname === "/contact"
-                    ? "text-brand font-bold border-b-2 border-brand pb-0.5"
-                    : isLight
-                    ? "text-primary hover:text-brand"
-                    : "text-white/90 hover:text-brand drop-shadow-sm"
-                }`}
-              >
-                Kontak WA
-              </Link>
-            </nav>
+          <nav className="mx-auto hidden items-center gap-1 rounded-2xl bg-white p-1.5 shadow-sm ring-1 ring-black/5 md:flex" aria-label="Navigasi utama">
+            {navLinks.map((item) => {
+              const active = pathname === item.href;
+              return (
+                <Link key={item.href} href={item.href} className={`flex items-center gap-2 rounded-xl px-3 py-2.5 text-xs font-bold transition-colors lg:px-4 ${active ? "bg-primary text-white" : "text-secondary hover:bg-canvas hover:text-primary"}`}>
+                  <Icon icon={item.icon} className="h-4 w-4" />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
 
-            {/* Right Action Button: Daftar (Placeholder) */}
-            <div className="hidden sm:flex items-center gap-3">
-              <a
-                href="http://localhost:3005"
-                className="inline-flex items-center justify-center gap-1.5 px-4.5 py-2 rounded-xl text-xs font-bold bg-brand text-white hover:bg-[#0A0A0A] transition-all cursor-pointer shadow-sm active:scale-95 border border-brand"
-              >
-                <Icon icon="solar:user-plus-bold" className="w-4 h-4" />
-                <span>Daftar / Portal App</span>
-              </a>
-            </div>
-
-            {/* Mobile Menu Trigger Button */}
-            <button
-              type="button"
-              onClick={() => {
-                setIsRendered(true);
-                setMobileMenuOpen(true);
-              }}
-              className={`md:hidden p-2 rounded-xl border transition-colors cursor-pointer ${
-                isLight
-                  ? "border-border-subtle bg-surface text-primary hover:bg-sand-200"
-                  : "border-white/20 bg-black/50 text-white backdrop-blur-md hover:bg-black/70"
-              }`}
-              aria-label="Buka Menu"
-            >
-              <Icon icon="solar:hamburger-menu-linear" className="w-6 h-6" />
+          <div className="ml-auto flex items-center gap-2 md:ml-0">
+            <button type="button" onClick={onOpenScheduleTour} className="hidden min-h-10 items-center gap-2 rounded-xl bg-brand px-4 text-xs font-extrabold text-white transition-colors hover:bg-brand-hover sm:flex">
+              <Icon icon="solar:calendar-add-bold" className="h-4 w-4" />
+              Booking
             </button>
-
+            <a href="http://localhost:3005" aria-label="Buka portal member" className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white">
+              <Icon icon="solar:user-bold" className="h-4 w-4" />
+            </a>
+            <button type="button" onClick={() => setMobileMenuOpen(true)} aria-label="Buka menu" className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-primary ring-1 ring-black/5 md:hidden">
+              <Icon icon="solar:hamburger-menu-linear" className="h-5 w-5" />
+            </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile Drawer */}
-      {isRendered && (
-        <div
-          ref={menuOverlayRef}
-          className="fixed inset-0 z-50 bg-timber-950/98 backdrop-blur-2xl text-white flex flex-col justify-between p-6 sm:p-10 md:hidden overflow-y-auto modal-scrollbar"
-        >
-          <div className="flex items-center justify-between border-b border-white/10 pb-5">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full overflow-hidden border border-brand/50 relative">
-                <Image
-                  src="/logo/freedom-logo.jpeg"
-                  alt="FreedomRoom Logo"
-                  fill
-                  sizes="40px"
-                  className="object-cover"
-                />
-              </div>
-              <div>
-                <span className="font-heading font-bold text-xl tracking-tight text-white block leading-none">
-                  Freedom<span className="text-brand">Room</span>
-                </span>
-                <span className="text-[9px] font-mono tracking-widest uppercase text-gray-400">
-                  Apartment, Hotel & Villa
-                </span>
-              </div>
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 bg-primary p-4 text-white md:hidden">
+          <div className="flex h-full flex-col rounded-[28px] border border-white/10 bg-white/[0.04] p-5">
+            <div className="flex items-center justify-between">
+              <span className="font-heading text-xl font-extrabold">Freedom<span className="text-brand">Room</span></span>
+              <button type="button" onClick={() => setMobileMenuOpen(false)} aria-label="Tutup menu" className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
+                <Icon icon="solar:close-circle-linear" className="h-5 w-5" />
+              </button>
             </div>
-            <button
-              onClick={closeMobileMenu}
-              className="p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors cursor-pointer"
-              aria-label="Tutup Menu"
-            >
-              <Icon icon="solar:close-circle-linear" className="w-6 h-6" />
+            <nav className="my-auto grid gap-2" aria-label="Navigasi mobile">
+              <Link href="/" className="flex items-center justify-between rounded-2xl bg-white/10 px-4 py-4 text-base font-bold">Beranda<Icon icon="solar:arrow-right-up-linear" className="h-5 w-5 text-brand" /></Link>
+              {navLinks.map((item) => (
+                <Link key={item.href} href={item.href} className="flex items-center justify-between rounded-2xl px-4 py-4 text-base font-bold text-white/70 hover:bg-white/10 hover:text-white">{item.label}<Icon icon={item.icon} className="h-5 w-5 text-brand" /></Link>
+              ))}
+              <Link href="/contact" className="flex items-center justify-between rounded-2xl px-4 py-4 text-base font-bold text-white/70 hover:bg-white/10 hover:text-white">Kontak<Icon icon="solar:chat-round-call-bold" className="h-5 w-5 text-brand" /></Link>
+            </nav>
+            <button type="button" onClick={onOpenScheduleTour} className="flex min-h-13 items-center justify-center gap-2 rounded-2xl bg-brand px-5 text-sm font-extrabold text-white">
+              <Icon icon="solar:calendar-add-bold" className="h-5 w-5" />
+              Booking sekarang
             </button>
-          </div>
-
-          <div ref={menuLinksRef} className="flex flex-col gap-5 text-xl font-heading font-medium my-auto">
-            <Link href="/" onClick={closeMobileMenu} className="hover:text-brand transition-colors">
-              Beranda
-            </Link>
-            <Link href="/booking" onClick={closeMobileMenu} className="hover:text-brand transition-colors text-brand font-bold">
-              Pilihan Penginapan & Booking
-            </Link>
-            <Link href="/cek-booking" onClick={closeMobileMenu} className="hover:text-brand transition-colors">
-              Cek Status Booking
-            </Link>
-            <Link href="/location" onClick={closeMobileMenu} className="hover:text-brand transition-colors">
-              Lokasi & Akses
-            </Link>
-            <Link href="/about" onClick={closeMobileMenu} className="hover:text-brand transition-colors">
-              Tentang Kami
-            </Link>
-            <Link href="/contact" onClick={closeMobileMenu} className="hover:text-brand transition-colors">
-              Kontak WhatsApp CS
-            </Link>
-          </div>
-
-          <div ref={menuFooterRef} className="pt-6 border-t border-white/10 space-y-3">
-            <a
-              href="http://localhost:3005"
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl text-sm font-bold bg-brand text-white hover:bg-[#0A0A0A] transition-all cursor-pointer shadow-md border border-brand"
-            >
-              <Icon icon="solar:user-plus-bold" className="w-5 h-5" />
-              <span>Buka Portal Member App</span>
-            </a>
-            <p className="text-center text-xs text-white/50">
-              Layanan Booking Apartemen, Hotel & Villa 24 Jam
-            </p>
           </div>
         </div>
       )}

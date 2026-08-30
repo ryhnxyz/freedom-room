@@ -17,8 +17,8 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-timber-950 text-white pt-16 sm:pt-24 pb-12 border-t border-timber-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 space-y-14 sm:space-y-20">
+    <footer className="bg-canvas px-4 pb-4 pt-12 text-white sm:px-6 sm:pb-6 sm:pt-16 lg:px-10">
+      <div className="mx-auto max-w-[1440px] space-y-14 rounded-[32px] bg-primary px-6 py-12 sm:space-y-16 sm:px-10 sm:py-16 lg:px-12">
         
         {/* Top Row: Brand Statement & Newsletter */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-start border-b border-white/10 pb-12 sm:pb-16">

@@ -49,13 +49,14 @@ export default function Neighborhood() {
   ];
 
   return (
-    <section id="location" aria-labelledby="neighborhood-title" className="py-16 sm:py-24 bg-canvas border-b border-border-subtle">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 space-y-10 sm:space-y-12">
+    <section id="location" aria-labelledby="neighborhood-title" className="bg-canvas py-12 sm:py-16">
+      <div className="mx-auto max-w-[1440px] space-y-8 px-4 sm:px-6 lg:px-10">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
-            <h2 id="neighborhood-title" className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-primary">
+            <span className="block text-[10px] font-extrabold uppercase tracking-[0.18em] text-muted">Around your stay</span>
+            <h2 id="neighborhood-title" className="font-heading text-3xl font-extrabold tracking-tight text-primary sm:text-4xl lg:text-5xl">
               Lokasi & Sekitar Properti
             </h2>
             <p className="text-xs sm:text-base text-secondary leading-relaxed">
@@ -63,7 +64,7 @@ export default function Neighborhood() {
             </p>
           </div>
 
-          <span className="inline-flex items-center gap-2 text-xs font-semibold text-brand bg-brand/15 px-4 py-2 rounded-full w-fit">
+          <span className="inline-flex w-fit items-center gap-2 rounded-full bg-brand-light px-4 py-2 text-xs font-bold text-brand">
             <span className="w-2 h-2 rounded-full bg-brand" />
             3 Menit dari Pintu Tol Sentul Selatan
           </span>
@@ -74,10 +75,10 @@ export default function Neighborhood() {
           {neighborhoodHighlights.map((poi, idx) => (
             <div
               key={idx}
-              className="bg-surface rounded-2xl p-5 border border-border-subtle hover:border-brand/40 hover:bg-sand-100 transition-all flex flex-col justify-between space-y-4 shadow-xs"
+               className="app-panel flex flex-col justify-between space-y-4 p-5 transition-transform hover:-translate-y-1"
             >
               <div className="flex items-center justify-between">
-                <div className="w-10 h-10 rounded-xl bg-brand/15 flex items-center justify-center text-brand">
+                 <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-light text-brand">
                   <Icon icon={poi.icon} className="w-5 h-5" />
                 </div>
                 <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-brand bg-brand/10 px-2.5 py-1 rounded-md">

@@ -109,17 +109,17 @@ export default function HouseGrid() {
         ref={containerRef}
         id="models"
         aria-labelledby="models-section-title"
-        className="relative w-full bg-canvas border-b border-border-subtle"
+        className="relative w-full bg-canvas py-8 sm:py-12"
       >
         {/* Section Header */}
-        <div className="py-14 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="mx-auto flex max-w-[1440px] flex-col justify-between gap-6 px-4 pb-8 sm:px-6 sm:pb-10 md:flex-row md:items-end lg:px-10">
           <div className="space-y-3 max-w-2xl">
-            <span className="text-xs font-mono font-bold tracking-widest text-brand uppercase block">
+            <span className="block text-[10px] font-extrabold uppercase tracking-[0.18em] text-muted">
               KATALOG RESMI PENGINAPAN
             </span>
             <h2
               id="models-section-title"
-              className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-primary leading-[1.15]"
+              className="font-heading text-3xl font-extrabold leading-[1.08] tracking-tight text-primary sm:text-4xl lg:text-5xl"
             >
               Pilihan Kamar Transit & Harian Eksklusif.
             </h2>
@@ -138,7 +138,7 @@ export default function HouseGrid() {
         </div>
 
         {/* Room Cards Stack (Fluid on Mobile, Parallax on Desktop) */}
-        <div className="relative w-full px-4 sm:px-6 lg:px-0 max-w-7xl lg:max-w-none mx-auto pb-12 lg:pb-0 space-y-8 lg:space-y-0">
+        <div className="relative mx-auto w-full max-w-[1440px] space-y-6 px-4 pb-4 sm:px-6 lg:space-y-8 lg:px-10">
           {HOUSE_MODELS.map((model, idx) => {
             const dbRoom = liveRooms.find((r) => r.id === model.databaseId || r.unit_number === model.unitNumber);
             const isAvailable = (dbRoom?.status || model.status) === "Available";
@@ -149,10 +149,10 @@ export default function HouseGrid() {
               <div
                 key={model.id}
                 style={{ zIndex: idx + 10 }}
-                className="house-card-track relative lg:h-[140vh] w-full"
+                className="house-card-track relative w-full lg:h-[120vh]"
               >
                 {/* Responsive Viewport Article */}
-                <article className="lg:sticky lg:top-0 w-full min-h-[540px] sm:min-h-[600px] lg:h-screen lg:min-h-[660px] flex flex-col justify-end overflow-hidden bg-black text-white rounded-3xl lg:rounded-none selection:bg-white selection:text-black shadow-xl lg:shadow-none relative">
+                <article className="relative flex min-h-[540px] w-full flex-col justify-end overflow-hidden rounded-[32px] bg-black text-white shadow-xl selection:bg-white selection:text-black sm:min-h-[600px] lg:sticky lg:top-4 lg:h-[calc(100vh-2rem)] lg:min-h-[660px]">
                   
                   {/* Background Full Cover Image */}
                   <div className="absolute inset-0 z-0 overflow-hidden">
@@ -166,10 +166,10 @@ export default function HouseGrid() {
                   </div>
 
                   {/* Inner Content Area */}
-                  <div className="house-card-content relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-12 py-6 sm:py-10 lg:pb-24 space-y-4 will-change-transform">
+                  <div className="house-card-content relative z-10 mx-auto w-full space-y-4 p-4 will-change-transform sm:p-6 lg:p-8">
                     
                     {/* Frosted Glass Spec Panel */}
-                    <div className="glass-frost rounded-2xl sm:rounded-3xl p-4 sm:p-7 border border-white/20 shadow-2xl backdrop-blur-2xl space-y-4 w-full">
+                    <div className="glass-frost w-full space-y-4 rounded-[28px] border border-white/15 p-5 shadow-2xl backdrop-blur-2xl sm:p-7">
                       
                       {/* Top Bar: Model Name & Base Price */}
                       <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-white/15 pb-3 sm:pb-4">
