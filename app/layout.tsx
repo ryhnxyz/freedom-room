@@ -99,11 +99,12 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
       { url: "/logo/freedom-logo.jpeg", type: "image/jpeg" },
-      { url: "/logo/tumbuh-logo-light.svg", type: "image/svg+xml" },
     ],
-    shortcut: "/logo/freedom-logo.jpeg",
-    apple: "/logo/freedom-logo.jpeg",
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
 };
 
