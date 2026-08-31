@@ -10,24 +10,27 @@ export default function AboutPage() {
   const TEAM_MEMBERS = [
     {
       name: "Dimas Faturahman",
-      role: "Owner & General Manager",
+      role: "Owner & Founder",
       bio: "Berpengalaman lebih dari 8 tahun dalam manajemen hospitality dan properti sewa apartemen di kawasan Sentul City dan Jabodetabek.",
-      image: "/img/freedom-room/team-1.jpg",
-      badge: "Manajemen Utama",
+      image: "/img/freedom-room/dimas-faturahman.jpg",
+      initials: "DF",
+      badge: "Founder",
     },
     {
-      name: "Sari Wulandari",
-      role: "Head of Housekeeping & Quality",
-      bio: "Memimpin standar sterilisasi dan kebersihan prima unit apartemen dengan protokol sanitasi hotel bintang lima.",
-      image: "/img/freedom-room/team-2.jpg",
-      badge: "Housekeeping Lead",
+      name: "Mochammad Reyhan Alfiana",
+      role: "Co-Founder",
+      bio: "Bersama founder mengembangkan strategi bisnis, operasional, dan pengalaman digital FreedomRoom agar layanan reservasi semakin praktis dan terpercaya.",
+      image: null,
+      initials: "MR",
+      badge: "Co-Founder",
     },
     {
-      name: "Arif Subekti",
-      role: "Lead Facility & Maintenance",
-      bio: "Menjaga keandalan pendingin udara (AC), kelistrikan, water heater, dan sistem smart lock agar selalu beroperasi 100% optimal.",
-      image: "/img/freedom-room/team-3.jpg",
-      badge: "Teknisi & Maintenance",
+      name: "Arif Riyadi",
+      role: "Housekeeping Leader",
+      bio: "Memimpin standar kebersihan, sterilisasi, dan kesiapan setiap unit agar tamu selalu mendapatkan pengalaman menginap yang nyaman.",
+      image: null,
+      initials: "AR",
+      badge: "Housekeeping Leader",
     },
   ];
 
@@ -145,9 +148,15 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {TEAM_MEMBERS.map((t) => (
               <div key={t.name} className="bg-surface rounded-2xl p-5 border border-border-subtle space-y-4 shadow-sm">
-                <div className="w-16 h-16 rounded-full overflow-hidden bg-sand-200 border border-border-subtle">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={t.image} alt={t.name} className="w-full h-full object-cover" />
+                <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-brand/25 bg-gradient-to-br from-brand-light via-surface to-brand-border shadow-sm">
+                  {t.image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={t.image} alt={t.name} className="h-full w-full object-cover" />
+                  ) : (
+                    <span className="font-heading text-lg font-extrabold tracking-wide text-brand-hover" aria-label={`Avatar ${t.name}`}>
+                      {t.initials}
+                    </span>
+                  )}
                 </div>
                 <div>
                   <span className="text-[10px] font-mono uppercase tracking-widest text-brand block mb-1">{t.badge}</span>

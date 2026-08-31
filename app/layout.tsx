@@ -49,6 +49,9 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "https://freedomroom.id/",
+    languages: {
+      "id-ID": "https://freedomroom.id/",
+    },
   },
   openGraph: {
     title: "FreedomRoom — Booking Penginapan Apartemen, Hotel & Villa",
@@ -93,18 +96,9 @@ export const metadata: Metadata = {
   },
   other: {
     "geo.region": "ID-JB",
-    "geo.placename": "Indonesia",
+    "geo.placename": "Sentul, Bogor",
     "geo.position": "-6.575;106.862",
     ICBM: "-6.575, 106.862",
-  },
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/logo/freedom-logo.png", type: "image/png" },
-    ],
-    shortcut: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
   },
 };
 
@@ -123,6 +117,11 @@ const jsonLdData = {
       priceRange: "$$",
       currenciesAccepted: "IDR",
       paymentAccepted: "Cash, Credit Card, Bank Transfer, QRIS",
+      areaServed: {
+        "@type": "City",
+        name: "Sentul, Bogor",
+      },
+      sameAs: ["https://app.freedomroom.id"],
       address: {
         "@type": "PostalAddress",
         streetAddress:
@@ -159,13 +158,6 @@ const jsonLdData = {
         { "@type": "LocationFeatureSpecification", name: "Kitchenette & Refrigerator", value: true },
         { "@type": "LocationFeatureSpecification", name: "24-Hour Security & Access Card", value: true },
       ],
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: "4.9",
-        reviewCount: "128",
-        bestRating: "5",
-        worstRating: "1",
-      },
     },
     {
       "@type": "WebSite",

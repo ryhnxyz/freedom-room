@@ -17,6 +17,11 @@ export const metadata: Metadata = {
     description: "Lacak status reservasi dan jadwal check-in kamar Anda di FreedomRoom Sentul Tower.",
     url: "https://freedomroom.id/cek-booking",
   },
+  robots: {
+    index: false,
+    follow: false,
+    noarchive: true,
+  },
 };
 
 export default function CekBookingLayout({ children }: { children: React.ReactNode }) {

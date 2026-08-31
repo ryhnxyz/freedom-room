@@ -3,7 +3,7 @@ import { HOUSE_MODELS } from "@/data/houseModels";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://freedomroom.id";
-  const lastModified = new Date();
+  const lastModified = new Date("2026-08-31");
 
   // Static main pages
   const staticPages: MetadataRoute.Sitemap = [
@@ -18,12 +18,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified,
       changeFrequency: "daily",
       priority: 0.95,
-    },
-    {
-      url: `${baseUrl}/cek-booking`,
-      lastModified,
-      changeFrequency: "daily",
-      priority: 0.85,
     },
     {
       url: `${baseUrl}/location`,
@@ -42,6 +36,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified,
       changeFrequency: "weekly",
       priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/journal`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.5,
     },
   ];
 
