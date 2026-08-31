@@ -25,13 +25,13 @@ export default function Footer() {
           
           <div className="lg:col-span-6 space-y-5 sm:space-y-6">
             <div className="flex items-center gap-3.5">
-              <div className="w-10 h-10 sm:w-11 sm:h-11 shrink-0 rounded-full overflow-hidden border border-brand/50 shadow-md relative">
+              <div className="relative h-12 w-16 shrink-0 overflow-hidden rounded-xl border border-brand/30 bg-white shadow-md">
                 <Image
-                  src="/logo/freedom-logo.jpeg"
+                  src="/logo/freedom-logo.png"
                   alt="FreedomRoom Logo"
                   fill
-                  sizes="44px"
-                  className="object-cover"
+                  sizes="64px"
+                  className="object-contain p-0.5"
                 />
               </div>
               <div className="flex flex-col">

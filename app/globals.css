@@ -3,79 +3,79 @@
 @theme {
   /* ========================================================
      FREEDOM-ROOM THEME COLOR PALETTE (From ryhnxyz/freedom-room)
-     --ul-primary: #b39229 (Freedom Gold)
-     --ul-secondary: #000000 (Black)
-     --ul-black: #111111 (Onyx)
-     --ul-gray: #EBEBEB
-     --ul-gray2: #6C6E76
+     --ul-primary: #D4A72C (Freedom Gold)
+     --ul-secondary: #17130A (Warm Black)
+     --ul-black: #100D07 (Onyx)
+     --ul-gray: #EDE7D9
+     --ul-gray2: #706959
      ======================================================== */
 
   /* Freedom Gold Primitive Palette */
-  --color-gold-50: #FCFAF2;
-  --color-gold-100: #F7F1DE;
-  --color-gold-200: #EFE3BC;
-  --color-gold-300: #E3CE91;
-  --color-gold-400: #D4B763;
-  --color-gold-500: #b39229;
-  --color-gold-600: #9E7F21;
-  --color-gold-700: #7E641B;
-  --color-gold-800: #624E19;
-  --color-gold-900: #4B3C16;
-  --color-gold-950: #2C2209;
+  --color-gold-50: #FFFDF6;
+  --color-gold-100: #FFF6D9;
+  --color-gold-200: #F9E5A4;
+  --color-gold-300: #F2D16B;
+  --color-gold-400: #E7BB3F;
+  --color-gold-500: #D4A72C;
+  --color-gold-600: #B98717;
+  --color-gold-700: #916511;
+  --color-gold-800: #6F4D14;
+  --color-gold-900: #543B15;
+  --color-gold-950: #302007;
 
   /* Timber / Onyx Palette */
-  --color-timber-50: #F9F9F9;
-  --color-timber-100: #F1F1F1;
-  --color-timber-200: #E2E2E2;
-  --color-timber-300: #C7C7C7;
-  --color-timber-400: #8E8E8E;
-  --color-timber-500: #5E5E5E;
-  --color-timber-600: #3E3E3E;
-  --color-timber-700: #2B2B2B;
-  --color-timber-800: #1C1C1C;
-  --color-timber-900: #111111;
-  --color-timber-950: #080808;
+  --color-timber-50: #FAF8F2;
+  --color-timber-100: #F2EEE4;
+  --color-timber-200: #E1D9C8;
+  --color-timber-300: #C8BCA5;
+  --color-timber-400: #94866D;
+  --color-timber-500: #6F634F;
+  --color-timber-600: #4B4234;
+  --color-timber-700: #342D23;
+  --color-timber-800: #241F18;
+  --color-timber-900: #17130A;
+  --color-timber-950: #0D0B07;
 
   /* Neutral Surface Palette */
-  --color-sand-50: #FCFCFC;
-  --color-sand-100: #F8F8F8;
-  --color-sand-200: #F0F0F0;
-  --color-sand-300: #EBEBEB;
-  --color-sand-400: #DFDFDF;
-  --color-sand-500: #CCCCCC;
+  --color-sand-50: #FFFEFA;
+  --color-sand-100: #FAF7EF;
+  --color-sand-200: #F2EDDF;
+  --color-sand-300: #E8E0CF;
+  --color-sand-400: #D9CEB8;
+  --color-sand-500: #BFB29A;
 
   /* Charcoal Primitive */
-  --color-charcoal-950: #080808;
-  --color-charcoal-900: #111111;
-  --color-charcoal-800: #1F1F1F;
-  --color-charcoal-700: #333333;
-  --color-charcoal-600: #555555;
-  --color-charcoal-500: #6C6E76;
-  --color-charcoal-400: #999999;
-  --color-charcoal-300: #CCCCCC;
+  --color-charcoal-950: #0D0B07;
+  --color-charcoal-900: #17130A;
+  --color-charcoal-800: #29231A;
+  --color-charcoal-700: #3E372B;
+  --color-charcoal-600: #574F40;
+  --color-charcoal-500: #706959;
+  --color-charcoal-400: #9A927F;
+  --color-charcoal-300: #C9C1B0;
 
   /* ========================================================
      SEMANTIC ROLE TOKENS
      ======================================================== */
-  --color-canvas: #F8F9FA;
-  --color-surface: #FFFFFF;
-  --color-surface-sand: #F0F0F0;
-  --color-surface-timber: #F7F1DE;
-  --color-surface-dark: #111111;
+  --color-canvas: #FAF8F2;
+  --color-surface: #FFFEFA;
+  --color-surface-sand: #F2EDDF;
+  --color-surface-timber: #FFF6D9;
+  --color-surface-dark: #17130A;
 
-  --color-primary: #111111;
-  --color-secondary: #555555;
-  --color-muted: #6C6E76;
+  --color-primary: #17130A;
+  --color-secondary: #574F40;
+  --color-muted: #706959;
   
-  --color-brand: #b39229;
-  --color-brand-hover: #967a21;
-  --color-brand-light: #FAF5E8;
-  --color-brand-border: #E8DCB8;
+  --color-brand: #D4A72C;
+  --color-brand-hover: #B98717;
+  --color-brand-light: #FFF6D9;
+  --color-brand-border: #E9D184;
 
-  --color-bottle: #b39229;
-  --color-pastel-green: #E8D8A0;
+  --color-bottle: #D4A72C;
+  --color-pastel-green: #F2D98D;
 
-  --color-border-subtle: #EBEBEB;
+  --color-border-subtle: #EDE7D9;
 
   /* Typography Definitions */
   --font-heading: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
@@ -148,8 +148,8 @@
 }
 
 .glass-pill-active {
-  border: 1px solid #b39229;
-  background: rgba(179, 146, 41, 0.22);
+  border: 1px solid #D4A72C;
+  background: rgba(212, 167, 44, 0.22);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
@@ -157,13 +157,13 @@
 
 /* Freedom Brand Accent Utilities */
 .text-gold {
-  color: #b39229;
+  color: #D4A72C;
 }
 .bg-gold {
-  background-color: #b39229;
+  background-color: #D4A72C;
 }
 .border-gold {
-  border-color: #b39229;
+  border-color: #D4A72C;
 }
 
 /* Hide scrollbar */
@@ -181,7 +181,7 @@
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
-  scrollbar-color: #b39229 rgba(0, 0, 0, 0.05);
+  scrollbar-color: #D4A72C rgba(0, 0, 0, 0.05);
 }
 
 .modal-scrollbar::-webkit-scrollbar {
@@ -195,10 +195,10 @@
 }
 
 .modal-scrollbar::-webkit-scrollbar-thumb {
-  background: #b39229;
+  background: #D4A72C;
   border-radius: 8px;
 }
 
 .modal-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #967a21;
+  background: #B98717;
 }

@@ -37,8 +37,8 @@ export default function Navbar({ theme: _theme }: NavbarProps) {
       <header className="fixed inset-x-0 top-0 z-40 border-b border-black/5 bg-canvas/90 shadow-sm backdrop-blur-2xl">
         <div className="mx-auto flex h-[72px] max-w-[1440px] items-center gap-3 px-4 sm:px-6 lg:px-10">
           <Link href="/" aria-label="FreedomRoom - Beranda" className="flex shrink-0 items-center gap-3 rounded-2xl">
-            <span className="relative h-10 w-10 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5">
-              <Image src="/logo/freedom-logo.jpeg" alt="FreedomRoom" fill sizes="40px" priority className="object-cover" />
+            <span className="relative h-11 w-14 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-brand/15">
+              <Image src="/logo/freedom-logo.png" alt="FreedomRoom" fill sizes="56px" priority className="object-contain p-0.5" />
             </span>
             <span className="hidden leading-none sm:block">
               <strong className="block font-heading text-lg font-extrabold tracking-tight text-primary">FreedomRoom</strong>

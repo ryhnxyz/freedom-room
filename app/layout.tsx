@@ -60,9 +60,9 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://freedomroom.id/logo/freedom-logo.jpeg",
-        width: 800,
-        height: 800,
+        url: "https://freedomroom.id/logo/freedom-logo.png",
+        width: 1150,
+        height: 900,
         alt: "FreedomRoom Logo",
       },
       {
@@ -78,7 +78,7 @@ export const metadata: Metadata = {
     title: "FreedomRoom — Booking Penginapan Apartemen, Hotel & Villa",
     description:
       "Platform booking penginapan terpercaya untuk sewa apartemen harian & transit, hotel, villa, dan staycation.",
-    images: ["https://freedomroom.id/logo/freedom-logo.jpeg"],
+    images: ["https://freedomroom.id/logo/freedom-logo.png"],
   },
   robots: {
     index: true,
@@ -101,7 +101,7 @@ export const metadata: Metadata = {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
       { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/logo/freedom-logo.jpeg", type: "image/jpeg" },
+      { url: "/logo/freedom-logo.png", type: "image/png" },
     ],
     shortcut: "/favicon.ico",
     apple: "/apple-touch-icon.png",
@@ -117,7 +117,7 @@ const jsonLdData = {
       name: "FreedomRoom — Booking Penginapan Apartemen, Hotel & Villa",
       description:
         "Platform booking penginapan terpercaya untuk sewa apartemen harian & transit, kamar hotel, dan villa dengan fasilitas premium lengkap.",
-      image: "https://freedomroom.id/logo/freedom-logo.jpeg",
+      image: "https://freedomroom.id/logo/freedom-logo.png",
       url: "https://freedomroom.id/",
       telephone: "+6287878906899",
       priceRange: "$$",

@@ -114,7 +114,7 @@ export default function ContactPage() {
 
             {formSubmitted ? (
               <div className="py-8 text-center space-y-4">
-                <div className="w-12 h-12 rounded-full bg-brand/15 text-[#b39229] flex items-center justify-center mx-auto">
+                <div className="w-12 h-12 rounded-full bg-brand/15 text-brand flex items-center justify-center mx-auto">
                   <Icon icon="solar:check-circle-bold" className="w-6 h-6" />
                 </div>
                 <h4 className="font-heading font-bold text-xl text-primary">Pesan Siap Dikirim</h4>

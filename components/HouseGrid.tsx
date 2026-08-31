@@ -121,7 +121,7 @@ export default function HouseGrid() {
               href="https://app.freedomroom.id"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-[#b39229] bg-[#b39229] px-3.5 py-2.5 text-xs font-semibold tracking-wide text-white shadow-sm transition-all duration-150 ease-out hover:border-[#967a21] hover:bg-[#967a21] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#E8DCB8]/60 active:scale-[0.985] sm:text-sm"
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-brand bg-brand px-3.5 py-2.5 text-xs font-semibold tracking-wide text-white shadow-sm transition-all duration-150 ease-out hover:border-brand-hover hover:bg-brand-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-border/60 active:scale-[0.985] sm:text-sm"
             >
               <Icon icon="solar:grid-bold" className="h-4.5 w-4.5 shrink-0" />
               <span>Lihat Semua Unit Kamar</span>

@@ -702,21 +702,21 @@ npm run start`}
                 <div className="space-y-3">
                   <h3 className="font-heading font-bold text-sm sm:text-base text-primary">Timber Green Primitive Scale</h3>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 text-xs">
-                    <div className="p-3 sm:p-3.5 rounded-xl bg-[#b39229] text-white space-y-1 shadow-xs">
+                    <div className="p-3 sm:p-3.5 rounded-xl bg-[#D4A72C] text-white space-y-1 shadow-xs">
                       <span className="font-bold block">Timber 900</span>
-                      <span className="font-mono text-[10px] text-sand-200 block truncate">#b39229 (Brand)</span>
+                      <span className="font-mono text-[10px] text-sand-200 block truncate">#D4A72C (Brand)</span>
                     </div>
                     <div className="p-3 sm:p-3.5 rounded-xl bg-[#0A0A0A] text-white space-y-1 shadow-xs">
                       <span className="font-bold block">Timber 950</span>
                       <span className="font-mono text-[10px] text-sand-200 block truncate">#0A0A0A (Dark)</span>
                     </div>
-                    <div className="p-3 sm:p-3.5 rounded-xl bg-[#FAF5E8] text-timber-900 border border-timber-200 space-y-1 shadow-xs">
+                    <div className="p-3 sm:p-3.5 rounded-xl bg-[#FFF6D9] text-timber-900 border border-timber-200 space-y-1 shadow-xs">
                       <span className="font-bold block">Timber 100</span>
-                      <span className="font-mono text-[10px] text-timber-800 block truncate">#FAF5E8 (Light)</span>
+                      <span className="font-mono text-[10px] text-timber-800 block truncate">#FFF6D9 (Light)</span>
                     </div>
-                    <div className="p-3 sm:p-3.5 rounded-xl bg-[#E8DCB8] text-timber-950 border border-timber-300 space-y-1 shadow-xs">
+                    <div className="p-3 sm:p-3.5 rounded-xl bg-[#E9D184] text-timber-950 border border-timber-300 space-y-1 shadow-xs">
                       <span className="font-bold block">Timber 200</span>
-                      <span className="font-mono text-[10px] text-timber-800 block truncate">#E8DCB8 (Border)</span>
+                      <span className="font-mono text-[10px] text-timber-800 block truncate">#E9D184 (Border)</span>
                     </div>
                   </div>
                 </div>
@@ -751,10 +751,10 @@ npm run start`}
 @theme {
   --color-canvas: #FBF9F5;
   --color-surface: #FFFFFF;
-  --color-brand: #b39229;
+  --color-brand: #D4A72C;
   --color-brand-hover: #0A0A0A;
-  --color-brand-light: #FAF5E8;
-  --color-brand-border: #E8DCB8;
+  --color-brand-light: #FFF6D9;
+  --color-brand-border: #E9D184;
   --color-border-subtle: #EAE5DC;
 }`}
                 />

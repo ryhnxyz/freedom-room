@@ -59,25 +59,25 @@ const sizeClasses: Record<ButtonSize, { root: string; icon: string }> = {
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    'bg-[#b39229] text-white border border-[#b39229] shadow-sm hover:bg-[#967a21] hover:border-[#967a21] active:bg-[#7E641B] active:border-[#7E641B] focus-visible:ring-4 focus-visible:ring-[#E8DCB8]/60',
+    'bg-[#D4A72C] text-white border border-[#D4A72C] shadow-sm hover:bg-[#B98717] hover:border-[#B98717] active:bg-[#916511] active:border-[#916511] focus-visible:ring-4 focus-visible:ring-[#E9D184]/60',
 
   // Sand Secondary
   secondary:
-    'bg-white text-[#111111] border border-[#EBEBEB] shadow-sm hover:bg-[#FAF5E8] hover:text-[#b39229] hover:border-[#E8DCB8] active:bg-[#F0F0F0] focus-visible:ring-4 focus-visible:ring-[#E8DCB8]/50',
+    'bg-white text-[#17130A] border border-[#EDE7D9] shadow-sm hover:bg-[#FFF6D9] hover:text-[#B98717] hover:border-[#E9D184] active:bg-[#F2EDDF] focus-visible:ring-4 focus-visible:ring-[#E9D184]/50',
 
   // White Outline / Secondary-Gray
   'secondary-gray':
-    'bg-white text-[#1A1A1A] border border-[#EAE5DC] shadow-[0_1px_2px_rgba(0,0,0,0.05)] hover:bg-[#F0EBE1] hover:text-[#b39229] hover:border-[#E8DCB8] active:bg-[#FAF5E8] active:text-[#0A0A0A] focus-visible:ring-4 focus-visible:ring-[#E8DCB8]/50',
+    'bg-white text-[#17130A] border border-[#E8E0CF] shadow-[0_1px_2px_rgba(0,0,0,0.05)] hover:bg-[#F2EDDF] hover:text-[#B98717] hover:border-[#E9D184] active:bg-[#FFF6D9] active:text-[#0D0B07] focus-visible:ring-4 focus-visible:ring-[#E9D184]/50',
 
   outline:
-    'bg-white text-[#1A1A1A] border border-[#EAE5DC] shadow-[0_1px_2px_rgba(0,0,0,0.05)] hover:bg-[#F0EBE1] hover:text-[#b39229] hover:border-[#E8DCB8] active:bg-[#FAF5E8] active:text-[#0A0A0A] focus-visible:ring-4 focus-visible:ring-[#E8DCB8]/50',
+    'bg-white text-[#17130A] border border-[#E8E0CF] shadow-[0_1px_2px_rgba(0,0,0,0.05)] hover:bg-[#F2EDDF] hover:text-[#B98717] hover:border-[#E9D184] active:bg-[#FFF6D9] active:text-[#0D0B07] focus-visible:ring-4 focus-visible:ring-[#E9D184]/50',
 
   // Ghost / Tertiary
   tertiary:
-    'bg-transparent text-[#4A4A4A] hover:bg-[#FAF5E8]/60 hover:text-[#b39229] active:bg-[#FAF5E8] focus-visible:ring-4 focus-visible:ring-[#E8DCB8]/40',
+    'bg-transparent text-[#574F40] hover:bg-[#FFF6D9]/60 hover:text-[#B98717] active:bg-[#FFF6D9] focus-visible:ring-4 focus-visible:ring-[#E9D184]/40',
 
   ghost:
-    'bg-transparent text-[#4A4A4A] hover:bg-[#FAF5E8]/60 hover:text-[#b39229] active:bg-[#FAF5E8] focus-visible:ring-4 focus-visible:ring-[#E8DCB8]/40',
+    'bg-transparent text-[#574F40] hover:bg-[#FFF6D9]/60 hover:text-[#B98717] active:bg-[#FFF6D9] focus-visible:ring-4 focus-visible:ring-[#E9D184]/40',
 
   // Dark Architectural
   dark:
@@ -85,7 +85,7 @@ const variantClasses: Record<ButtonVariant, string> = {
 
   // Text Link
   link:
-    'bg-transparent text-[#b39229] hover:text-[#0A0A0A] underline-offset-4 hover:underline p-0 h-auto font-semibold focus-visible:ring-2 focus-visible:ring-[#b39229]',
+    'bg-transparent text-[#B98717] hover:text-[#0D0B07] underline-offset-4 hover:underline p-0 h-auto font-semibold focus-visible:ring-2 focus-visible:ring-[#D4A72C]',
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
