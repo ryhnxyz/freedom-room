@@ -11,6 +11,7 @@ interface NavbarProps {
 }
 
 const navLinks = [
+  { href: "/app", label: "App", icon: "solar:smartphone-bold" },
   { href: "https://app.freedomroom.id", label: "Unit", icon: "solar:buildings-2-bold", external: true },
   { href: "/location", label: "Lokasi", icon: "solar:map-point-bold" },
   { href: "/about", label: "Tentang Kami", icon: "solar:info-circle-bold" },
