@@ -16,6 +16,16 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: '/app',
+        destination: 'https://app.freedomroom.id',
+        permanent: false,
+      },
+      {
+        source: '/app/:path*',
+        destination: 'https://app.freedomroom.id/:path*',
+        permanent: false,
+      },
+      {
         source: '/models/:slug',
         destination: '/room/:slug',
         permanent: true,
